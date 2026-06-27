@@ -74,7 +74,20 @@
                         linear-gradient(90deg, var(--azure) 1px, transparent 1px);
       background-size: 48px 48px;
     }
-    .hero-content { position: relative; z-index: 1; max-width: 720px; }
+    .hero-inner {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; gap: 3.5rem;
+      max-width: 1100px;
+    }
+    .hero-content { max-width: 720px; }
+    .hero-photo {
+      flex-shrink: 0;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--azure2);
+      box-shadow: 0 0 0 8px rgba(0,168,232,0.08), 0 20px 40px rgba(0,0,0,0.35);
+    }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 0.5rem;
       background: rgba(0,168,232,0.1); border: 1px solid rgba(0,168,232,0.3);
@@ -311,6 +324,9 @@
       .nav-links { display: none; }
       .hero { padding: 5rem 1.5rem 3rem; }
       section { padding: 3.5rem 1.5rem; }
+      .hero-inner { flex-direction: column-reverse; text-align: center; gap: 2rem; }
+      .hero-photo { width: 160px; height: 160px; }
+      .hero-ctas, .hero-stats { justify-content: center; }
       .hero-stats { gap: 1.5rem; }
       .about-grid { grid-template-columns: 1fr; gap: 2rem; }
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
@@ -344,32 +360,35 @@
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Available for Enterprise Projects</div>
-    <h1>Hi, I'm <span class="name-accent">Vishnu Kiran</span></h1>
-    <div class="hero-title">Azure AI Solution Consultant &nbsp;|&nbsp; Cloud Solution Architect &nbsp;|&nbsp; Azure Integration Lead</div>
-    <p class="hero-desc">
-      16+ years building enterprise-scale cloud solutions on Microsoft Azure.
-      I specialize in Azure AI, API Management, Terraform IaC, and enterprise integration — turning complex architectures into clean, maintainable, production-ready systems.
-    </p>
-    <div class="hero-ctas">
-      <a href="#projects" class="btn-primary">View Projects →</a>
-      <a href="#contact" class="btn-ghost">Get in Touch</a>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Available for Enterprise Projects</div>
+      <h1>Hi, I'm <span class="name-accent">Vishnu Kiran</span></h1>
+      <div class="hero-title">Azure AI Solution Consultant &nbsp;|&nbsp; Cloud Solution Architect &nbsp;|&nbsp; Azure Integration Lead</div>
+      <p class="hero-desc">
+        16+ years building enterprise-scale cloud solutions on Microsoft Azure.
+        I specialize in Azure AI, API Management, Terraform IaC, and enterprise integration — turning complex architectures into clean, maintainable, production-ready systems.
+      </p>
+      <div class="hero-ctas">
+        <a href="#projects" class="btn-primary">View Projects →</a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">16<span>+</span></div>
+          <div class="stat-label">Years of Experience</div>
+        </div>
+        <div>
+          <div class="stat-num">50<span>+</span></div>
+          <div class="stat-label">Azure Services Used</div>
+        </div>
+        <div>
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Enterprise Projects</div>
+        </div>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div>
-        <div class="stat-num">16<span>+</span></div>
-        <div class="stat-label">Years of Experience</div>
-      </div>
-      <div>
-        <div class="stat-num">50<span>+</span></div>
-        <div class="stat-label">Azure Services Used</div>
-      </div>
-      <div>
-        <div class="stat-num">∞</div>
-        <div class="stat-label">Enterprise Projects</div>
-      </div>
-    </div>
+    <img class="hero-photo" src="https://avatars.githubusercontent.com/u/180734928?s=400&u=135629f773a246c9a2f51ec56c3939d568599659&v=4" alt="Vishnu Kiran" />
   </div>
 </section>
 
