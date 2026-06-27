@@ -55,6 +55,16 @@
       font-weight: 500; transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--teal); }
+    .nav-phone {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--azure2); text-decoration: none;
+      font-size: 0.85rem; font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid var(--border); border-radius: 2rem;
+      padding: 0.4rem 0.9rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .nav-phone:hover { border-color: var(--teal); color: var(--teal); }
 
     /* ── HERO ── */
     .hero {
@@ -323,6 +333,7 @@
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
+      .nav-phone { font-size: 0.75rem; padding: 0.35rem 0.7rem; }
       .hero { padding: 5rem 1.5rem 3rem; }
       section { padding: 3.5rem 1.5rem; }
       .hero-inner { flex-direction: column-reverse; text-align: center; gap: 2rem; }
@@ -355,6 +366,9 @@
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <a href="tel:+918523007299" class="nav-phone">
+    <span>📞</span> +91 85230 07299
+  </a>
 </nav>
 
 <!-- HERO -->
