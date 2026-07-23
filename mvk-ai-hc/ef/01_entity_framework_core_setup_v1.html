@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entity Framework Core — Overview and Setup</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-border: #334155;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --accent: #38bdf8;
+    --plain-bg: #0c2b3a;
+    --plain-border: #0e7490;
+    --tech-bg: #241a3a;
+    --tech-border: #7c3aed;
+    --code-bg: #0b1220;
+    --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  section, nav.toc, header.doc-header { scroll-margin-top: 24px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+  header.doc-header {
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .badge {
+    background: var(--badge-bg);
+    color: #fff;
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .badge.alt { background: #334155; }
+  .purpose {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+  }
+  .purpose strong { color: var(--text); }
+  nav.toc {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 36px;
+  }
+  nav.toc h2 { margin-top: 0; font-size: 1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  nav.toc ol { margin: 0; padding-left: 20px; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  section { margin-bottom: 44px; }
+  h2 {
+    font-size: 1.4rem;
+    color: #f8fafc;
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 18px;
+  }
+  h3 { font-size: 1.1rem; color: #f1f5f9; margin-top: 28px; }
+
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .tech { background: var(--tech-bg); border: 1px solid var(--tech-border); }
+  .tech .layer-label { color: #c4b5fd; }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+  }
+  code {
+    font-family: "SF Mono", Consolas, Monaco, monospace;
+  }
+  p code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; }
+
+  ol.steps { padding-left: 22px; }
+  ol.steps li { margin-bottom: 14px; }
+
+  .grounding {
+    background: #1a1408;
+    border: 1px solid #92400e;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    color: #fde68a;
+    margin-bottom: 32px;
+  }
+  .grounding strong { color: #fef3c7; }
+
+  footer {
+    border-top: 1px solid var(--panel-border);
+    padding-top: 20px;
+    margin-top: 48px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  footer h2 { font-size: 1rem; border: none; padding-left: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  footer ul { padding-left: 20px; }
+
+  .author-card {
+    margin-top: 48px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 24px 26px;
+    scroll-margin-top: 24px;
+  }
+  .author-card h2 { border: none; padding-left: 0; font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .author-name { font-size: 1.25rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+  .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 14px; }
+  .author-bio { color: var(--text-dim); font-size: 0.95rem; }
+  @media (prefers-color-scheme: light) {
+    .author-name { color: #0f172a; }
+  }
+
+  .top-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--badge-bg);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    z-index: 50;
+  }
+  .top-btn:hover { filter: brightness(1.1); }
+
+  .section-nav-link {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .section-nav-link:hover { text-decoration: underline; }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel-border: #e2e8f0;
+      --text: #1e293b;
+      --text-dim: #64748b;
+      --accent: #0284c7;
+      --plain-bg: #ecfeff;
+      --plain-border: #06b6d4;
+      --tech-bg: #f5f3ff;
+      --tech-border: #8b5cf6;
+      --code-bg: #f1f5f9;
+      --badge-bg: #2563eb;
+    }
+    h1, h2, h3 { color: #0f172a; }
+    .grounding { background: #fffbeb; border-color: #f59e0b; color: #78350f; }
+    .grounding strong { color: #451a03; }
+  }
+</style>
+</head>
+<body>
+<a href="#top" class="top-btn">↑ Top</a>
+<div class="wrap">
+
+  <a href="../hcs_home.html" style="display:inline-block;margin-bottom:24px;font-size:0.85rem;color:var(--accent);text-decoration:none;font-weight:500;">← Healthcare Co-Pilot Studio</a>
+
+  <header class="doc-header" id="top">
+    <h1>Entity Framework Core — What It Is, Why We Use It, How We Set It Up</h1>
+    <div class="meta">
+      <span class="badge">Version 1</span>
+      <span class="badge alt">2026-07-23 11:28</span>
+      <a href="#about-document" class="badge alt" style="text-decoration:none;">About This Document ↓</a>
+      <a href="#grounding" class="badge alt" style="text-decoration:none;">Grounded in Real Code ↓</a>
+      <a href="#author" class="badge alt" style="text-decoration:none;">About Author ↓</a>
+    </div>
+  </header>
+
+  <nav class="toc" id="contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">What is an ORM, and what is Entity Framework Core</a></li>
+      <li><a href="#s2">Why this project uses it</a></li>
+      <li><a href="#s3">The three building blocks</a></li>
+      <li><a href="#s4">Step-by-step setup (this project's actual workflow)</a></li>
+      <li><a href="#s5">Why this approach matters</a></li>
+    </ol>
+  </nav>
+
+  <section id="s1">
+    <h2>1. What is an ORM, and what is Entity Framework Core</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      An application needs to read and write data in a database. Without help, a developer writes
+      raw SQL for every operation and manually converts each database row into a C# object, and
+      back again. An ORM (Object-Relational Mapper) automates that translation — the developer
+      works with plain C# classes, and the ORM generates the SQL underneath.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      Entity Framework Core (EF Core) is Microsoft's ORM for .NET. It maps C# classes
+      ("entities") to database tables, tracks changes made to those objects in memory, and
+      generates the corresponding SQL (<code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code>/
+      parameterized <code>SELECT</code>) when changes are saved. It supports multiple database
+      providers (SQL Server, PostgreSQL, SQLite, etc.) through a common API, and includes a
+      migrations system for evolving the database schema alongside the codebase.
+    </div>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s2">
+    <h2>2. Why this project uses it</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Every backend API in this project that talks to a database (<code>HC.AI.Identity.Api</code>
+      today, <code>HC.AI.MAPI</code> and <code>AI.HealthCare.Patient.API</code> following the same
+      pattern) needs a consistent, reliable way to read/write records — users, roles, documents,
+      and (in <code>HC.AI.MAPI</code>'s case) the persona/LLM-configuration tables discussed
+      elsewhere in this project. EF Core gives every API the same approach instead of each one
+      inventing its own data-access code.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      This project standardizes on EF Core 8 with the SQL Server provider across its .NET APIs,
+      using a <strong>code-first, migration-driven</strong> workflow — the C# entity classes are
+      the source of truth, and schema changes are captured as versioned migration files (not
+      hand-written <code>ALTER TABLE</code> scripts run ad hoc). This keeps schema history in
+      source control alongside the code that depends on it.
+    </div>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s3">
+    <h2>3. The three building blocks</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Setting up EF Core for a new area of the database comes down to three things: (1) plain C#
+      classes describing what a record looks like, (2) one class that represents "the database
+      connection plus what tables exist," and (3) a way to tell the app how to actually connect
+      (which server, which database).
+    </div>
+
+    <h3>3a. Entity classes</h3>
+    <p>Plain C# classes, one per table, living under <code>Entities/</code>:</p>
+    <pre><code>// HC.AI.Identity.EF/Entities/Role.cs (simplified)
+public class Role
+{
+    public int RoleId { get; set; }
+    public string RoleName { get; set; }
+    public int OrderId { get; set; }
+    public ICollection&lt;User&gt; Users { get; set; }
+}</code></pre>
+
+    <h3>3b. The DbContext</h3>
+    <p>One class per logical database, exposing a <code>DbSet&lt;T&gt;</code> per entity, plus
+    Fluent API configuration (keys, required fields, max lengths, indexes, relationships, seed
+    data) in <code>OnModelCreating</code>:</p>
+    <pre><code>// HC.AI.Identity.EF/DBContexts/AiHrDbContext.cs (excerpt)
+public class AiHrDbContext : DbContext
+{
+    public AiHrDbContext(DbContextOptions&lt;AiHrDbContext&gt; options) : base(options) { }
+
+    public DbSet&lt;User&gt; Users =&gt; Set&lt;User&gt;();
+    public DbSet&lt;Role&gt; Roles =&gt; Set&lt;Role&gt;();
+    public DbSet&lt;OcrDocument&gt; OcrDocuments =&gt; Set&lt;OcrDocument&gt;();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity&lt;Role&gt;(e =&gt;
+        {
+            e.HasKey(r =&gt; r.RoleId);
+            e.Property(r =&gt; r.RoleName).IsRequired().HasMaxLength(100);
+            e.HasIndex(r =&gt; r.RoleName).IsUnique();
+        });
+
+        modelBuilder.Entity&lt;User&gt;(e =&gt;
+        {
+            e.HasKey(u =&gt; u.UserId);
+            e.HasOne(u =&gt; u.Role).WithMany(r =&gt; r.Users).HasForeignKey(u =&gt; u.RoleId);
+        });
+
+        // Seed data — rows created automatically by the next migration
+        modelBuilder.Entity&lt;Role&gt;().HasData(
+            new Role { RoleId = 1, RoleName = "Doctor", OrderId = 1 },
+            new Role { RoleId = 2, RoleName = "Patient", OrderId = 2 }
+        );
+    }
+}</code></pre>
+
+    <h3>3c. Registering it in the API</h3>
+    <p>One line in <code>Program.cs</code> wires the DbContext into dependency injection, pointing
+    at a named connection string:</p>
+    <pre><code>builder.Services.AddDbContext&lt;AiHrDbContext&gt;(options =&gt;
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AiHrDb")));</code></pre>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s4">
+    <h2>4. Step-by-step: setting up EF Core for a new API area</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Once the three building blocks above exist, there's a repeatable set of commands to get a
+      real database table out of them, and to change that table later without losing data.
+    </div>
+    <ol class="steps">
+      <li>Add the NuGet packages (as done in <code>HC.AI.Identity.EF.csproj</code>):
+        <code>Microsoft.EntityFrameworkCore.SqlServer</code>,
+        <code>Microsoft.EntityFrameworkCore.Design</code>,
+        <code>Microsoft.EntityFrameworkCore.Tools</code> — all pinned to <code>8.0.28</code> in
+        this project.</li>
+      <li>Write the entity class(es) under <code>Entities/</code>.</li>
+      <li>Write (or extend) the DbContext, registering each entity as a
+        <code>DbSet&lt;T&gt;</code> and configuring it in <code>OnModelCreating</code>.</li>
+      <li>Add a connection string to <code>appsettings.json</code> under a named key (e.g.
+        <code>AiHrDb</code>), and register the DbContext in <code>Program.cs</code> as shown in
+        3c.</li>
+      <li>Generate a migration:
+        <pre><code>dotnet ef migrations add &lt;DescriptiveName&gt; --project &lt;EFProjectFolder&gt; --startup-project &lt;ApiProjectFolder&gt;</code></pre>
+        This project's real migration history for <code>AiHrDbContext</code> (in order):
+        <code>InitialCreate</code> → <code>AddRoleOrderId</code> →
+        <code>AddOcrDocumentsTable</code> → <code>AddUserUpdatedAt</code> →
+        <code>SimplifyRolesToDoctorPatient</code> — each one a small, named, incremental change,
+        not one giant schema dump.</li>
+      <li>Apply the migration to the actual database:
+        <pre><code>dotnet ef database update --project &lt;EFProjectFolder&gt; --startup-project &lt;ApiProjectFolder&gt;</code></pre>
+      </li>
+      <li>From then on, any further schema change is: change the entity/DbContext → generate a new
+        migration → apply it. The migration files are checked into source control, so the schema's
+        full history travels with the code.</li>
+    </ol>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s5">
+    <h2>5. Why this approach matters</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Because the schema lives in code and every change is a tracked, named migration, it's
+      possible to show exactly when and why any table changed, not just what it looks like today.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      The <code>SimplifyRolesToDoctorPatient</code> migration is a real, traceable example of a
+      deliberate business decision (narrowing roles from a generic 7-role HR set down to just
+      Doctor/Patient) captured as a schema change with a self-documenting name, sitting alongside
+      the reasoning for it in <code>hc_agile/product_owner/backlog/BACKLOG.md</code> (PB023 notes).
+      That pairing — code-first schema plus the documented business reasoning — means the schema's
+      technical history and its business rationale stay in sync, from the same source of truth.
+    </div>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <footer>
+    <h2>Coming in the next version</h2>
+    <ul>
+      <li><code>HC.AI.MAPI.EF</code> walkthrough once that project's DbContext/entities are
+        actually built (currently scaffold-only) — will follow this exact same pattern.</li>
+      <li>Screenshots/terminal output from a live migration run.</li>
+    </ul>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </footer>
+
+  <div class="purpose" id="about-document" style="scroll-margin-top:24px; margin-top:32px;">
+    <strong>About this document:</strong> this document covers Entity Framework Core end to end —
+    what it is, why it's used, and how it's implemented in this project. Each topic opens with a
+    plain-language explanation, then a technical layer with the concrete implementation details
+    underneath.
+    <br><a href="#contents" class="section-nav-link">↑ Contents</a>
+  </div>
+
+  <div class="grounding" id="grounding" style="scroll-margin-top:24px; margin-top:20px;">
+    <strong>Grounded in real code:</strong> every setup step above is taken from this project's
+    actual working Entity Framework Core implementation — <code>HC.AI.Identity.EF</code>
+    (<code>hc_apis/az/hc_core_apis/HC.AI.Identity.Api/HC.AI.Identity.EF/</code>) — not generic
+    textbook steps. <code>HC.AI.MAPI.EF</code> is this project's other EF layer, currently
+    scaffold-only (no DbContext/entities yet) — it will follow this same pattern once built out.
+    <br><a href="#contents" class="section-nav-link">↑ Contents</a>
+  </div>
+
+  <div class="author-card" id="author">
+    <h2>About Author</h2>
+    <div class="author-name">Vishnu Kiran M</div>
+    <div class="author-email">mvkwithmath@gmail.com</div>
+    <div class="author-bio">
+      Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
+      Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API Management,
+      Terraform, AIOps, and enterprise integration. Experienced in architecting scalable, secure,
+      production-ready AI solutions on Microsoft Azure.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
