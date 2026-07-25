@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EF Core — NuGet Packages</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --tech-bg: #241a3a; --tech-border: #7c3aed;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  h3 { font-size: 1.05rem; color: #f1f5f9; margin-top: 26px; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .tech { background: var(--tech-bg); border: 1px solid var(--tech-border); }
+  .tech .layer-label { color: #c4b5fd; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; }
+  pre { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 16px; overflow-x: auto; font-size: 0.83rem; margin: 10px 0 20px; }
+  .pill { display: inline-block; font-size: 0.72rem; font-weight: 600; padding: 2px 9px; border-radius: 999px; }
+  .pill-runtime { background: #064e3b; color: #6ee7b7; }
+  .pill-designtime { background: #422006; color: #fbbf24; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --tech-bg: #f5f3ff; --tech-border: #8b5cf6; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, h3 { color: #0f172a; }
+    .pill-runtime { background: #d1fae5; color: #065f46; }
+    .pill-designtime { background: #fef3c7; color: #92400e; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">EF Core Topics</div>
+    <a href="EF_Core_Home.html">🏠 EF Core Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_setup_steps.html">4. Setup Steps</a>
+    <a href="05_why_it_matters.html">5. Why It Matters</a>
+    <a href="06_nuget_packages.html" class="active">6. NuGet Packages</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="EF_Core_Home.html">EF Core</a> / Topic 6</div>
+    <h1>NuGet Packages — What Each One Is Responsible For</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Entity Framework Core itself is split across a few separate installable packages rather than
+      one giant package — one does the actual work of talking to SQL Server at runtime, and two
+      others exist purely to power the command-line tools used while developing (generating and
+      applying migrations). Only one of the three needs to ship with the running application.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      This project references three EF Core packages (all pinned to <code>8.0.28</code> in
+      <code>HC.AI.Identity.EF.csproj</code>) — each with a distinct, non-overlapping responsibility:
+    </div>
+
+    <table>
+      <tr><th>Package</th><th>Responsibility</th><th>When it's needed</th></tr>
+      <tr>
+        <td><code>Microsoft.EntityFrameworkCore.SqlServer</code></td>
+        <td>The SQL Server <strong>database provider</strong> for EF Core. Translates EF Core's
+        LINQ queries into actual SQL Server T-SQL, provides the <code>UseSqlServer(...)</code>
+        extension method used when registering the <code>DbContext</code>, and handles
+        SQL-Server-specific type mapping (e.g. <code>NVARCHAR</code>, <code>DATETIME2</code>).</td>
+        <td><span class="pill pill-runtime">Runtime</span> — the app cannot connect to or query SQL
+        Server without it.</td>
+      </tr>
+      <tr>
+        <td><code>Microsoft.EntityFrameworkCore.Design</code></td>
+        <td>Shared design-time infrastructure that the EF Core CLI tooling depends on to inspect
+        the model, build migrations, and scaffold code.</td>
+        <td><span class="pill pill-designtime">Design-time only</span> — marked
+        <code>PrivateAssets="all"</code> in the csproj, so it doesn't ship inside the published
+        application.</td>
+      </tr>
+      <tr>
+        <td><code>Microsoft.EntityFrameworkCore.Tools</code></td>
+        <td>Provides the actual <code>dotnet ef</code> command-line commands (<code>migrations
+        add</code>, <code>database update</code>, etc.) used throughout the
+        <a href="04_setup_steps.html">Setup Steps</a> workflow.</td>
+        <td><span class="pill pill-designtime">Design-time only</span> — same
+        <code>PrivateAssets="all"</code> treatment; a developer's machine needs it, the deployed
+        application doesn't.</td>
+      </tr>
+    </table>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      In short: one package is the "driver" that lets the running application actually talk to the
+      database; the other two are developer-only tools that never leave the build machine.
+    </div>
+
+    <h3>1. Microsoft.EntityFrameworkCore.SqlServer</h3>
+    <p><strong>What it is:</strong> the SQL Server "database provider" — the plug-in that teaches
+    generic EF Core how to speak SQL Server specifically (as opposed to PostgreSQL, SQLite, etc.,
+    which would each need their own provider package instead).</p>
+    <p><strong>Responsibility:</strong> turns the LINQ queries written against a
+    <code>DbSet&lt;T&gt;</code> into real, parameterized SQL Server T-SQL, and maps C# types to
+    SQL Server column types (e.g. C# <code>string</code> → <code>NVARCHAR</code>, C#
+    <code>DateTime</code> → <code>DATETIME2</code>).</p>
+    <p><strong>Example</strong> — this project's actual registration in <code>Program.cs</code>,
+    where <code>UseSqlServer</code> comes directly from this package:</p>
+    <pre><code>builder.Services.AddDbContext&lt;AiHrDbContext&gt;(options =&gt;
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AiHrDb")));</code></pre>
+    <p>And the query this provider makes possible — plain C# on the left, what it becomes on SQL
+    Server on the right:</p>
+    <pre><code>// C# (LINQ) — no SQL written by hand
+var user = await context.Users
+    .FirstOrDefaultAsync(u =&gt; u.Email == email);
+
+// Translated to (conceptually):
+// SELECT TOP(1) * FROM Users WHERE Email = @email</code></pre>
+
+    <h3>2. Microsoft.EntityFrameworkCore.Design</h3>
+    <p><strong>What it is:</strong> the shared design-time engine that EF Core's developer tooling
+    is built on top of — it does the actual work of inspecting the model and building a migration;
+    it is not something application code calls directly.</p>
+    <p><strong>Responsibility:</strong> at design time (i.e. while a developer is running a
+    command, not while the app is serving requests), it loads the <code>DbContext</code>,
+    compares the current model against the last migration snapshot, and produces the C# migration
+    file describing the difference.</p>
+    <p><strong>Example:</strong> this package is what makes the next command
+    (<code>migrations add</code>) able to see the model at all — without it installed, running the
+    command from <a href="04_setup_steps.html">Setup Steps</a> fails immediately with a missing
+    design-time-services error, before it even gets to generating anything:</p>
+    <pre><code>dotnet ef migrations add AddUserUpdatedAt --project HC.AI.Identity.EF --startup-project HC.AI.Identity.Api
+# ^ Microsoft.EntityFrameworkCore.Design is what allows this command to load
+#   AiHrDbContext's model and compute what changed, producing:
+#   Migrations/20260704033222_AddUserUpdatedAt.cs</code></pre>
+
+    <h3>3. Microsoft.EntityFrameworkCore.Tools</h3>
+    <p><strong>What it is:</strong> the command-line front-end — literally what makes the
+    <code>dotnet ef</code> command exist and recognize its sub-commands.</p>
+    <p><strong>Responsibility:</strong> parses the command line (<code>migrations add</code>,
+    <code>database update</code>, <code>migrations remove</code>, etc.) and hands the request off
+    to <code>Microsoft.EntityFrameworkCore.Design</code> to do the actual work.</p>
+    <p><strong>Example</strong> — the second half of the real workflow from
+    <a href="04_setup_steps.html">Setup Steps</a>, applying a generated migration to the actual
+    database:</p>
+    <pre><code>dotnet ef database update --project HC.AI.Identity.EF --startup-project HC.AI.Identity.Api
+# ^ Microsoft.EntityFrameworkCore.Tools provides the "dotnet ef" command itself;
+#   without this package, "dotnet ef" is not a recognized command at all.</code></pre>
+
+    <div class="pager">
+      <a href="05_why_it_matters.html">← Why It Matters</a>
+      <a href="EF_Core_Home.html">Back to EF Core Home →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

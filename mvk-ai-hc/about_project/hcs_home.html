@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare Co-Pilot Studio — Project Overview</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-border: #334155;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --accent: #38bdf8;
+    --plain-bg: #0c2b3a;
+    --plain-border: #0e7490;
+    --tech-bg: #241a3a;
+    --tech-border: #7c3aed;
+    --code-bg: #0b1220;
+    --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  section, nav.toc, header.doc-header { scroll-margin-top: 24px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+  header.doc-header {
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .badge {
+    background: var(--badge-bg);
+    color: #fff;
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .badge.alt { background: #334155; }
+  .purpose {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+  }
+  .purpose strong { color: var(--text); }
+  nav.toc {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 36px;
+  }
+  nav.toc h2 { margin-top: 0; font-size: 1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  nav.toc ol { margin: 0; padding-left: 20px; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  section { margin-bottom: 44px; }
+  h2 {
+    font-size: 1.4rem;
+    color: #f8fafc;
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 18px;
+  }
+  h3 { font-size: 1.1rem; color: #f1f5f9; margin-top: 24px; }
+
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .tech { background: var(--tech-bg); border: 1px solid var(--tech-border); }
+  .tech .layer-label { color: #c4b5fd; }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+  }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, li code, td code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.88em; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--panel-border); }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; }
+
+  .flow {
+    background: var(--code-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-size: 0.88rem;
+    overflow-x: auto;
+  }
+  .flow code { display: block; white-space: pre; }
+
+  .status-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+  .status-live { background: #064e3b; color: #6ee7b7; }
+  .status-progress { background: #422006; color: #fbbf24; }
+  .status-planned { background: #1e293b; color: #94a3b8; border: 1px solid var(--panel-border); }
+  @media (prefers-color-scheme: light) {
+    .status-live { background: #d1fae5; color: #065f46; }
+    .status-progress { background: #fef3c7; color: #92400e; }
+    .status-planned { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+  }
+
+  .grounding {
+    background: #1a1408;
+    border: 1px solid #92400e;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    color: #fde68a;
+    margin-bottom: 32px;
+  }
+  .grounding strong { color: #fef3c7; }
+
+  footer {
+    border-top: 1px solid var(--panel-border);
+    padding-top: 20px;
+    margin-top: 48px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  footer h2 { font-size: 1rem; border: none; padding-left: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  footer ul { padding-left: 20px; }
+
+  .author-card {
+    margin-top: 48px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 24px 26px;
+    scroll-margin-top: 24px;
+  }
+  .author-card h2 { border: none; padding-left: 0; font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .author-name { font-size: 1.25rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+  .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 14px; }
+  .author-bio { color: var(--text-dim); font-size: 0.95rem; }
+
+  .top-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--badge-bg);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    z-index: 50;
+  }
+  .top-btn:hover { filter: brightness(1.1); }
+
+  .section-nav-link {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .section-nav-link:hover { text-decoration: underline; }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel-border: #e2e8f0;
+      --text: #1e293b;
+      --text-dim: #64748b;
+      --accent: #0284c7;
+      --plain-bg: #ecfeff;
+      --plain-border: #06b6d4;
+      --tech-bg: #f5f3ff;
+      --tech-border: #8b5cf6;
+      --code-bg: #f1f5f9;
+      --badge-bg: #2563eb;
+    }
+    h1, h2, h3 { color: #0f172a; }
+    .author-name { color: #0f172a; }
+    .grounding { background: #fffbeb; border-color: #f59e0b; color: #78350f; }
+    .grounding strong { color: #451a03; }
+  }
+</style>
+</head>
+<body>
+<a href="#top" class="top-btn">↑ Top</a>
+<div class="wrap">
+
+  <header class="doc-header" id="top">
+    <h1>Healthcare Co-Pilot Studio</h1>
+    <p class="tagline">An AI-assisted healthcare platform where doctors and patients get natural-language answers grounded in real data — not guesses.</p>
+    <div class="meta">
+      <span class="badge">Version 1</span>
+      <span class="badge alt">2026-07-23 14:05</span>
+      <a href="#about-document" class="badge alt" style="text-decoration:none;">About This Document ↓</a>
+      <a href="#author" class="badge alt" style="text-decoration:none;">About Author ↓</a>
+      <a href="../ts/01_technology_stack_v1.html" class="badge" style="text-decoration:none;">Technology Stack →</a>
+    </div>
+  </header>
+
+  <nav class="toc" id="contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">The Problem</a></li>
+      <li><a href="#s2">The Solution</a></li>
+      <li><a href="#s3">How It Works</a></li>
+      <li><a href="#s4">Who It's For</a></li>
+      <li><a href="#s5">Technology Stack</a></li>
+      <li><a href="#s6">Current Status</a></li>
+    </ol>
+  </nav>
+
+  <section id="s1">
+    <h2>1. The Problem</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Doctors and patients need fast, natural-language access to healthcare information —
+      "show me this patient's recent visits," "what medications is John on?" — but healthcare
+      systems are typically locked behind rigid forms, dashboards, and technical interfaces
+      (Swagger, SQL, admin panels) that aren't built for a conversational question. At the same
+      time, healthcare is a field where an AI system simply making something up is not an
+      acceptable failure mode.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      Two constraints drive the entire architecture: (1) the set of possible questions is
+      effectively unbounded — hand-building a fixed REST endpoint per question doesn't scale — so
+      the system needs to interpret open-ended natural language and translate it into a real data
+      query dynamically; (2) letting a language model freely generate SQL or answer from its own
+      "knowledge" is unacceptable in this domain, because a wrong-but-plausible-sounding answer
+      about patient data is a real safety risk, not just an inconvenience.
+    </div>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s2">
+    <h2>2. The Solution</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      A conversational AI assistant, built specifically for this domain, that always answers from
+      real records rather than from what the model "thinks" it knows — with different personas
+      (Doctor, Patient) getting their own tailored chat experience, secured behind proper
+      authentication.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      The assistant never lets the language model generate or execute raw SQL. Instead, natural
+      language is translated into a constrained, schema-validated query — a small structured
+      "query DSL" — which the backend validates against an allow-list of tables/columns before
+      executing it as parameterized, read-only data access. The model then composes its answer
+      using only the real query result, not its own general knowledge. This closes off the two
+      biggest risks in applying an LLM to healthcare data: SQL-injection-by-LLM, and fabricated
+      ("hallucinated") facts about a patient.
+    </div>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s3">
+    <h2>3. How It Works</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      A question goes through a chain of checks and translations before it ever touches patient
+      data, and the answer that comes back is built only from what was actually found — the AI
+      is a translator and communicator, not the source of truth.
+    </div>
+    <div class="flow"><code>Doctor/Patient asks a question in the chat UI
+  → Authenticated request reaches the AI Assistant API
+  → Orchestration layer (Semantic Kernel) selects the right model for this persona/request
+  → Local LLM (Ollama) interprets intent, proposes a structured query — not raw SQL
+  → Guardrail layer validates the query against an allow-list (read-only, known tables/columns only)
+  → Query executes against SQL Server, real results come back
+  → LLM composes the final answer using only those results
+  → Answer is returned to the chat UI</code></div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      Implemented as a layered ASP.NET Core backend (<code>HC.AI.MAPI</code>): Controller →
+      Service Layer → Semantic Kernel orchestration → LLM connector (Ollama) → Prompt Layer →
+      Guardrail Layer → Tool Layer → Business/Repository/EF Core → SQL Server. Every stage owns
+      one responsibility, so guardrail logic, prompt content, and model selection can each evolve
+      independently without touching the others. Model and prompt selection is being migrated from
+      static configuration to a database-backed, per-persona configuration (in progress) so
+      behavior can be tuned without a redeploy.
+    </div>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s4">
+    <h2>4. Who It's For</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      The platform is built around personas — each type of user gets a chat experience and set of
+      capabilities designed for their role, not a one-size-fits-all interface.
+    </div>
+    <table>
+      <tr><th>Persona</th><th>What they get</th><th>Status</th></tr>
+      <tr><td>Doctor</td><td>Natural-language chat assistant for clinical/patient queries</td><td><span class="status-pill status-progress">In Progress</span></td></tr>
+      <tr><td>Patient</td><td>Natural-language chat assistant for their own health information</td><td><span class="status-pill status-progress">In Progress</span></td></tr>
+      <tr><td>Admin</td><td>Oversight/management of Doctor and Patient accounts and records</td><td><span class="status-pill status-planned">Planned</span></td></tr>
+    </table>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s5">
+    <h2>5. Technology Stack</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Built on mainstream, enterprise-proven technology end to end — nothing exotic or
+      hard-to-maintain, so the platform is straightforward to support, extend, and hand over.
+    </div>
+    <table>
+      <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+      <tr><td>Backend APIs</td><td>ASP.NET Core (C#)</td><td>REST APIs for AI assistant, authentication, and patient records</td></tr>
+      <tr><td>Data access</td><td>Entity Framework Core, SQL Server</td><td>Code-first schema, migrations, query execution</td></tr>
+      <tr><td>AI orchestration</td><td>Microsoft Semantic Kernel</td><td>Connects the API layer to the language model, manages the chat/completion flow</td></tr>
+      <tr><td>Language model runtime</td><td>Ollama (local), <code>qwen2.5</code> family + persona-tuned variants</td><td>Runs the actual language model that interprets questions and composes answers</td></tr>
+      <tr><td>Frontend</td><td>Angular, TypeScript</td><td>Persona-specific chat UI and web portal</td></tr>
+      <tr><td>Authentication</td><td>JWT-based auth API, EF Core-backed</td><td>Secures every persona's access</td></tr>
+      <tr><td>Data engineering</td><td>PySpark</td><td>Ingesting and profiling the synthetic patient dataset used for development</td></tr>
+      <tr><td>Testing</td><td>Playwright</td><td>Automated API and UI test coverage</td></tr>
+      <tr><td>Process/delivery</td><td>Azure DevOps</td><td>Backlog, sprint, and work-item tracking</td></tr>
+    </table>
+    <a href="../ts/01_technology_stack_v1.html" class="badge" style="text-decoration:none; display:inline-block; margin-top:8px;">View full Technology Stack →</a>
+    <br>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <section id="s6">
+    <h2>6. Current Status</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      This is an actively evolving platform, built incrementally — capability by capability,
+      demonstrated as it's proven working, not promised in advance.
+    </div>
+    <table>
+      <tr><th>Capability</th><th>Status</th></tr>
+      <tr><td>Doctor persona — natural-language chat (general LLM responses)</td><td><span class="status-pill status-progress">In Progress</span></td></tr>
+      <tr><td>Patient persona — chat UI</td><td><span class="status-pill status-progress">In Progress</span></td></tr>
+      <tr><td>Authentication (login/signup)</td><td><span class="status-pill status-live">Live</span></td></tr>
+      <tr><td>Guardrailed, database-grounded query execution</td><td><span class="status-pill status-progress">In Progress</span></td></tr>
+      <tr><td>Dynamic, database-backed model/prompt configuration per persona</td><td><span class="status-pill status-progress">In Progress</span></td></tr>
+      <tr><td>Admin persona &amp; management console</td><td><span class="status-pill status-planned">Planned</span></td></tr>
+      <tr><td>Clinical document intelligence (upload/extract)</td><td><span class="status-pill status-planned">Planned</span></td></tr>
+    </table>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </section>
+
+  <footer>
+    <h2>Coming in the next version</h2>
+    <ul>
+      <li>Live screenshots of the chat UI once the persona flows are demo-ready.</li>
+      <li>Updated status table as guardrail and dynamic-configuration work completes.</li>
+    </ul>
+    <a href="#contents" class="section-nav-link">↑ Contents</a>
+  </footer>
+
+  <div class="purpose" id="about-document" style="scroll-margin-top:24px; margin-top:32px;">
+    <strong>About this document:</strong> a plain-language and technical overview of the
+    Healthcare Co-Pilot Studio project — what it is, the problem it solves, how it solves it, and
+    the technology behind it. Intended as a first read for anyone new to the project, expanded and
+    updated as the platform grows.
+    <br><a href="#contents" class="section-nav-link">↑ Contents</a>
+  </div>
+
+  <div class="author-card" id="author">
+    <h2>About Author</h2>
+    <div class="author-name">Vishnu Kiran M</div>
+    <div class="author-email">mvkwithmath@gmail.com</div>
+    <div class="author-bio">
+      Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
+      Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API Management,
+      Terraform, AIOps, and enterprise integration. Experienced in architecting scalable, secure,
+      production-ready AI solutions on Microsoft Azure.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
