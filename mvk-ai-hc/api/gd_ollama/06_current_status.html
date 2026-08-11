@@ -106,7 +106,30 @@
         <td><span class="status-pill status-progress">In Progress</span></td>
         <td>Schema and stored procedure exist; not yet the default resolution path in the live request flow</td>
       </tr>
+      <tr>
+        <td>Cold-start request timeout (<code>BUG-001</code>)</td>
+        <td><span class="status-pill status-progress">In Progress</span></td>
+        <td>Open — see note below</td>
+      </tr>
     </table>
+
+    <div class="warn">
+      <strong>Cold-start behavior — worth knowing before a live demo:</strong> Ollama has to load
+      a model into memory before it can generate anything. If <code>hc-doctor-executor:latest</code>
+      or <code>hc-patient-executor:1.1</code> hasn't been called recently, that first request after
+      idle time is measurably slower — observed at roughly <strong>91–110 seconds</strong> for a
+      single short message, versus about <strong>18.5 seconds</strong> once the model is already
+      warm. Doctor and Patient use different models, so each persona's first message in a session
+      can hit this independently.
+      <br><br>
+      <code>KernalFactory</code>'s HTTP client currently uses .NET's default 100-second timeout,
+      which the observed worst case can exceed — meaning a cold-start request can occasionally be
+      canceled outright rather than just arrive slowly. Tracked as <code>BUG-001</code>, still
+      open. Two fixes are under consideration, neither shipped yet: raising the timeout past the
+      observed worst case, or moving to a streamed response (<code>PB045</code>) so the reply
+      appears token-by-token instead of arriving as one blocking call. If this is seen live, it's
+      expected behavior for locally-hosted, on-demand LLM serving — not an environment fault.
+    </div>
 
     <div class="warn">
       <strong>Real config issue worth flagging:</strong> in <code>appsettings.json</code>, the

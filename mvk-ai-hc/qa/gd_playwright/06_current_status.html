@@ -105,9 +105,14 @@
         <td>Scaffold only, no tests written yet</td>
       </tr>
       <tr>
-        <td>Doctor Chat send/receive coverage</td>
-        <td><span class="status-pill status-progress">In Progress</span></td>
-        <td>No spec exists yet — see Test Coverage</td>
+        <td>Doctor Chat send/receive coverage (Demo 2.2, agent-based pipeline)</td>
+        <td><span class="status-pill status-live">Live</span></td>
+        <td><code>agent-chat.spec.ts</code> — real browser, real Ollama, real reply through the streaming send flow</td>
+      </tr>
+      <tr>
+        <td>Demo 3 / 3.1 — Server-Sent Events streaming</td>
+        <td><span class="status-pill status-live">Live</span></td>
+        <td>Demo 3 (2026-08-01) independently proved SSE wire mechanics — chunked delivery, JWT-over-<code>fetch</code>, clean close — against a throwaway, non-LLM spike endpoint (<code>sse-demo-stream.spec.ts</code>). Demo 3.1 (2026-08-02) verified the same mechanics wired into the <em>real</em> Doctor Agent Chat send flow (<code>provider-stream-chat</code>, replacing the old single-shot <code>provider-chat</code> per explicit product direction) — real model output streamed token-by-token in the actual chat UI, not a side panel, plus confirmed it sidesteps the ~100s cold-start timeout (BUG-001) that reliably hits the non-streaming endpoint. Tool-calling-under-streaming interaction and a few failure-mode cases are still being worked through</td>
       </tr>
     </table>
 

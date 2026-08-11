@@ -119,6 +119,35 @@
   .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 14px; }
   .author-bio { color: var(--text-dim); font-size: 0.95rem; }
 
+  .contact-card {
+    margin-top: 24px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 24px 26px;
+  }
+  .contact-card h2 { border: none; padding-left: 0; font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .contact-card p { color: var(--text-dim); font-size: 0.95rem; margin: 0 0 16px; }
+  .contact-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    color: #fff;
+    background: var(--badge-bg);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .contact-link.secondary {
+    color: var(--accent);
+    background: transparent;
+    border-color: var(--panel-border);
+  }
+  .contact-link:hover { filter: brightness(1.1); text-decoration: none; }
+
   .top-btn {
     position: fixed;
     bottom: 28px;
@@ -134,6 +163,16 @@
     z-index: 50;
   }
   .top-btn:hover { filter: brightness(1.1); }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .back-link:hover { text-decoration: underline; }
 
   @media (prefers-color-scheme: light) {
     :root {
@@ -159,6 +198,8 @@
 <a href="#top" class="top-btn">↑ Top</a>
 <div class="wrap">
 
+  <a href="../about_project/hcs_home.html" class="back-link">← Back to Project Home</a>
+
   <header class="doc-header" id="top">
     <h1>Technology Stack</h1>
     <p class="tagline">The technologies behind Healthcare Co-Pilot Studio — click any card for a full walkthrough of that piece.</p>
@@ -170,45 +211,21 @@
     </div>
   </header>
 
-  <section id="backend">
-    <h2>Backend &amp; Data</h2>
-    <div class="grid">
-      <a class="card" href="../api/gd_mapi/gd_ef/EF_Core_Home.html">
-        <span class="card-icon">🗄️</span>
-        <div class="card-title">Entity Framework Core</div>
-        <div class="card-purpose">Code-first data access, migrations, and schema history for every backend API.</div>
-        <span class="card-status status-available">Available</span>
-      </a>
-      <a class="card" href="../api/gd_aspnetcore/AspNetCore_Home.html">
-        <span class="card-icon">🟣</span>
-        <div class="card-title">ASP.NET Core</div>
-        <div class="card-purpose">The REST API framework behind every backend service.</div>
-        <span class="card-status status-available">Available</span>
-      </a>
-      <a class="card" href="../data/gd_sqlserver/SQLServer_Home.html">
-        <span class="card-icon">🛢️</span>
-        <div class="card-title">SQL Server</div>
-        <div class="card-purpose">The relational database storing patient, identity, and configuration data.</div>
-        <span class="card-status status-available">Available</span>
-      </a>
-    </div>
-  </section>
-
-  <section id="security">
-    <h2>Security &amp; Identity</h2>
-    <div class="grid">
-      <a class="card" href="../api/gd_identity/Identity_Home.html">
-        <span class="card-icon">🔐</span>
-        <div class="card-title">Identity &amp; Authentication</div>
-        <div class="card-purpose">JWT token issuance, backend validation middleware, and how the frontend carries identity on every request.</div>
-        <span class="card-status status-available">Available</span>
-      </a>
-    </div>
-  </section>
-
   <section id="ai">
     <h2>AI &amp; Language Models</h2>
     <div class="grid">
+      <a class="card" href="../llm/LLM_Home.html">
+        <span class="card-icon">LLM</span>
+        <div class="card-title">Large Language Models</div>
+        <div class="card-purpose">Product and technical summary of how LLMs are used safely through Semantic Kernel, Ollama, persona model direction, grounding, and testing.</div>
+        <span class="card-status status-available">Staging draft</span>
+      </a>
+      <a class="card" href="../ml/MachineLearning_Home.html">
+        <span class="card-icon">ML</span>
+        <div class="card-title">Machine Learning</div>
+        <div class="card-purpose">Definition, core types, and future healthcare use cases such as prediction, classification, anomaly detection, and recommendations.</div>
+        <span class="card-status status-available">Staging draft</span>
+      </a>
       <a class="card" href="../api/gd_semantickernel/SemanticKernel_Home.html">
         <span class="card-icon">🧠</span>
         <div class="card-title">Semantic Kernel</div>
@@ -221,44 +238,25 @@
         <div class="card-purpose">Runs the local language models that interpret questions and compose answers.</div>
         <span class="card-status status-available">Available</span>
       </a>
-    </div>
-  </section>
-
-  <section id="frontend">
-    <h2>Frontend</h2>
-    <div class="grid">
-      <a class="card" href="../ui/gd_angular/Angular_Home.html">
-        <span class="card-icon">⚡</span>
-        <div class="card-title">Angular</div>
-        <div class="card-purpose">Persona-specific chat UI and web portal.</div>
-        <span class="card-status status-available">Available</span>
+      <a class="card" href="../mcp/MCP_Home.html">
+        <span class="card-icon">MCP</span>
+        <div class="card-title">Model Context Protocol</div>
+        <div class="card-purpose">AI tool integration layer for exposing governed healthcare capabilities through ASP.NET Core, FastAPI, and Azure Functions implementation tracks.</div>
+        <span class="card-status status-available">Track A active</span>
+      </a>
+      <a class="card" href="../mcp/architecture_patterns/Architecture_Patterns_Home.html">
+        <span class="card-icon">ARCH</span>
+        <div class="card-title">Technical Architecture</div>
+        <div class="card-purpose">MCP host-boundary architecture discussion, including gateway, bounded context, resilience, and migration patterns.</div>
+        <span class="card-status status-design">Planned architecture</span>
+      </a>
+      <a class="card" href="../agent/Agent_Home.html">
+        <span class="card-icon">Agent</span>
+        <div class="card-title">AI Agents</div>
+        <div class="card-purpose">Agent architecture for Healthcare Co-Pilot Studio, including LangChain and Semantic Kernel implementation paths.</div>
+        <span class="card-status status-available">Architecture draft</span>
       </a>
     </div>
-  </section>
-
-  <section id="platform">
-    <h2>Data Engineering, Testing &amp; Delivery</h2>
-    <div class="grid">
-      <a class="card" href="../bigdata/gd_pyspark/PySpark_Home.html">
-        <span class="card-icon">📊</span>
-        <div class="card-title">PySpark</div>
-        <div class="card-purpose">Ingesting and profiling the synthetic patient dataset used for development.</div>
-        <span class="card-status status-available">Available</span>
-      </a>
-      <a class="card" href="../qa/gd_playwright/Playwright_Home.html">
-        <span class="card-icon">🧪</span>
-        <div class="card-title">Playwright</div>
-        <div class="card-purpose">Automated API and UI test coverage.</div>
-        <span class="card-status status-available">Available</span>
-      </a>
-      <a class="card" href="../devops/gd_azuredevops/AzureDevOps_Home.html">
-        <span class="card-icon">🔧</span>
-        <div class="card-title">Azure DevOps</div>
-        <div class="card-purpose">Backlog, sprint, and work-item tracking.</div>
-        <span class="card-status status-available">Available</span>
-      </a>
-    </div>
-    <a href="#top" class="section-nav-link">↑ Top</a>
   </section>
 
   <section id="azure-integration">
@@ -323,6 +321,113 @@
     <a href="#top" class="section-nav-link">↑ Top</a>
   </section>
 
+  <section id="frontend">
+    <h2>Frontend</h2>
+    <div class="grid">
+      <a class="card" href="../ui/gd_angular/Angular_Home.html">
+        <span class="card-icon">⚡</span>
+        <div class="card-title">Angular</div>
+        <div class="card-purpose">Persona-specific chat UI and web portal.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="security">
+    <h2>Security &amp; Identity</h2>
+    <div class="grid">
+      <a class="card" href="../api/gd_identity/Identity_Home.html">
+        <span class="card-icon">🔐</span>
+        <div class="card-title">Identity &amp; Authentication</div>
+        <div class="card-purpose">JWT token issuance, backend validation middleware, and how the frontend carries identity on every request.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="backend">
+    <h2>Backend &amp; Data</h2>
+    <div class="grid">
+      <a class="card" href="../api/gd_mapi/gd_ef/EF_Core_Home.html">
+        <span class="card-icon">🗄️</span>
+        <div class="card-title">Entity Framework Core</div>
+        <div class="card-purpose">Code-first data access, migrations, and schema history for every backend API.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../api/gd_aspnetcore/AspNetCore_Home.html">
+        <span class="card-icon">🟣</span>
+        <div class="card-title">ASP.NET Core</div>
+        <div class="card-purpose">The REST API framework behind every backend service.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../data/gd_sqlserver/SQLServer_Home.html">
+        <span class="card-icon">🛢️</span>
+        <div class="card-title">SQL Server</div>
+        <div class="card-purpose">The relational database storing patient, identity, and configuration data.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="platform">
+    <h2>Data Engineering, Testing &amp; Delivery</h2>
+    <div class="grid">
+      <a class="card" href="../bigdata/gd_pyspark/PySpark_Home.html">
+        <span class="card-icon">📊</span>
+        <div class="card-title">PySpark</div>
+        <div class="card-purpose">Ingesting and profiling the synthetic patient dataset used for development.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../qa/gd_playwright/Playwright_Home.html">
+        <span class="card-icon">🧪</span>
+        <div class="card-title">Playwright</div>
+        <div class="card-purpose">Automated API and UI test coverage.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../devops/gd_azuredevops/AzureDevOps_Home.html">
+        <span class="card-icon">🔧</span>
+        <div class="card-title">Azure DevOps</div>
+        <div class="card-purpose">Backlog, sprint, and work-item tracking.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+    <a href="#top" class="section-nav-link">↑ Top</a>
+  </section>
+
+  <section id="delivery-model">
+    <h2>Delivery Operating Model</h2>
+    <div class="purpose">
+      <strong>How the work is run:</strong> Healthcare Co-Pilot Studio is documented as a
+      staged, local-first delivery system. Ideas are captured as backlog/user-story/task markdown,
+      reviewed in the staging documentation folder, implemented in the relevant codebase, verified
+      through focused tests or manual checks, and only then positioned for client-facing or
+      interview-facing discussion.
+    </div>
+    <div class="grid" style="margin-top:16px;">
+      <a class="card" href="../devops/gd_azuredevops/AzureDevOps_Home.html">
+        <span class="card-icon">ADO</span>
+        <div class="card-title">Traceable Backlog</div>
+        <div class="card-purpose">Epics, user stories, tasks, and findings are kept visible so technical work can be explained as product delivery.</div>
+        <span class="card-status status-available">Documented</span>
+      </a>
+      <a class="card" href="../qa/gd_playwright/Playwright_Home.html">
+        <span class="card-icon">QA</span>
+        <div class="card-title">Regression Confidence</div>
+        <div class="card-purpose">Playwright coverage records what has been tested, what is still manual, and where real LLM behavior is verified.</div>
+        <span class="card-status status-available">Documented</span>
+      </a>
+      <a class="card" href="../backlog/AIHC_FOLDER_UPDATE_PLAN.md">
+        <span class="card-icon">DOC</span>
+        <div class="card-title">Documentation Staging</div>
+        <div class="card-purpose">Folder-wise documentation updates are planned before changing public profile pages or demo material.</div>
+        <span class="card-status status-design">In progress</span>
+      </a>
+    </div>
+    <a href="#top" class="section-nav-link">Top</a>
+  </section>
+
+
+
   <footer>
     <h2>Coming in the next version</h2>
     <p>Every technology actually implemented in this platform today now has its own walkthrough.
@@ -342,13 +447,39 @@
   <div class="author-card" id="author">
     <h2>About Author</h2>
     <div class="author-name">Vishnu Kiran M</div>
-    <div class="author-email">mvkwithmath@gmail.com</div>
+    <div class="author-email">vishnu.nt@gmail.com</div>
     <div class="author-bio">
       Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
       Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API Management,
       Terraform, AIOps, and enterprise integration. Experienced in architecting scalable, secure,
       production-ready AI solutions on Microsoft Azure.
     </div>
+  </div>
+
+  <div class="contact-card" id="contact">
+    <h2>Get In Touch</h2>
+    <div class="contact-links">
+      <a href="https://www.linkedin.com/in/vishnu-m-50a453258/" class="contact-link" target="_blank">LinkedIn</a>
+      <a href="https://github.com/mvkml" class="contact-link secondary" target="_blank">GitHub</a>
+      <a href="https://www.youtube.com/@vishnukiranm/playlists" class="contact-link secondary" target="_blank">YouTube</a>
+      <a href="mailto:vishnu.nt@gmail.com" class="contact-link secondary">Email</a>
+      <a href="tel:+918523007299" class="contact-link secondary">+91 85230 07299</a>
+      <a href="../../AboutVishnuKiran.html#contact" class="contact-link secondary">Full Profile</a>
+    </div>
+    <p>
+      Open to remote opportunities, Forward Deployed Engineer roles, enterprise consulting,
+      freelance projects, and strategic collaborations.
+    </p>
+    <p>
+      I work with organizations to identify business and operational gaps, uncover opportunities
+      for AI-driven transformation, and design and build practical end-to-end solutions using
+      Agentic AI, Azure AI, Cloud, IoT/IIoT, and enterprise integration technologies.
+    </p>
+    <p>
+      Whether it's solving an existing challenge, modernizing a workflow, connecting systems and
+      industrial data, or building a new AI-enabled solution, I'm open to partnering from problem
+      discovery through architecture, implementation, and deployment.
+    </p>
   </div>
 
 </div>

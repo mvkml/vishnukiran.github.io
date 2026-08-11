@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Learning - Home</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --tech-bg: #241a3a; --tech-border: #7c3aed;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  .back-link { display: inline-block; margin-bottom: 24px; font-size: 0.85rem; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .back-link:hover { text-decoration: underline; }
+  header.doc-header { border-bottom: 1px solid var(--panel-border); padding-bottom: 24px; margin-bottom: 32px; }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .badge { background: var(--badge-bg); color: #fff; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; font-weight: 600; letter-spacing: 0.02em; }
+  .badge.alt { background: #334155; }
+  section { margin-bottom: 44px; }
+  h2 { font-size: 1.35rem; color: #f8fafc; border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 18px; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .tech { background: var(--tech-bg); border: 1px solid var(--tech-border); }
+  .tech .layer-label { color: #c4b5fd; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; }
+  .purpose { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 16px 18px; font-size: 0.95rem; color: var(--text-dim); margin-top: 40px; }
+  .purpose strong { color: var(--text); }
+  .author-card { margin-top: 32px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 24px 26px; }
+  .author-card h2 { border: none; padding-left: 0; font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .author-name { font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+  .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 12px; }
+  .author-bio { color: var(--text-dim); font-size: 0.92rem; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --tech-bg: #f5f3ff; --tech-border: #8b5cf6; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, h2, .author-name { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../ts/01_technology_stack_v1.html" class="back-link">&larr; Back to Technology Stack</a>
+
+  <header class="doc-header">
+    <h1>Machine Learning</h1>
+    <p class="tagline">The discipline of teaching systems to learn patterns from data and use those patterns for prediction, classification, recommendation, detection, and decision support.</p>
+    <div class="meta">
+      <span class="badge">Staging Draft</span>
+      <span class="badge alt">Machine Learning Section</span>
+      <span class="badge alt">Definition &amp; Types</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. Definition</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Machine Learning is a way of building software where the system improves from examples
+      instead of being programmed only with fixed rules. The model studies historical data,
+      learns patterns, and then applies those patterns to new cases.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      Machine Learning is a branch of artificial intelligence that uses algorithms, statistical
+      methods, and optimization to train models from data. A trained model maps input features to
+      outputs such as labels, scores, predictions, clusters, recommendations, or generated content.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Why It Matters In Healthcare Co-Pilot Studio</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Machine Learning can help the platform move beyond simple lookup and chat. It can support
+      risk scoring, pattern detection, patient segmentation, document understanding, anomaly
+      detection, and smarter recommendations when the data and governance are ready.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      In this project, ML is a foundation area for future predictive and analytical capabilities.
+      It is separate from the current LLM chat flow, but it can work alongside LLMs: ML models can
+      produce structured signals, and the assistant can explain those signals through a controlled
+      user experience.
+    </div>
+  </section>
+
+  <section>
+    <h2>3. Main Types Of Machine Learning</h2>
+    <table>
+      <tr><th>Type</th><th>Definition</th><th>Healthcare Example</th></tr>
+      <tr>
+        <td><a href="01_supervised_learning.html">Supervised Learning</a></td>
+        <td>The model learns from examples where the correct answer is already known.</td>
+        <td>Predict readmission risk from patient history, vitals, diagnosis, and previous outcomes.</td>
+      </tr>
+      <tr>
+        <td>Unsupervised Learning</td>
+        <td>The model finds hidden patterns or groups in data without predefined labels.</td>
+        <td>Group patients by similar clinical patterns or utilization behavior.</td>
+      </tr>
+      <tr>
+        <td>Semi-Supervised Learning</td>
+        <td>The model learns from a small labeled dataset plus a larger unlabeled dataset.</td>
+        <td>Use a few reviewed clinical documents plus many unreviewed documents to improve classification.</td>
+      </tr>
+      <tr>
+        <td>Reinforcement Learning</td>
+        <td>The model learns by taking actions and receiving rewards or penalties over time.</td>
+        <td>Optimize operational decisions such as scheduling or resource allocation in a simulated environment.</td>
+      </tr>
+      <tr>
+        <td>Deep Learning</td>
+        <td>A family of ML methods using neural networks with many layers to learn complex patterns.</td>
+        <td>Analyze medical images, speech, clinical text, or large-scale patient signals.</td>
+      </tr>
+      <tr>
+        <td>Generative AI</td>
+        <td>Models that generate new text, images, summaries, code, or other content from learned patterns.</td>
+        <td>Summarize visit notes or help draft patient-friendly explanations, with guardrails.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>4. Common ML Tasks</h2>
+    <table>
+      <tr><th>Task</th><th>What It Does</th><th>Example Output</th></tr>
+      <tr><td>Classification</td><td>Assigns an item to a category.</td><td>High risk / medium risk / low risk</td></tr>
+      <tr><td>Regression</td><td>Predicts a numeric value.</td><td>Expected cost, length of stay, lab value trend</td></tr>
+      <tr><td>Clustering</td><td>Groups similar records together.</td><td>Patient segments with similar care patterns</td></tr>
+      <tr><td>Anomaly Detection</td><td>Finds unusual or unexpected behavior.</td><td>Unusual claim pattern or abnormal vital trend</td></tr>
+      <tr><td>Recommendation</td><td>Suggests likely useful next actions or items.</td><td>Follow-up reminder, care-plan suggestion, next best document</td></tr>
+      <tr><td>Natural Language Processing</td><td>Extracts meaning from text.</td><td>Condition, medication, symptom, or summary from notes</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>5. Current Status</h2>
+    <div class="layer plain">
+      <span class="layer-label">Current Position</span>
+      Machine Learning is being added as a documentation and planning track. The current platform
+      already has AI assistant, LLM, Semantic Kernel, Ollama, SQL Server, and Playwright tracks.
+      This page creates the starting point for the ML track so the implementation direction can be
+      discussed clearly before code is added.
+    </div>
+  </section>
+
+  <div class="purpose">
+    <strong>About this section:</strong> this is the first Machine Learning page for Healthcare
+    Co-Pilot Studio. It intentionally starts with definition and types, so the next discussion can
+    decide which ML capability should be designed first.
+  </div>
+
+  <div class="author-card">
+    <h2>About Author</h2>
+    <div class="author-name">Vishnu Kiran M</div>
+    <div class="author-email">mvkwithmath@gmail.com</div>
+    <div class="author-bio">
+      Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
+      Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API Management,
+      Terraform, AIOps, and enterprise integration.
+    </div>
+  </div>
+</div>
+</body>
+</html>

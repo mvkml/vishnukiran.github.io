@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Pattern - Circuit Breaker</title>
+  <link rel="stylesheet" href="patterns.css">
+  <style>
+    .diagram {
+      display: grid;
+      gap: 18px;
+      margin: 18px 0 24px;
+    }
+
+    .diagram-lane {
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .lane-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--panel-border);
+      background: rgba(56, 189, 248, .08);
+    }
+
+    .lane-title {
+      color: var(--text);
+      font-weight: 700;
+      font-size: .96rem;
+    }
+
+    .lane-status {
+      border-radius: 999px;
+      padding: 3px 9px;
+      color: #fff;
+      background: var(--badge-bg);
+      font-size: .74rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .lane-status.warn {
+      background: #b45309;
+    }
+
+    .diagram-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .diagram-node {
+      min-height: 118px;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--bg);
+      padding: 12px;
+      position: relative;
+    }
+
+    .diagram-node::after {
+      content: "->";
+      position: absolute;
+      right: -12px;
+      top: 48%;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .diagram-node:last-child::after {
+      content: "";
+    }
+
+    .node-label {
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 6px;
+      font-size: .9rem;
+    }
+
+    .node-copy {
+      color: var(--text-dim);
+      font-size: .82rem;
+      line-height: 1.45;
+    }
+
+    .node-risk {
+      border-color: #f97316;
+    }
+
+    .node-open {
+      border-color: #ef4444;
+    }
+
+    .node-ok {
+      border-color: #22c55e;
+    }
+
+    .host-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .host-pill {
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: var(--text-dim);
+      background: var(--panel);
+      font-size: .78rem;
+    }
+
+    .host-pill.ok {
+      border-color: #22c55e;
+    }
+
+    .host-pill.open {
+      border-color: #ef4444;
+    }
+
+    .pattern-list {
+      display: grid;
+      gap: 12px;
+      margin: 18px 0 24px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pattern-list li {
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px 16px;
+    }
+
+    .pattern-name {
+      color: var(--text);
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .pattern-list p {
+      margin: 0 0 8px;
+      font-size: .9rem;
+    }
+
+    .term-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 24px;
+    }
+
+    .term-card {
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 13px 15px;
+    }
+
+    .term-card dt {
+      color: var(--text);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .term-card dd {
+      margin: 0;
+      color: var(--text-dim);
+      font-size: .88rem;
+      line-height: 1.5;
+    }
+
+    .state-flow {
+      display: grid;
+      gap: 14px;
+      margin: 18px 0 24px;
+    }
+
+    .state-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .state-badge {
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .state-title {
+      color: var(--text);
+      font-weight: 800;
+      font-size: .96rem;
+    }
+
+    .state-subtitle {
+      color: var(--text-dim);
+      font-size: .78rem;
+      margin-top: 4px;
+    }
+
+    .state-detail {
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--bg);
+      padding: 14px 16px;
+    }
+
+    .state-detail p {
+      margin: 0 0 8px;
+      font-size: .9rem;
+    }
+
+    .state-detail p:last-child {
+      margin-bottom: 0;
+    }
+
+    .state-closed {
+      border-color: #22c55e;
+    }
+
+    .state-open {
+      border-color: #ef4444;
+    }
+
+    .state-half {
+      border-color: #f97316;
+    }
+
+    .mini-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin: 18px 0 24px;
+      align-items: center;
+    }
+
+    .mini-step {
+      min-height: 78px;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 11px 12px;
+      color: var(--text);
+      font-size: .82rem;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mini-arrow {
+      color: var(--accent);
+      text-align: center;
+      font-weight: 900;
+    }
+
+    @media (max-width: 900px) {
+      .diagram-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .diagram-node::after {
+        content: "down";
+        right: 14px;
+        top: auto;
+        bottom: -18px;
+        font-size: .72rem;
+      }
+
+      .diagram-node:last-child::after {
+        content: "";
+      }
+
+      .term-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .state-row {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-arrow {
+        transform: rotate(90deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="sidebar">
+      <div class="sb-title">MCP Architecture</div>
+      <a href="Architecture_Patterns_Home.html">Patterns Home</a>
+      <a href="01_api_gateway.html">1. API Gateway</a>
+      <a href="02_bff.html">2. Backend for Frontend</a>
+      <a href="03_aggregator.html">3. Aggregator</a>
+      <a href="04_facade.html">4. Facade</a>
+      <a href="05_adapter.html">5. Adapter</a>
+      <a href="06_anti_corruption_layer.html">6. Anti-Corruption Layer</a>
+      <a href="07_bounded_context.html">7. Bounded Context</a>
+      <a href="08_circuit_breaker.html" class="active">8. Circuit Breaker</a>
+      <a href="09_bulkhead.html">9. Bulkhead</a>
+      <a href="10_service_discovery.html">10. Service Discovery</a>
+      <a href="11_strangler_fig.html">11. Strangler Fig</a>
+      <a href="12_mediator.html">12. Mediator</a>
+      <a href="../04_tool_segregation.html">Tool Segregation</a>
+    </nav>
+
+    <main class="main">
+      <h1>Circuit Breaker</h1>
+      <div class="meta">
+        <span class="badge">Resilience Pattern</span>
+        <span class="badge alt">Planned Implementation</span>
+        <span class="badge alt">Relevant Risk Observed</span>
+      </div>
+
+      <div class="plain">
+        <strong>Plain:</strong> A Circuit Breaker protects the application from repeatedly calling
+        something that is already failing. After enough failures, the circuit opens for a short
+        time, stops new calls, and lets the system recover instead of making every request wait and
+        fail again.
+      </div>
+
+      <h2>What It Is</h2>
+      <p>
+        Circuit Breaker is a resilience pattern used around remote calls: APIs, databases, model
+        runtimes, queues, or any service that can be slow, unavailable, or overloaded. It behaves
+        like an electrical breaker. When failures cross a threshold, the circuit opens and blocks
+        more calls for a cooling period.
+      </p>
+      <p>
+        After the cooling period, the breaker allows a small test call. If that succeeds, the
+        circuit closes and normal traffic resumes. If it still fails, the circuit opens again.
+      </p>
+
+      <h2>Why We Use It</h2>
+      <p>
+        Without a Circuit Breaker, every user request may repeat the same doomed call and wait for a
+        timeout. That wastes threads, keeps the UI waiting, increases load on the failing service,
+        and turns one dependency problem into a wider application problem.
+      </p>
+      <p>
+        With a Circuit Breaker, the system can fail fast with a clear scoped message, use a fallback,
+        or route the request differently while the failing dependency recovers.
+      </p>
+
+      <h2>When To Use It</h2>
+      <p>
+        Use it when the application calls something outside its own process and that dependency can
+        fail repeatedly: an MCP host, an LLM runtime like Ollama, an external EHR API, a payment or
+        insurance service, or a database path with known transient failures.
+      </p>
+
+      <h2>How It Works</h2>
+      <div class="mini-flow" aria-label="Circuit breaker lifecycle">
+        <div class="mini-step state-closed">Closed: calls allowed</div>
+        <div class="mini-arrow">-></div>
+        <div class="mini-step state-open">Open: calls blocked</div>
+        <div class="mini-arrow">-></div>
+        <div class="mini-step state-half">Half-open: test recovery</div>
+      </div>
+
+      <div class="state-flow">
+        <div class="state-row">
+          <div class="state-badge state-closed">
+            <div class="state-title">1. Closed</div>
+            <div class="state-subtitle">Normal operating state</div>
+          </div>
+          <div class="state-detail">
+            <p>The application calls the dependency normally.</p>
+            <p>Successes and failures are counted in the background.</p>
+            <p>If failures stay below the threshold, the circuit remains closed.</p>
+          </div>
+        </div>
+
+        <div class="state-row">
+          <div class="state-badge state-open">
+            <div class="state-title">2. Open</div>
+            <div class="state-subtitle">Protection state</div>
+          </div>
+          <div class="state-detail">
+            <p>Too many failures or timeouts have happened within the configured window.</p>
+            <p>The breaker stops sending new calls to the failing dependency.</p>
+            <p>The application fails fast with a controlled fallback or scoped message.</p>
+          </div>
+        </div>
+
+        <div class="state-row">
+          <div class="state-badge state-half">
+            <div class="state-title">3. Half-Open</div>
+            <div class="state-subtitle">Recovery test state</div>
+          </div>
+          <div class="state-detail">
+            <p>After the cool-down period, the breaker allows a small test call.</p>
+            <p>If the test succeeds, the circuit closes and normal traffic resumes.</p>
+            <p>If the test fails, the circuit opens again and waits before trying later.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>Relevant Project Context</h2>
+      <p>
+        The project has already observed a real resilience risk around local Ollama generation.
+        BUG-001 records cold-start or slow-generation requests taking around 90-110 seconds and
+        sometimes exceeding the default <code>HttpClient</code> timeout. BUG-005 also records model
+        switching/residency uncertainty when moving between Doctor and Patient persona models.
+      </p>
+      <p>
+        This is exactly the kind of dependency behavior where Circuit Breaker and Retry policies
+        become useful: the model runtime may be temporarily unavailable, too slow, or not ready for
+        the next request. The current project has mitigations, but not a full breaker yet.
+      </p>
+
+      <h2>What We Have Achieved</h2>
+      <p>
+        The project has not yet implemented a formal Circuit Breaker in code. There is no completed
+        Polly-based breaker around Ollama or MCP calls today.
+      </p>
+      <p>
+        What has been achieved is the groundwork and practical mitigation around the same failure
+        area: the timeout issue is logged as BUG-001, Doctor and Patient pre-warm endpoints were
+        added to reduce first-message cold-start pain, the demo pre-warm script was created, and
+        QA documented that pre-warming helps but does not fully solve CPU-only slow generation.
+      </p>
+
+      <h2>Planned MCP Host Use</h2>
+      <p>
+        ADR004 applies Circuit Breaker to future separated MCP hosts. If the ICU MCP host is down,
+        the Doctor agent should not keep waiting on repeated failed ICU calls, and unrelated OP
+        queries should still work. A gateway or BFF can put a breaker around each host and return a
+        clear scoped failure only for the unavailable domain.
+      </p>
+
+      <h2>Related Patterns</h2>
+      <ul class="pattern-list">
+        <li>
+          <div class="pattern-name">Retry Pattern</div>
+          <p><strong>What it means:</strong> retry the same operation when the failure may be temporary.</p>
+          <p><strong>How it relates:</strong> Retry can handle a short Ollama/MCP hiccup, but Circuit Breaker stops retries when the dependency is clearly unhealthy.</p>
+        </li>
+        <li>
+          <div class="pattern-name">Timeout Pattern</div>
+          <p><strong>What it means:</strong> set a maximum wait time for a dependency call.</p>
+          <p><strong>How it relates:</strong> BUG-001 is a timeout problem. Circuit Breaker uses timeout failures as signals to open the circuit after repeated trouble.</p>
+        </li>
+        <li>
+          <div class="pattern-name">Fallback Pattern</div>
+          <p><strong>What it means:</strong> return a safe alternate response when the primary path is unavailable.</p>
+          <p><strong>How it relates:</strong> If an ICU MCP host is down, the agent can return a scoped message such as "ICU tools are temporarily unavailable" instead of failing the whole chat.</p>
+        </li>
+        <li>
+          <div class="pattern-name">Bulkhead Pattern</div>
+          <p><strong>What it means:</strong> isolate resources or failure domains so one area does not sink another.</p>
+          <p><strong>How it relates:</strong> Bulkhead separates OP/ICU/Emergency capacity; Circuit Breaker decides when one failing domain should stop receiving calls for a while.</p>
+        </li>
+        <li>
+          <div class="pattern-name">API Gateway / BFF Pattern</div>
+          <p><strong>What it means:</strong> provide one controlled entry point for a client or agent.</p>
+          <p><strong>How it relates:</strong> A Gateway or BFF is a natural place to apply Circuit Breaker policy for each downstream MCP host.</p>
+        </li>
+        <li>
+          <div class="pattern-name">Health Check Pattern</div>
+          <p><strong>What it means:</strong> actively check whether a service is alive, ready, and able to handle traffic.</p>
+          <p><strong>How it relates:</strong> Health checks can inform whether an MCP host or Ollama path is ready before the breaker allows traffic again.</p>
+        </li>
+        <li>
+          <div class="pattern-name">Rate Limiting Pattern</div>
+          <p><strong>What it means:</strong> restrict how many calls a client or workflow can make in a period of time.</p>
+          <p><strong>How it relates:</strong> Rate limiting reduces overload; Circuit Breaker reacts when overload or failure has already started to damage dependency calls.</p>
+        </li>
+      </ul>
+
+      <h2>Terminology</h2>
+      <dl class="term-grid">
+        <div class="term-card">
+          <dt>Closed Circuit</dt>
+          <dd>Normal state. Calls are allowed and success/failure is tracked.</dd>
+        </div>
+        <div class="term-card">
+          <dt>Open Circuit</dt>
+          <dd>Protected state. Calls are blocked temporarily because failures crossed the threshold.</dd>
+        </div>
+        <div class="term-card">
+          <dt>Half-Open Circuit</dt>
+          <dd>Recovery test state. A small number of calls are allowed to check if the dependency is healthy again.</dd>
+        </div>
+        <div class="term-card">
+          <dt>Failure Threshold</dt>
+          <dd>The number or percentage of failures required before the circuit opens.</dd>
+        </div>
+        <div class="term-card">
+          <dt>Cool-Down Period</dt>
+          <dd>The waiting time before the breaker tests the dependency again.</dd>
+        </div>
+        <div class="term-card">
+          <dt>Fail Fast</dt>
+          <dd>Return quickly with a controlled response instead of waiting for another likely timeout.</dd>
+        </div>
+        <div class="term-card">
+          <dt>Scoped Failure</dt>
+          <dd>A failure limited to one dependency or domain, such as ICU tools only, while other domains continue.</dd>
+        </div>
+        <div class="term-card">
+          <dt>Transient Failure</dt>
+          <dd>A short-lived failure that may succeed on retry, such as a brief network or service hiccup.</dd>
+        </div>
+      </dl>
+
+      <h2>Project Diagram</h2>
+      <div class="diagram" aria-label="Circuit Breaker project diagram">
+        <section class="diagram-lane">
+          <div class="lane-head">
+            <div class="lane-title">Current Observed Risk: Ollama Slow Response</div>
+            <div class="lane-status warn">Observed, Not Breaker-Protected</div>
+          </div>
+          <div class="diagram-steps">
+            <div class="diagram-node">
+              <div class="node-label">Doctor / Patient Chat</div>
+              <div class="node-copy">The user sends a chat request from the Angular experience.</div>
+            </div>
+            <div class="diagram-node">
+              <div class="node-label">HC.AI.MAPI</div>
+              <div class="node-copy">The API routes the request into the persona-specific assistant flow.</div>
+            </div>
+            <div class="diagram-node node-risk">
+              <div class="node-label">Semantic Kernel + Ollama</div>
+              <div class="node-copy">Local model generation can be slow during cold start or CPU-only execution.</div>
+            </div>
+            <div class="diagram-node node-open">
+              <div class="node-label">Timeout Risk</div>
+              <div class="node-copy">BUG-001 and BUG-005 show where a future Circuit Breaker policy would help.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="diagram-lane">
+          <div class="lane-head">
+            <div class="lane-title">Planned Shape: Circuit Breaker Per MCP Host</div>
+            <div class="lane-status">Planned Architecture</div>
+          </div>
+          <div class="diagram-steps">
+            <div class="diagram-node">
+              <div class="node-label">Doctor Agent</div>
+              <div class="node-copy">The agent asks for patient-domain tool data.</div>
+            </div>
+            <div class="diagram-node">
+              <div class="node-label">Gateway / BFF</div>
+              <div class="node-copy">One integration point can apply breaker, timeout, retry, and fallback policy.</div>
+            </div>
+            <div class="diagram-node">
+              <div class="node-label">Host Breakers</div>
+              <div class="host-grid">
+                <div class="host-pill ok">OP Host: closed, calls allowed</div>
+                <div class="host-pill open">ICU Host: open, fail fast</div>
+                <div class="host-pill ok">Emergency Host: closed, calls allowed</div>
+              </div>
+            </div>
+            <div class="diagram-node node-ok">
+              <div class="node-label">Scoped Result</div>
+              <div class="node-copy">Healthy domains continue. Only the failing domain returns a clear scoped message.</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="note">
+        <strong>Status:</strong> Circuit Breaker is planned, not implemented. The project has
+        already identified the kind of failure it would protect against, especially around Ollama
+        timeout/cold-start behavior and future multi-host MCP calls.
+      </div>
+
+      <div class="pager">
+        <a href="07_bounded_context.html">Previous: Bounded Context</a>
+        <a href="09_bulkhead.html">Next: Bulkhead</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

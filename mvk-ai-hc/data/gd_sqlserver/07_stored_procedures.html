@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Server - Stored Procedures</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 260px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 980px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.8rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.02rem; color: var(--text-dim); margin: 0 0 22px; }
+  section { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 22px 24px; margin: 0 0 26px; }
+  section h2 { margin: 0 0 10px; color: #f8fafc; font-size: 1.22rem; }
+  section h3 { color: var(--accent); font-size: 1rem; margin: 20px 0 8px; }
+  p { color: var(--text-dim); margin: 0 0 12px; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.87rem; }
+  th, td { border: 1px solid var(--panel-border); padding: 9px 10px; vertical-align: top; text-align: left; }
+  th { background: rgba(15, 23, 42, 0.42); color: #f8fafc; }
+  td { color: var(--text-dim); }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  pre { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 13px 14px; overflow-x: auto; color: var(--text); font-size: 0.84rem; line-height: 1.5; }
+  pre code { color: var(--text); background: transparent; padding: 0; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 26px; }
+  .tabs a { border: 1px solid var(--panel-border); border-radius: 8px; padding: 7px 10px; color: var(--text); text-decoration: none; font-size: 0.82rem; background: rgba(15, 23, 42, 0.26); }
+  .tabs a:hover { border-color: var(--accent); color: #f8fafc; }
+  .badge { display: inline-block; background: #334155; color: #fff; font-size: 0.75rem; padding: 3px 8px; border-radius: 999px; margin-bottom: 10px; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, section h2, th { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Stored Procedures</div>
+    <a href="#usp_GetLLMOptionByUserOrPersona" class="active">usp_GetLLMOptionByUserOrPersona</a>
+    <a href="#usp_Tool_ExecuteHealthcareQuery">usp_Tool_ExecuteHealthcareQuery</a>
+    <a href="#usp_Tool_GetPatientAppointments">usp_Tool_GetPatientAppointments</a>
+    <a href="#usp_Tool_GetProviderPatientAppointments">usp_Tool_GetProviderPatientAppointments</a>
+    <a href="#usp_Tool_GetPatientMedications">usp_Tool_GetPatientMedications</a>
+    <a href="#usp_Tool_GetPatientPrescriptions">usp_Tool_GetPatientPrescriptions</a>
+    <a href="#usp_Tool_GetPrescriptionDetails">usp_Tool_GetPrescriptionDetails</a>
+    <a href="#usp_Tool_GetMedicationRefillStatus">usp_Tool_GetMedicationRefillStatus</a>
+    <a href="#usp_Tool_GetMedicationStock">usp_Tool_GetMedicationStock</a>
+    <a href="#usp_Tool_GetLowStockMedications">usp_Tool_GetLowStockMedications</a>
+    <a href="#usp_Tool_GetMedicationReturns">usp_Tool_GetMedicationReturns</a>
+    <a href="#usp_Tool_GetPharmacyDispenseHistory">usp_Tool_GetPharmacyDispenseHistory</a>
+    <a href="#usp_Tool_GetPatientLabOrders">usp_Tool_GetPatientLabOrders</a>
+    <a href="#usp_Tool_GetPendingLabOrders">usp_Tool_GetPendingLabOrders</a>
+    <a href="#usp_Tool_GetPatientLabResults">usp_Tool_GetPatientLabResults</a>
+    <a href="#usp_Tool_GetAbnormalLabResults">usp_Tool_GetAbnormalLabResults</a>
+    <a href="#usp_Tool_GetPatientImagingOrders">usp_Tool_GetPatientImagingOrders</a>
+    <a href="#usp_Tool_GetPendingImagingOrders">usp_Tool_GetPendingImagingOrders</a>
+    <a href="#usp_Tool_GetPatientImagingStudies">usp_Tool_GetPatientImagingStudies</a>
+    <a href="#usp_Tool_GetImagingReport">usp_Tool_GetImagingReport</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="SQLServer_Home.html">SQL Server Home</a>
+    <a class="sb-up" href="sqlserver_project_healthcare.html">Health Care Project</a>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="SQLServer_Home.html">SQL Server</a> / Topic 7</div>
+    <h1>Stored Procedures</h1>
+    <p class="tagline">Procedure-level documentation for healthcare SQL Server routines, grouped by business area and linked to the tables they depend on.</p>
+
+    <div class="tabs" aria-label="Stored procedure tabs">
+      <a href="#usp_GetLLMOptionByUserOrPersona">LLM Option Resolution</a>
+      <a href="#usp_Tool_ExecuteHealthcareQuery">Healthcare Query Tool</a>
+      <a href="#usp_Tool_GetPatientAppointments">Appointments</a>
+      <a href="#usp_Tool_GetPatientMedications">Medications</a>
+      <a href="#usp_Tool_GetPatientLabOrders">Labs</a>
+      <a href="#usp_Tool_GetPatientImagingOrders">Imaging</a>
+    </div>
+
+    <section id="usp_GetLLMOptionByUserOrPersona">
+      <span class="badge">Role and Persona Procedure</span>
+      <h2>usp_GetLLMOptionByUserOrPersona</h2>
+      <p>Resolves which LLM configuration should be used for a request. It can resolve by <code>UserId</code>, by <code>PersonaTypeId</code>, and optionally by <code>ModelRole</code>.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_GetLLMOptionByUserOrPersona.sql</code></td></tr>
+        <tr><td>Main purpose</td><td>Convert account role or persona into the active LLM option used by the MAPI layer.</td></tr>
+        <tr><td>Input parameters</td><td><code>@UserId</code>, <code>@PersonaTypeId</code>, <code>@ModelRole</code></td></tr>
+        <tr><td>Main tables</td><td><code>Users</code>, <code>Roles</code>, <code>PersonaMapper</code>, <code>PersonaType</code>, <code>LLMMapper</code>, <code>LLMOption</code></td></tr>
+        <tr><td>Role path</td><td><code>Users.RoleId</code> -> <code>Roles.RoleId</code> -> <code>PersonaMapper.RoleId</code> -> <code>PersonaType.TypeId</code></td></tr>
+      </table>
+      <h3>Sample Call</h3>
+      <pre><code>EXEC dbo.usp_GetLLMOptionByUserOrPersona
+    @UserId = 1,
+    @PersonaTypeId = NULL,
+    @ModelRole = N'Executor';</code></pre>
+      <h3>Readable Join Version</h3>
+      <pre><code>SELECT
+    u.UserId,
+    u.Email,
+    r.RoleName,
+    pt.Name AS PersonaName,
+    lm.ModelRole,
+    lo.Provider,
+    lo.Model,
+    lo.Name AS LLMOptionName
+FROM dbo.Users u
+INNER JOIN dbo.Roles r ON r.RoleId = u.RoleId
+INNER JOIN dbo.PersonaMapper pm
+    ON pm.RoleId = r.RoleId
+    AND pm.IsDefault = 1
+    AND pm.IsActive = 1
+INNER JOIN dbo.PersonaType pt ON pt.TypeId = pm.PersonaTypeId
+INNER JOIN dbo.LLMMapper lm
+    ON lm.PersonaTypeId = pt.TypeId
+    AND lm.IsActive = 1
+INNER JOIN dbo.LLMOption lo
+    ON lo.LLMOptionId = lm.LLMOptionId
+    AND lo.IsActive = 1
+ORDER BY u.UserId, lm.ModelRole;</code></pre>
+    </section>
+
+    <section id="usp_Tool_ExecuteHealthcareQuery">
+      <span class="badge">Guardrail Procedure</span>
+      <h2>usp_Tool_ExecuteHealthcareQuery</h2>
+      <p>Executes tool-driven healthcare queries only after validating table, column, join, filter, sort, and record-limit inputs against allow-list metadata.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_ExecuteHealthcareQuery.sql</code></td></tr>
+        <tr><td>Main tables</td><td><code>TableWhitelist</code>, <code>ColumnWhitelist</code>, <code>JoinWhitelist</code>, <code>QueryAuditLog</code>, approved clinical tables</td></tr>
+        <tr><td>Purpose</td><td>Let tool code request a safe query shape without sending raw SQL from the LLM to the database.</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPatientAppointments">
+      <span class="badge">Appointments</span>
+      <h2>usp_Tool_GetPatientAppointments</h2>
+      <p>Returns appointment data scoped for patient/persona tool workflows.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPatientAppointments.sql</code></td></tr>
+        <tr><td>Main tables</td><td><code>UCAppointments</code>, provider and department lookup tables, whitelist tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetProviderPatientAppointments">
+      <span class="badge">Appointments</span>
+      <h2>usp_Tool_GetProviderPatientAppointments</h2>
+      <p>Returns appointment data scoped for provider workflows.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetProviderPatientAppointments.sql</code></td></tr>
+        <tr><td>Main tables</td><td><code>UCAppointments</code>, provider and department lookup tables, whitelist tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPatientMedications">
+      <span class="badge">Medications</span>
+      <h2>usp_Tool_GetPatientMedications</h2>
+      <p>Reads patient medication records.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPatientMedications.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Medication master, prescription, dispense, stock, patient, and provider tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPatientPrescriptions">
+      <span class="badge">Medications</span>
+      <h2>usp_Tool_GetPatientPrescriptions</h2>
+      <p>Reads patient prescription records.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPatientPrescriptions.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Prescription, medication, patient, provider, and lookup tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPrescriptionDetails">
+      <span class="badge">Medications</span>
+      <h2>usp_Tool_GetPrescriptionDetails</h2>
+      <p>Reads prescription detail information.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPrescriptionDetails.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Prescription, medication, dispense, patient, and provider tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetMedicationRefillStatus">
+      <span class="badge">Medications</span>
+      <h2>usp_Tool_GetMedicationRefillStatus</h2>
+      <p>Reads refill status information.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetMedicationRefillStatus.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Prescription, refill, medication, patient, and provider tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetMedicationStock">
+      <span class="badge">Medications</span>
+      <h2>usp_Tool_GetMedicationStock</h2>
+      <p>Reads medication stock levels.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetMedicationStock.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Medication stock, medication master, and inventory lookup tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetLowStockMedications">
+      <span class="badge">Medications</span>
+      <h2>usp_Tool_GetLowStockMedications</h2>
+      <p>Finds medications below the configured stock threshold.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetLowStockMedications.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Medication stock and medication master tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetMedicationReturns">
+      <span class="badge">Medications</span>
+      <h2>usp_Tool_GetMedicationReturns</h2>
+      <p>Reads medication return records.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetMedicationReturns.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Medication return, prescription, dispense, medication, and patient tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPharmacyDispenseHistory">
+      <span class="badge">Medications</span>
+      <h2>usp_Tool_GetPharmacyDispenseHistory</h2>
+      <p>Reads pharmacy dispense history.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPharmacyDispenseHistory.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Pharmacy dispense, prescription, medication, patient, and provider tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPatientLabOrders">
+      <span class="badge">Labs</span>
+      <h2>usp_Tool_GetPatientLabOrders</h2>
+      <p>Reads patient lab orders.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPatientLabOrders.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Lab order, patient, provider, and clinical lookup tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPendingLabOrders">
+      <span class="badge">Labs</span>
+      <h2>usp_Tool_GetPendingLabOrders</h2>
+      <p>Reads pending lab orders.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPendingLabOrders.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Lab order, lab status, patient, and provider tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPatientLabResults">
+      <span class="badge">Labs</span>
+      <h2>usp_Tool_GetPatientLabResults</h2>
+      <p>Reads patient lab results.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPatientLabResults.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Lab result, lab order, patient, provider, and units tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetAbnormalLabResults">
+      <span class="badge">Labs</span>
+      <h2>usp_Tool_GetAbnormalLabResults</h2>
+      <p>Reads abnormal lab results.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetAbnormalLabResults.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Lab result, lab order, patient, provider, and units tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPatientImagingOrders">
+      <span class="badge">Imaging</span>
+      <h2>usp_Tool_GetPatientImagingOrders</h2>
+      <p>Reads patient imaging orders.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPatientImagingOrders.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Imaging order, patient, provider, and clinical lookup tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPendingImagingOrders">
+      <span class="badge">Imaging</span>
+      <h2>usp_Tool_GetPendingImagingOrders</h2>
+      <p>Reads pending imaging orders.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPendingImagingOrders.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Imaging order, imaging status, patient, and provider tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetPatientImagingStudies">
+      <span class="badge">Imaging</span>
+      <h2>usp_Tool_GetPatientImagingStudies</h2>
+      <p>Reads patient imaging studies.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetPatientImagingStudies.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Imaging study, imaging order, patient, provider, and status tables</td></tr>
+      </table>
+    </section>
+
+    <section id="usp_Tool_GetImagingReport">
+      <span class="badge">Imaging</span>
+      <h2>usp_Tool_GetImagingReport</h2>
+      <p>Reads imaging report details.</p>
+      <table>
+        <tr><th>Area</th><th>Details</th></tr>
+        <tr><td>Source file</td><td><code>hc_data_source/hc_sql/procedures/usp_Tool_GetImagingReport.sql</code></td></tr>
+        <tr><td>Main tables</td><td>Imaging report, imaging study, imaging order, patient, and provider tables</td></tr>
+      </table>
+    </section>
+  </main>
+</div>
+</body>
+</html>

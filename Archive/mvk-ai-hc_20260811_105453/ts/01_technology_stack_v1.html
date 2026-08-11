@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare Co-Pilot Studio — Technology Stack</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-border: #334155;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --accent: #38bdf8;
+    --code-bg: #0b1220;
+    --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  section, nav.toc, header.doc-header { scroll-margin-top: 24px; }
+  body {
+    margin: 0;
+    font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
+  header.doc-header {
+    border-bottom: 1px solid var(--panel-border);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .badge {
+    background: var(--badge-bg);
+    color: #fff;
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .badge.alt { background: #334155; }
+  .purpose {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+  }
+  .purpose strong { color: var(--text); }
+
+  section { margin-bottom: 48px; }
+  h2 {
+    font-size: 1.3rem;
+    color: #f8fafc;
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    margin-bottom: 18px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  a.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card.disabled { opacity: 0.55; cursor: default; }
+  .card-icon { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+  .card-title { font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-bottom: 6px; }
+  .card-purpose { font-size: 0.88rem; color: var(--text-dim); margin-bottom: 12px; }
+  .card-status { font-size: 0.72rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; display: inline-block; }
+  .status-available { background: #064e3b; color: #6ee7b7; }
+  .status-soon { background: #1e293b; color: #94a3b8; border: 1px solid var(--panel-border); }
+  .status-design { background: #422006; color: #fbbf24; }
+
+  .section-nav-link {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .section-nav-link:hover { text-decoration: underline; }
+
+  footer {
+    border-top: 1px solid var(--panel-border);
+    padding-top: 20px;
+    margin-top: 48px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  footer h2 { font-size: 1rem; border: none; padding-left: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .author-card {
+    margin-top: 48px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 24px 26px;
+    scroll-margin-top: 24px;
+  }
+  .author-card h2 { border: none; padding-left: 0; font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .author-name { font-size: 1.25rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+  .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 14px; }
+  .author-bio { color: var(--text-dim); font-size: 0.95rem; }
+
+  .top-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--badge-bg);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+    z-index: 50;
+  }
+  .top-btn:hover { filter: brightness(1.1); }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel-border: #e2e8f0;
+      --text: #1e293b;
+      --text-dim: #64748b;
+      --accent: #0284c7;
+      --code-bg: #f1f5f9;
+      --badge-bg: #2563eb;
+    }
+    h1, h2 { color: #0f172a; }
+    .card-title { color: #0f172a; }
+    .author-name { color: #0f172a; }
+    .status-available { background: #d1fae5; color: #065f46; }
+    .status-soon { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+    .status-design { background: #fef3c7; color: #92400e; }
+  }
+</style>
+</head>
+<body>
+<a href="#top" class="top-btn">↑ Top</a>
+<div class="wrap">
+
+  <header class="doc-header" id="top">
+    <h1>Technology Stack</h1>
+    <p class="tagline">The technologies behind Healthcare Co-Pilot Studio — click any card for a full walkthrough of that piece.</p>
+    <div class="meta">
+      <span class="badge">Version 1</span>
+      <span class="badge alt">2026-07-25</span>
+      <a href="#about-document" class="badge alt" style="text-decoration:none;">About This Document ↓</a>
+      <a href="#author" class="badge alt" style="text-decoration:none;">About Author ↓</a>
+    </div>
+  </header>
+
+  <section id="azure-integration">
+    <h2>Azure Integration <span class="badge alt" style="text-transform:none; letter-spacing:normal;">Planned</span></h2>
+    <div class="grid">
+      <div class="card disabled">
+        <span class="card-icon">⚙️</span>
+        <div class="card-title">Azure Functions</div>
+        <div class="card-purpose">Serverless compute for on-demand data processing tasks.</div>
+        <span class="card-status status-soon">Coming soon</span>
+      </div>
+      <div class="card disabled">
+        <span class="card-icon">🔁</span>
+        <div class="card-title">Azure Durable Functions</div>
+        <div class="card-purpose">Stateful orchestration for longer-running data processing workflows, triggered from queue/topic messages.</div>
+        <span class="card-status status-soon">Coming soon</span>
+      </div>
+      <div class="card disabled">
+        <span class="card-icon">📬</span>
+        <div class="card-title">Service Bus (Queues &amp; Topics)</div>
+        <div class="card-purpose">Publish/subscribe messaging for patient and insurance metadata, triggering downstream Azure Functions/Durable Functions processing.</div>
+        <span class="card-status status-soon">Coming soon</span>
+      </div>
+      <div class="card disabled">
+        <span class="card-icon">📡</span>
+        <div class="card-title">Event Hub</div>
+        <div class="card-purpose">Streaming ingestion for scanned document data (e.g. insurance scans), feeding recurring processing in Azure Functions.</div>
+        <span class="card-status status-soon">Coming soon</span>
+      </div>
+      <a class="card" href="../api/gd_cosmosdb/CosmosDB_Home.html">
+        <span class="card-icon">🌐</span>
+        <div class="card-title">Azure Cosmos DB</div>
+        <div class="card-purpose">The planned vector store for retrieval-augmented answers — a locked design decision, not yet built.</div>
+        <span class="card-status status-design">Planned — design logged</span>
+      </a>
+    </div>
+    <a href="#top" class="section-nav-link">↑ Top</a>
+  </section>
+
+  <section id="backend">
+    <h2>Backend &amp; Data</h2>
+    <div class="grid">
+      <a class="card" href="../api/gd_mapi/gd_ef/EF_Core_Home.html">
+        <span class="card-icon">🗄️</span>
+        <div class="card-title">Entity Framework Core</div>
+        <div class="card-purpose">Code-first data access, migrations, and schema history for every backend API.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../api/gd_aspnetcore/AspNetCore_Home.html">
+        <span class="card-icon">🟣</span>
+        <div class="card-title">ASP.NET Core</div>
+        <div class="card-purpose">The REST API framework behind every backend service.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../data/gd_sqlserver/SQLServer_Home.html">
+        <span class="card-icon">🛢️</span>
+        <div class="card-title">SQL Server</div>
+        <div class="card-purpose">The relational database storing patient, identity, and configuration data.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="security">
+    <h2>Security &amp; Identity</h2>
+    <div class="grid">
+      <a class="card" href="../api/gd_identity/Identity_Home.html">
+        <span class="card-icon">🔐</span>
+        <div class="card-title">Identity &amp; Authentication</div>
+        <div class="card-purpose">JWT token issuance, backend validation middleware, and how the frontend carries identity on every request.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="ai">
+    <h2>AI &amp; Language Models</h2>
+    <div class="grid">
+      <a class="card" href="../api/gd_semantickernel/SemanticKernel_Home.html">
+        <span class="card-icon">🧠</span>
+        <div class="card-title">Semantic Kernel</div>
+        <div class="card-purpose">Orchestrates the connection between the API layer and the language model.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../api/gd_ollama/Ollama_Home.html">
+        <span class="card-icon">🦙</span>
+        <div class="card-title">Ollama</div>
+        <div class="card-purpose">Runs the local language models that interpret questions and compose answers.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="frontend">
+    <h2>Frontend</h2>
+    <div class="grid">
+      <a class="card" href="../ui/gd_angular/Angular_Home.html">
+        <span class="card-icon">⚡</span>
+        <div class="card-title">Angular</div>
+        <div class="card-purpose">Persona-specific chat UI and web portal.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="platform">
+    <h2>Data Engineering, Testing &amp; Delivery</h2>
+    <div class="grid">
+      <a class="card" href="../bigdata/gd_pyspark/PySpark_Home.html">
+        <span class="card-icon">📊</span>
+        <div class="card-title">PySpark</div>
+        <div class="card-purpose">Ingesting and profiling the synthetic patient dataset used for development.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../qa/gd_playwright/Playwright_Home.html">
+        <span class="card-icon">🧪</span>
+        <div class="card-title">Playwright</div>
+        <div class="card-purpose">Automated API and UI test coverage.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+      <a class="card" href="../devops/gd_azuredevops/AzureDevOps_Home.html">
+        <span class="card-icon">🔧</span>
+        <div class="card-title">Azure DevOps</div>
+        <div class="card-purpose">Backlog, sprint, and work-item tracking.</div>
+        <span class="card-status status-available">Available</span>
+      </a>
+    </div>
+    <a href="#top" class="section-nav-link">↑ Top</a>
+  </section>
+
+  <section id="azure-ai">
+    <h2>Azure AI <span class="badge alt" style="text-transform:none; letter-spacing:normal;">Planned</span></h2>
+    <div class="grid">
+      <div class="card disabled">
+        <span class="card-icon">🏭</span>
+        <div class="card-title">Azure AI Foundry</div>
+        <div class="card-purpose">Foundry projects for building and managing AI agents, including multi-agent process development.</div>
+        <span class="card-status status-soon">Coming soon</span>
+      </div>
+      <div class="card disabled">
+        <span class="card-icon">🔎</span>
+        <div class="card-title">Azure AI Search</div>
+        <div class="card-purpose">Vector database for semantic/vector search over embeddings.</div>
+        <span class="card-status status-soon">Coming soon</span>
+      </div>
+      <div class="card disabled">
+        <span class="card-icon">💬</span>
+        <div class="card-title">Azure OpenAI</div>
+        <div class="card-purpose">Managed large language model service.</div>
+        <span class="card-status status-soon">Coming soon</span>
+      </div>
+    </div>
+    <a href="#top" class="section-nav-link">↑ Top</a>
+  </section>
+
+  <footer>
+    <h2>Coming in the next version</h2>
+    <p>Every technology actually implemented in this platform today now has its own walkthrough.
+    Azure Cosmos DB has a design-stage page — its use is a locked decision, but nothing is built
+    yet, and that page says so plainly rather than describing working software that doesn't
+    exist. The remaining "Coming soon" cards (Azure Functions, Durable Functions, Service Bus,
+    Event Hub, Azure AI Foundry, Azure AI Search, Azure OpenAI) don't have a page yet at all —
+    no decision has been logged for them either, so there's nothing yet to write.</p>
+  </footer>
+
+  <div class="purpose" id="about-document" style="scroll-margin-top:24px; margin-top:32px;">
+    <strong>About this document:</strong> a navigation hub for the technology stack behind
+    Healthcare Co-Pilot Studio. Each card links to its own dedicated walkthrough page, written and
+    added one technology at a time.
+  </div>
+
+  <div class="author-card" id="author">
+    <h2>About Author</h2>
+    <div class="author-name">Vishnu Kiran M</div>
+    <div class="author-email">mvkwithmath@gmail.com</div>
+    <div class="author-bio">
+      Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
+      Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API Management,
+      Terraform, AIOps, and enterprise integration. Experienced in architecting scalable, secure,
+      production-ready AI solutions on Microsoft Azure.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

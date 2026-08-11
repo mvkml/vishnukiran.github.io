@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASP.NET Core — Design Patterns</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .flow { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 18px 20px; font-size: 0.86rem; overflow-x: auto; margin: 14px 0; }
+  .flow code { display: block; white-space: pre; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.87rem; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .note { background: #422006; border: 1px solid #92400e; border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 0.88rem; color: #fbbf24; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+    .note { background: #fef3c7; border-color: #fbbf24; color: #92400e; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">ASP.NET Core Topics</div>
+    <a href="AspNetCore_Home.html">🏠 ASP.NET Core Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_middleware_pipeline.html">4. Middleware Pipeline</a>
+    <a href="05_api_documentation.html">5. API Documentation</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <a href="07_design_patterns.html" class="active">7. Design Patterns</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="AspNetCore_Home.html">ASP.NET Core</a> / Topic 7</div>
+    <h1>Design Patterns</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Every backend API in this platform is built from the same small set of layers — Controller,
+      Service, Business Logic, Agent, and Entity Framework — and each layer boundary uses a
+      well-established design pattern to keep concerns separated and pieces replaceable.
+    </div>
+
+    <div class="flow"><code>Controller        ← top / highest layer   (faces the outside world — HTTP, the caller)
+Service
+Business Logic
+Agent
+Entity Framework   ← bottom / lowest layer (faces the database — nothing below it)</code></div>
+
+    <table>
+      <tr><th>Design Pattern</th><th>What it solves</th><th>Where it shows up</th></tr>
+      <tr><td>Layered / N-Tier Architecture</td><td>Keeps each concern isolated — a change in one layer shouldn't ripple through the others</td><td>The chain itself: Controller → Service → Business Logic → Agent → Entity Framework</td></tr>
+      <tr><td>Dependency Injection</td><td>Every layer depends on an interface, not a concrete implementation, so pieces can be swapped or tested in isolation</td><td>Wired at startup, used throughout every layer</td></tr>
+      <tr><td>Repository Pattern</td><td>Isolates "how we talk to the database" from "what the business logic needs"</td><td>Sits directly above Entity Framework</td></tr>
+      <tr><td>Factory Pattern</td><td>Builds the right object at runtime based on configuration, instead of hardcoding one fixed choice</td><td>Builds the language-model client based on which provider/model is configured</td></tr>
+      <tr><td>Mapper / Data Mapper Pattern</td><td>Translates a request or database result from one layer's shape into the next layer's shape, so the two can evolve independently</td><td>Between almost every layer boundary</td></tr>
+      <tr><td>DTO (Data Transfer Object) Pattern</td><td>Separate objects for "what came in over the wire," "what a layer works with internally," and "what goes back out" — instead of one object doing all three jobs</td><td>Request / internal item / response, at each layer</td></tr>
+      <tr><td>Allow-List (Whitelist) Pattern</td><td>A security pattern — instead of trying to block bad input, only pre-approved input is allowed through at all</td><td>The query-safety design in the data layer (approved tables, columns, and joins only)</td></tr>
+      <tr><td>Fallback / Default Pattern</td><td>A safe secondary path when the expected context is missing, instead of failing outright</td><td>Used when a request arrives without full identity context</td></tr>
+      <tr><td>Adapter Pattern</td><td>Lets the system talk to different underlying providers through one consistent interface</td><td>The layer that talks to the language-model runtime is written against a provider-agnostic interface</td></tr>
+    </table>
+
+    <p>Most of these are <strong>structural/architectural patterns</strong> — how layers relate to
+    each other — rather than classic behavioral "Gang of Four" patterns. That matches this
+    codebase's overall style: pragmatic layering, not pattern-naming for its own sake.</p>
+
+    <div class="note">
+      <strong>Not yet present, honestly:</strong> even though the design docs describe it, there is
+      no <strong>Strategy pattern for model routing</strong> yet — a step that would pick between a
+      "classification" model and an "executor" model at runtime. That routing decision is planned,
+      not built.
+    </div>
+
+    <div class="pager">
+      <a href="06_current_status.html">← Current Status</a>
+      <a href="AspNetCore_Home.html">Back to ASP.NET Core Home →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Context Protocol - Home</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --badge-bg:#1d4ed8; --code-bg:#0b1220; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:250px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+  .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+  .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); }
+  .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+  .sb-divider { border-top:1px solid var(--panel-border); margin:16px 6px; }
+  .main { flex:1; padding:40px 32px 80px; max-width:900px; }
+  h1 { font-size:1.9rem; margin:0 0 12px; color:#f8fafc; }
+  .tagline { font-size:1.05rem; color:var(--text-dim); margin:0 0 16px; }
+  .meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px; }
+  .badge { background:var(--badge-bg); color:#fff; font-size:.78rem; padding:4px 10px; border-radius:999px; font-weight:600; text-decoration:none; }
+  .badge.alt { background:#334155; }
+  .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 32px; }
+  .purpose strong { color:var(--text); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px; margin-top:20px; }
+  .card { background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:20px; text-decoration:none; color:var(--text); display:block; transition:border-color .15s, transform .15s; }
+  a.card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .card.disabled { opacity:.65; }
+  .card-num { font-size:.75rem; color:var(--accent); font-weight:700; margin-bottom:6px; }
+  .card-title { font-size:1.05rem; font-weight:700; color:#f8fafc; margin-bottom:6px; }
+  .card-purpose { font-size:.86rem; color:var(--text-dim); }
+  h2 { font-size:1.28rem; color:#f8fafc; border-left:4px solid var(--accent); padding-left:12px; margin:34px 0 16px; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; }
+  th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; }
+  th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+  .author-card { margin-top:32px; background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:24px 26px; }
+  .author-card h2 { font-size:1.1rem; margin-top:0; color:var(--text-dim); text-transform:uppercase; letter-spacing:.05em; }
+  .author-name { font-size:1.15rem; font-weight:700; color:#f8fafc; }
+  .author-email { color:var(--accent); font-size:.9rem; margin-bottom:12px; }
+  .author-bio { color:var(--text-dim); font-size:.92rem; }
+  @media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --badge-bg:#2563eb; --code-bg:#f1f5f9; }
+    h1, h2, .card-title, .author-name { color:#0f172a; }
+    .badge.alt { background:#e2e8f0; color:#334155; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">MCP Topics</div>
+    <a href="MCP_Home.html" class="active">MCP Home</a>
+    <a href="01_overview.html">1. What Is MCP?</a>
+    <a href="02_rest_api_vs_mcp.html">2. REST API vs MCP</a>
+    <a href="03_implementation_options.html">3. Implementation Options</a>
+    <a href="04_tool_segregation.html">4. Tool Segregation</a>
+    <a href="architecture_patterns/Architecture_Patterns_Home.html">Architecture Patterns</a>
+    <a href="net_core_api/AspNetCore_MCP_Home.html">ASP.NET Core MCP</a>
+    <div class="sb-divider"></div>
+    <a href="../ts/01_technology_stack_v1.html">Technology Stack</a>
+    <a href="../about_project/hcs_home.html">Site Home</a>
+  </nav>
+  <main class="main">
+    <h1>Model Context Protocol</h1>
+    <p class="tagline">The architecture layer that lets an AI assistant call approved tools and retrieve real business data through controlled, auditable boundaries.</p>
+    <div class="meta">
+      <span class="badge">Client Architecture Draft</span>
+      <span class="badge alt">2026-07-28</span>
+      <span class="badge alt">ASP.NET Core Focus</span>
+    </div>
+
+    <div class="purpose">
+      <strong>Executive summary:</strong> MCP is not a replacement for REST APIs. REST APIs expose
+      application capabilities to applications and user interfaces. MCP exposes carefully described
+      tools and context to AI agents so the model can discover what it is allowed to do, call those
+      tools in a structured way, and receive governed results instead of guessing.
+    </div>
+
+    <table>
+      <tr><th>Implementation Track</th><th>Purpose</th><th>Status</th></tr>
+      <tr><td>ASP.NET Core</td><td>Enterprise .NET service hosting REST endpoints plus MCP HTTP transport for healthcare data tools.</td><td>Current focus</td></tr>
+      <tr><td>FastAPI</td><td>Python implementation path for lightweight AI/data tools and quick agent experiments.</td><td>Planned documentation</td></tr>
+      <tr><td>Azure Functions</td><td>Serverless MCP/tool endpoints for event-driven and cloud-hosted workloads.</td><td>Planned documentation</td></tr>
+    </table>
+
+    <div class="grid">
+      <a class="card" href="01_overview.html">
+        <div class="card-num">TOPIC 1</div>
+        <div class="card-title">What Is MCP?</div>
+        <div class="card-purpose">A plain and technical explanation of MCP in an AI assistant architecture.</div>
+      </a>
+      <a class="card" href="02_rest_api_vs_mcp.html">
+        <div class="card-num">TOPIC 2</div>
+        <div class="card-title">REST API vs MCP</div>
+        <div class="card-purpose">When to use REST, when to use MCP, and why Healthcare Co-Pilot Studio can use both.</div>
+      </a>
+      <a class="card" href="03_implementation_options.html">
+        <div class="card-num">TOPIC 3</div>
+        <div class="card-title">Implementation Options</div>
+        <div class="card-purpose">ASP.NET Core, FastAPI, and Azure Functions as three viable hosting styles.</div>
+      </a>
+      <a class="card" href="04_tool_segregation.html">
+        <div class="card-num">TOPIC 4</div>
+        <div class="card-title">Tool Segregation</div>
+        <div class="card-purpose">ADR004: why future OP, ICU, and Emergency tools should be isolated by separate MCP host boundaries.</div>
+      </a>
+      <a class="card" href="architecture_patterns/Architecture_Patterns_Home.html">
+        <div class="card-num">TOPIC 5</div>
+        <div class="card-title">Architecture Patterns</div>
+        <div class="card-purpose">Technical architecture discussion for the 12 patterns behind future multi-host MCP design.</div>
+      </a>
+    </div>
+
+    <h2>Implementation Tracks</h2>
+    <div class="grid">
+      <a class="card" href="net_core_api/AspNetCore_MCP_Home.html">
+        <div class="card-num">TRACK A</div>
+        <div class="card-title">ASP.NET Core REST API + MCP</div>
+        <div class="card-purpose">Current implementation track using <code>HC.AI.MCP</code>, .NET 8, REST controller testing, and MCP HTTP transport.</div>
+      </a>
+      <div class="card disabled">
+        <div class="card-num">TRACK B</div>
+        <div class="card-title">FastAPI MCP</div>
+        <div class="card-purpose">Planned Python track for lightweight AI/data tools and FastAPI-hosted MCP capabilities.</div>
+      </div>
+      <div class="card disabled">
+        <div class="card-num">TRACK C</div>
+        <div class="card-title">Azure Functions MCP</div>
+        <div class="card-purpose">Planned serverless track for cloud-hosted MCP tools, event-driven workflows, and Azure integration.</div>
+      </div>
+    </div>
+
+    <div class="purpose">
+      <strong>Client positioning:</strong> this section presents MCP as an architecture decision for
+      safe AI-tool integration. The message is deliberately practical: controlled tool access,
+      persona-aware data boundaries, real implementation options, and honest status per hosting
+      model.
+    </div>
+
+    <div class="author-card">
+      <h2>About Author</h2>
+      <div class="author-name">Vishnu Kiran M</div>
+      <div class="author-email">mvkwithmath@gmail.com</div>
+      <div class="author-bio">Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents, RAG, Azure AI Search, API Management, Terraform, AIOps, and enterprise integration.</div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

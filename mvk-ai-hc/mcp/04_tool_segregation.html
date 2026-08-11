@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP - Tool Segregation</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --plain-bg:#0c2b3a; --plain-border:#0e7490; --tech-bg:#241a3a; --tech-border:#7c3aed; --code-bg:#0b1220; --badge-bg:#1d4ed8; }
+  * { box-sizing:border-box; } body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:250px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+  .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+  .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); } .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+  .main { flex:1; padding:40px 32px 80px; max-width:920px; }
+  h1 { font-size:1.8rem; margin:0 0 12px; color:#f8fafc; } h2 { font-size:1.25rem; border-left:4px solid var(--accent); padding-left:12px; margin-top:34px; color:#f8fafc; }
+  .meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px; }
+  .badge { background:var(--badge-bg); color:#fff; font-size:.78rem; padding:4px 10px; border-radius:999px; font-weight:600; text-decoration:none; } .badge.alt { background:#334155; }
+  .layer { border-radius:10px; padding:16px 20px; margin:14px 0; } .layer-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:8px; }
+  .plain { background:var(--plain-bg); border:1px solid var(--plain-border); } .plain .layer-label { color:#67e8f9; }
+  .tech { background:var(--tech-bg); border:1px solid var(--tech-border); } .tech .layer-label { color:#c4b5fd; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; } th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; } th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  .flow { background:var(--code-bg); border:1px solid var(--panel-border); border-radius:8px; padding:18px 20px; font-size:.86rem; overflow-x:auto; } .flow code { white-space:pre; background:transparent; padding:0; }
+  code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+  .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 28px; } .purpose strong { color:var(--text); }
+  @media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } }
+  @media (prefers-color-scheme: light) { :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --plain-bg:#ecfeff; --plain-border:#06b6d4; --tech-bg:#f5f3ff; --tech-border:#8b5cf6; --code-bg:#f1f5f9; --badge-bg:#2563eb; } h1,h2 { color:#0f172a; } .badge.alt { background:#e2e8f0; color:#334155; } }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">MCP Topics</div>
+    <a href="MCP_Home.html">MCP Home</a>
+    <a href="01_overview.html">1. What Is MCP?</a>
+    <a href="02_rest_api_vs_mcp.html">2. REST API vs MCP</a>
+    <a href="03_implementation_options.html">3. Implementation Options</a>
+    <a href="04_tool_segregation.html" class="active">4. Tool Segregation</a>
+    <a href="architecture_patterns/Architecture_Patterns_Home.html">Architecture Patterns</a>
+    <a href="net_core_api/AspNetCore_MCP_Home.html">ASP.NET Core MCP</a>
+  </nav>
+  <main class="main">
+    <h1>MCP Tool Segregation By Host Boundary</h1>
+    <div class="meta">
+      <span class="badge">ADR004</span>
+      <span class="badge alt">Future Decision</span>
+      <span class="badge alt">Not Built Yet</span>
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      As Healthcare Co-Pilot Studio grows, not every agent should see every healthcare tool. A
+      Doctor agent working with outpatient data should not be overloaded with ICU or Emergency
+      tools unless that scope is intentionally allowed. The architecture decision is to isolate
+      future tool groups by separate MCP host projects, not by naming convention or URL structure.
+    </div>
+
+    <div class="purpose">
+      <strong>Current status:</strong> this is a decision for future work. Today's
+      <code>HC.AI.MCP</code> host still has one tool/domain path. Nothing is currently segregated;
+      this page documents the approved approach for when a second patient tool category is added.
+    </div>
+
+    <h2>Why Changing The URL Is Not Enough</h2>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      In the current MCP ASP.NET Core SDK shape, REST routing and MCP tool visibility are separate
+      concerns. Changing a controller route or mapping MCP at a different URL does not create a
+      different tool list. Tool exposure comes from the MCP server registration and the assembly
+      scanned by <code>WithToolsFromAssembly()</code>. Multiple routes can still point to the same
+      global MCP tool registry.
+    </div>
+
+    <table>
+      <tr><th>Attempt</th><th>Result</th><th>Reason</th></tr>
+      <tr><td>Change REST controller route</td><td>Does not segregate MCP tools</td><td>REST controllers and MCP tool listing are independent.</td></tr>
+      <tr><td>Map MCP under another path</td><td>Still exposes the same registered tools</td><td>The route changes the address, not the underlying tool registry.</td></tr>
+      <tr><td>Use naming conventions only</td><td>Not enforceable</td><td>Clients can still see or call tools exposed by the same host.</td></tr>
+    </table>
+
+    <h2>Why Client-Side Filtering Is Not Enough</h2>
+    <div class="layer plain">
+      <span class="layer-label">Enterprise Concern</span>
+      Client-side filtering means the agent chooses to ignore tools it should not use. That can work
+      in a small prototype, but it is not a strong enterprise trust boundary. A different client,
+      a later code change, or another team can accidentally expose or call a tool that the server
+      still makes available.
+    </div>
+
+    <h2>Chosen Approach</h2>
+    <div class="flow"><code>HC.AI.MCP.Patient.OP
+  -> OP patient tools only
+
+HC.AI.MCP.Patient.ICU
+  -> ICU patient tools only
+
+HC.AI.MCP.Patient.Emergency
+  -> Emergency patient tools only</code></div>
+
+    <table>
+      <tr><th>Decision</th><th>Value</th></tr>
+      <tr><td>Separate MCP host per bounded context</td><td>Each agent connects only to the host relevant to its domain.</td></tr>
+      <tr><td>Shared class libraries for common logic</td><td>Repository, EF, BL, and model conventions can still be reused.</td></tr>
+      <tr><td>Separate deployable processes/ports</td><td>Auth, scaling, ownership, and release cadence can differ per domain.</td></tr>
+      <tr><td>Structural isolation</td><td>An agent cannot see tools from a host it was never connected to.</td></tr>
+    </table>
+
+    <div class="purpose">
+      <strong>Client-facing takeaway:</strong> this maps MCP tool design to standard
+      microservice and bounded-context architecture. Tool segregation becomes a deployment and
+      ownership boundary, not an instruction that every client must remember to follow.
+      The detailed technical architecture patterns are expanded in
+      <a href="architecture_patterns/Architecture_Patterns_Home.html" style="color:var(--accent);">MCP Architecture Patterns</a>.
+    </div>
+  </main>
+</div>
+</body>
+</html>

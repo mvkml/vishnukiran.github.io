@@ -69,9 +69,10 @@
 
     <div class="layer plain">
       <span class="layer-label">Plain</span>
-      Login, signup, and route protection are well covered for every persona. Sending a chat
-      message is covered for Patient. It is not yet covered for Doctor — a real, specific gap
-      worth naming rather than glossing over.
+      Login, signup, route protection, and now chat send/receive are covered for every persona.
+      Doctor Chat's coverage grew the most recently — the earlier gap noted here (no test for
+      sending a message and getting a reply) is closed, and Demo 3/3.1's real-time streaming work
+      added its own dedicated coverage on top.
     </div>
 
     <table>
@@ -83,13 +84,17 @@
       <tr><td>Doctor signup (real backend)</td><td>7 tests — including a full signup → login → land-on-Doctor-Chat flow</td></tr>
       <tr><td>Patient signup (real backend)</td><td>7 tests — including signup → login → land-on-"My Health Assistant" flow</td></tr>
       <tr><td>Patient chat — sending a message (real backend + real Ollama)</td><td>3 tests — one real generation, two network-mocked error paths</td></tr>
+      <tr><td>Doctor Chat — agent pipeline, real streaming send flow (Demo 2.2/3.1)</td><td><code>agent-chat.spec.ts</code> — real question, real streamed reply, asserts genuine incremental rendering (mid-stream snapshot vs. final), not just a start/end check</td></tr>
+      <tr><td>Doctor provider-chat REST layer (API, real backend + real DB)</td><td><code>provider-chat.spec.ts</code> — 7 tests: core behavior, chat-history persistence against the real database, multi-turn history replay</td></tr>
+      <tr><td>SSE streaming wire mechanics (Demo 3 spike, throwaway endpoint)</td><td><code>sse-demo-stream.spec.ts</code> — 2 tests: real incremental DOM proof, structural isolation from the real chat</td></tr>
     </table>
 
     <div class="warn">
-      <strong>Real gap:</strong> there is no test file for Doctor Chat sending/receiving a
-      message — only Patient Chat has that coverage. The Doctor signup test confirms the Doctor
-      Chat page's heading appears after login, but nothing exercises actually sending a message
-      and getting a reply on that page.
+      <strong>Still open:</strong> tool-calling behavior interleaved with streaming (a Semantic
+      Kernel rough edge — function-call chunks can mix with text chunks mid-response) isn't
+      exercised yet, nor are several stream failure modes (a connection dying mid-answer with no
+      error signal, MCP tool errors mid-stream). Tracked as a running scenario list, not yet all
+      executed.
     </div>
 
     <div class="pager">

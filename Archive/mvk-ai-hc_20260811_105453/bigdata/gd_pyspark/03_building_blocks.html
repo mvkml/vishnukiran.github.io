@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PySpark — Building Blocks</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">PySpark Topics</div>
+    <a href="PySpark_Home.html">🏠 PySpark Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html" class="active">3. Building Blocks</a>
+    <a href="04_synthea_dataset_and_notebooks.html">4. The Synthea Dataset &amp; Notebooks</a>
+    <a href="05_sql_connectivity_check.html">5. SQL Server Connectivity Check</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="PySpark_Home.html">PySpark</a> / Topic 3</div>
+    <h1>Building Blocks</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      This is a genuine, self-hosted Spark environment running on a single machine — not a
+      Databricks subscription. The setup documentation is upfront about that distinction rather
+      than blurring the two together.
+    </div>
+
+    <p>From <code>hc_bigdata/document/setup/databricks_local_equivalent.md</code>, stated
+    directly:</p>
+    <p style="color:var(--text-dim); font-style:italic;">"Databricks has no true 'on-premise'
+    version — it is a commercial SaaS platform... What we are actually building is the
+    open-source stack Databricks itself is built on (Apache Spark + notebooks), self-hosted on
+    your laptop."</p>
+
+    <table>
+      <tr><th>Databricks concept</th><th>Local equivalent actually used</th></tr>
+      <tr><td>Workspace</td><td>Project folder (<code>hc_bigdata/</code>)</td></tr>
+      <tr><td>Cluster</td><td>Local <code>SparkSession</code>, <code>master("local[*]")</code></td></tr>
+      <tr><td>DBFS</td><td>Local disk paths</td></tr>
+      <tr><td>Delta Lake</td><td>Not installed — plain CSV reads only</td></tr>
+    </table>
+
+    <h3 style="color:#f8fafc; font-size:1rem;">Verified local setup</h3>
+    <table>
+      <tr><th>#</th><th>Step</th><th>Status</th></tr>
+      <tr><td>1</td><td><code>SPARK_HOME</code> → Spark 3.5.5 (Hadoop 3 build)</td><td>Done</td></tr>
+      <tr><td>2</td><td><code>JAVA_HOME</code> → Java 11</td><td>Done</td></tr>
+      <tr><td>3</td><td><code>winutils.exe</code> + <code>hadoop.dll</code> (Windows POSIX emulation, needed even for single-machine mode)</td><td>Done</td></tr>
+      <tr><td>4</td><td>Dedicated Python 3.12 virtual environment (isolated from the rest of the repo's tooling)</td><td>Done</td></tr>
+      <tr><td>5</td><td><code>pyspark==3.5.5</code> + JupyterLab installed into the venv</td><td>Done</td></tr>
+      <tr><td>6</td><td>First notebook executed successfully end to end</td><td>Done</td></tr>
+    </table>
+
+    <p>The dedicated Python 3.12 environment exists because the machine's default Python (3.14)
+    isn't yet supported by this PySpark version — a deliberately isolated, reproducible venv
+    avoids that conflict entirely.</p>
+
+    <div class="pager">
+      <a href="02_why_we_use_it.html">← Why We Use It</a>
+      <a href="04_synthea_dataset_and_notebooks.html">Next: The Synthea Dataset &amp; Notebooks →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

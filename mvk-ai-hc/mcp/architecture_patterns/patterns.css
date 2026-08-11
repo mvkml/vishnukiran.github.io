@@ -1,0 +1,27 @@
+:root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --badge-bg:#1d4ed8; --plain-bg:#0c2b3a; --plain-border:#0e7490; --code-bg:#0b1220; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+.shell { display:flex; min-height:100vh; }
+.sidebar { width:270px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+.sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+.sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+.sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); }
+.sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+.main { flex:1; padding:40px 32px 80px; max-width:920px; }
+h1 { font-size:1.85rem; margin:0 0 12px; color:#f8fafc; }
+h2 { font-size:1.22rem; border-left:4px solid var(--accent); padding-left:12px; margin:32px 0 14px; color:#f8fafc; }
+p { color:var(--text-dim); margin:0 0 14px; }
+.meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:26px; }
+.badge { background:var(--badge-bg); color:#fff; font-size:.78rem; padding:4px 10px; border-radius:999px; font-weight:600; }
+.badge.alt { background:#334155; }
+.plain,.note { border-radius:10px; padding:16px 18px; margin:16px 0 24px; }
+.plain { background:var(--plain-bg); border:1px solid var(--plain-border); color:var(--text); }
+.note { background:var(--panel); border:1px solid var(--panel-border); color:var(--text-dim); }
+.note strong,.plain strong { color:var(--text); }
+.flow { background:var(--code-bg); border:1px solid var(--panel-border); border-radius:8px; padding:18px 20px; font-size:.86rem; overflow-x:auto; }
+.flow code { white-space:pre; background:transparent; padding:0; }
+code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+.pager { display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; }
+.pager a { color:#fff; background:var(--badge-bg); border-radius:999px; padding:8px 14px; text-decoration:none; font-size:.84rem; font-weight:600; }
+@media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } }
+@media (prefers-color-scheme: light) { :root { --bg:#f8fafc; --panel:#fff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --badge-bg:#2563eb; --plain-bg:#ecfeff; --plain-border:#06b6d4; --code-bg:#f1f5f9; } h1,h2 { color:#0f172a; } .badge.alt { background:#e2e8f0; color:#334155; } }
