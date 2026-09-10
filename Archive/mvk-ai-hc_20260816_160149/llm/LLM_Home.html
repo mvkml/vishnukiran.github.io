@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Large Language Models - Home</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --tech-bg: #241a3a; --tech-border: #7c3aed;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  .back-link { display: inline-block; margin-bottom: 24px; font-size: 0.85rem; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .back-link:hover { text-decoration: underline; }
+  header.doc-header { border-bottom: 1px solid var(--panel-border); padding-bottom: 24px; margin-bottom: 32px; }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .badge { background: var(--badge-bg); color: #fff; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; font-weight: 600; letter-spacing: 0.02em; }
+  .badge.alt { background: #334155; }
+  section { margin-bottom: 44px; }
+  h2 { font-size: 1.35rem; color: #f8fafc; border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 18px; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .tech { background: var(--tech-bg); border: 1px solid var(--tech-border); }
+  .tech .layer-label { color: #c4b5fd; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; }
+  .flow { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 18px 20px; font-size: 0.86rem; overflow-x: auto; margin: 14px 0; }
+  .flow code { display: block; white-space: pre; }
+  .request-flow { display: grid; gap: 10px; margin: 16px 0 24px; }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 14px;
+    align-items: start;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    position: relative;
+  }
+  .flow-step::after {
+    content: "";
+    position: absolute;
+    left: 36px;
+    bottom: -11px;
+    width: 1px;
+    height: 10px;
+    background: var(--panel-border);
+  }
+  .flow-step:last-child::after { display: none; }
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(56,189,248,0.12);
+    border: 1px solid rgba(56,189,248,0.45);
+    color: #67e8f9;
+    font-weight: 700;
+    font-size: 0.82rem;
+    font-family: "SF Mono", Consolas, Monaco, monospace;
+  }
+  .step-title { color: #f8fafc; font-weight: 700; font-size: 0.96rem; margin-bottom: 2px; }
+  .step-desc { color: var(--text-dim); font-size: 0.88rem; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  a { color: var(--accent); }
+  .status-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+  .status-live { background: #064e3b; color: #6ee7b7; }
+  .status-progress { background: #422006; color: #fbbf24; }
+  .status-planned { background: #1e293b; color: #94a3b8; border: 1px solid var(--panel-border); }
+  .purpose { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 16px 18px; font-size: 0.95rem; color: var(--text-dim); margin-top: 40px; }
+  .purpose strong { color: var(--text); }
+  .author-card { margin-top: 32px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 24px 26px; }
+  .author-card h2 { border: none; padding-left: 0; font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .author-name { font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+  .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 12px; }
+  .author-bio { color: var(--text-dim); font-size: 0.92rem; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --tech-bg: #f5f3ff; --tech-border: #8b5cf6; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, h2, .author-name { color: #0f172a; }
+    .step-title { color: #0f172a; }
+    .status-live { background: #d1fae5; color: #065f46; }
+    .status-progress { background: #fef3c7; color: #92400e; }
+    .status-planned { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../ts/01_technology_stack_v1.html" class="back-link">&larr; Back to Technology Stack</a>
+
+  <header class="doc-header">
+    <h1>Large Language Models</h1>
+    <p class="tagline">How Healthcare Co-Pilot Studio uses LLMs as a controlled reasoning and communication layer, not as an unchecked source of healthcare truth.</p>
+    <div class="meta">
+      <span class="badge">Staging Draft</span>
+      <span class="badge alt">LLM Section</span>
+      <span class="badge alt">Product &amp; Technical Summary</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. Why LLMs Matter Here</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      The LLM gives doctors and patients a natural way to ask questions. Instead of forcing users
+      through forms, filters, SQL, or Swagger screens, the system lets them ask in plain language
+      and then turns that request into a controlled backend flow.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      The LLM is deliberately treated as an interpreter and answer composer. It is not allowed to
+      freely invent patient facts or execute raw SQL. Healthcare data access is routed through
+      application guardrails, persona rules, and database-backed configuration.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Current LLM Architecture</h2>
+    <div class="request-flow">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <div>
+          <div class="step-title">Doctor / Patient Natural-Language Question</div>
+          <div class="step-desc">The workflow starts with a healthcare question written in everyday language.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <div>
+          <div class="step-title">Persona-Specific Angular Chat UI</div>
+          <div class="step-desc">The UI captures the question and carries authenticated Doctor or Patient context.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <div>
+          <div class="step-title">ASP.NET Core AI Assistant API</div>
+          <div class="step-desc">The API receives the request, validates the boundary, and starts the assistant workflow.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <div>
+          <div class="step-title">Semantic Kernel Orchestration Layer</div>
+          <div class="step-desc">Semantic Kernel coordinates prompt preparation, model connection, and execution flow.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <div>
+          <div class="step-title">Persona &amp; Model Resolution</div>
+          <div class="step-desc">The platform selects the appropriate Doctor or Patient model/configuration path.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">06</div>
+        <div>
+          <div class="step-title">Ollama Local LLM Runtime</div>
+          <div class="step-desc">The selected local model generates language output inside the controlled runtime.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">07</div>
+        <div>
+          <div class="step-title">Guardrail &amp; Grounding Layer</div>
+          <div class="step-desc">The system prevents unsafe free-form data access and prepares approved context.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">08</div>
+        <div>
+          <div class="step-title">SQL Server / Configured Data Sources</div>
+          <div class="step-desc">Real data, persona rules, model configuration, and allow-list metadata supply the source of truth.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">09</div>
+        <div>
+          <div class="step-title">Controlled Answer Composition</div>
+          <div class="step-desc">The final answer is composed from approved context instead of unsupported model assumptions.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">10</div>
+        <div>
+          <div class="step-title">Angular Chat UI Response</div>
+          <div class="step-desc">The response is returned to the Doctor or Patient in the chat experience.</div>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <tr><th>Layer</th><th>Role In The LLM Story</th><th>Current Source</th></tr>
+      <tr><td>Semantic Kernel</td><td>Orchestration layer between the API and model runtime.</td><td><a href="../api/gd_semantickernel/SemanticKernel_Home.html">Semantic Kernel docs</a></td></tr>
+      <tr><td>Ollama</td><td>Local LLM runtime that generates model responses.</td><td><a href="../api/gd_ollama/Ollama_Home.html">Ollama docs</a></td></tr>
+      <tr><td>SQL Server</td><td>Stores persona/model configuration and guardrail allow-list data.</td><td><a href="../data/gd_sqlserver/SQLServer_Home.html">SQL Server docs</a></td></tr>
+      <tr><td>Playwright</td><td>Includes a real LLM end-to-end smoke test using an Ollama-generated reply.</td><td><a href="../qa/gd_playwright/05_real_llm_test.html">Real LLM test</a></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>3. Model Runtime And Persona Direction</h2>
+    <table>
+      <tr><th>Item</th><th>Current Understanding</th><th>Status</th></tr>
+      <tr><td>Base model</td><td><code>qwen2.5:7b</code> is documented as the local base model.</td><td><span class="status-pill status-live">Documented</span></td></tr>
+      <tr><td>Persona executor models</td><td>Doctor and Patient executor models are documented as persona-specific model direction.</td><td><span class="status-pill status-progress">In progress</span></td></tr>
+      <tr><td>Model selection</td><td>Configuration-based selection exists; database-backed selection is documented as built/proven but not fully live everywhere.</td><td><span class="status-pill status-progress">In progress</span></td></tr>
+      <tr><td>Hosted LLM option</td><td>Azure OpenAI is currently positioned as planned, not implemented.</td><td><span class="status-pill status-planned">Planned</span></td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>4. Product Value</h2>
+    <div class="layer plain">
+      <span class="layer-label">Business Value</span>
+      This project demonstrates that LLMs can be introduced into a healthcare workflow with clear
+      boundaries: local model runtime, persona-aware behavior, backend orchestration, testing, and
+      guardrails that keep the model from becoming the system of record.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical Strength</span>
+      The important engineering decision is separation of responsibility. Angular owns the persona
+      UI, ASP.NET Core owns the API boundary, Semantic Kernel owns orchestration, Ollama owns model
+      generation, SQL Server owns configuration and governed data access, and Playwright proves at
+      least one real end-to-end LLM path.
+    </div>
+  </section>
+
+  <section>
+    <h2>5. Current Status</h2>
+    <table>
+      <tr><th>Capability</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Local LLM runtime</td><td><span class="status-pill status-live">Documented</span></td><td>Ollama is the documented local runtime.</td></tr>
+      <tr><td>Semantic Kernel orchestration</td><td><span class="status-pill status-live">Documented</span></td><td>Current live path and design-vs-reality are documented separately.</td></tr>
+      <tr><td>Persona model direction</td><td><span class="status-pill status-progress">In progress</span></td><td>Doctor/Patient model direction is documented; dynamic behavior is still evolving.</td></tr>
+      <tr><td>Database-backed model selection</td><td><span class="status-pill status-progress">In progress</span></td><td>Schema and stored-procedure direction are documented in the SQL Server section.</td></tr>
+      <tr><td>RAG/vector retrieval</td><td><span class="status-pill status-planned">Planned</span></td><td>Cosmos DB/RAG direction is design-stage, not live.</td></tr>
+    </table>
+  </section>
+
+  <div class="purpose">
+    <strong>About this section:</strong> this page summarizes the LLM design, product value,
+    implementation status, and technical strengths of the platform. It connects the existing
+    Semantic Kernel, Ollama, SQL Server, Cosmos DB, and Playwright documentation into one readable
+    LLM story.
+  </div>
+
+  <div class="author-card">
+    <h2>About Author</h2>
+    <div class="author-name">Vishnu Kiran M</div>
+    <div class="author-email">mvkwithmath@gmail.com</div>
+    <div class="author-bio">
+      Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
+      Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API Management,
+      Terraform, AIOps, and enterprise integration.
+    </div>
+  </div>
+</div>
+</body>
+</html>

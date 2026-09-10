@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Databricks - Metastore</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 820px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a, .pager a { color: var(--accent); text-decoration: none; }
+  .pager a:hover { text-decoration: underline; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 8px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  ul, ol { margin: 10px 0 0 22px; padding: 0; }
+  li { margin: 5px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; }
+  pre { background: #0b1220; border: 1px solid var(--panel-border); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; color: #e2e8f0; }
+  .layer a { color: var(--accent); text-decoration: none; }
+  .layer a:hover { text-decoration: underline; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { font-size: 0.9rem; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } .main { padding: 28px 18px 56px; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Databricks Topics</div>
+    <a href="../Databricks_Home.html">Databricks Home</a>
+    <a href="../Databricks_Index.html">Databricks Topics</a>
+    <a href="../04_unity_catalog.html">4. Unity Catalog</a>
+    <a href="04_metastore.html" class="active">Metastore</a>
+    <a href="../05_catalog.html">5. Catalog</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../gd_pyspark/PySpark_Home.html">Back to PySpark</a>
+    <a class="sb-up" href="../../../ts/01_technology_stack_v1.html">Technology Stack</a>
+    <a class="sb-up" href="../../../about_project/hcs_home.html">Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="../Databricks_Home.html">Azure Databricks</a> / Metastore</div>
+    <h1>Metastore</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Definition</span>
+      A metastore is the top-level container in Unity Catalog. Catalogs are created inside a metastore, and the metastore manages metadata, permissions, and governance for those data assets.
+      <br><br>
+      A metastore in Databricks is the central place where Unity Catalog stores metadata about your data assets.
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Registry</span>
+      Think of it as the registry for:
+      <ul>
+        <li>Catalogs</li>
+        <li>Schemas</li>
+        <li>Tables</li>
+        <li>Views</li>
+        <li>Volumes</li>
+        <li>Permissions</li>
+        <li>Storage locations</li>
+      </ul>
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Important Point</span>
+      It does not usually store the data itself. Instead, it tracks where the data lives and who can access it.
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Storage Root Issue</span>
+      Your error means Databricks is trying to create a catalog that needs a managed storage location, but the
+      metastore's configured storage root URL either does not exist, is not configured, or cannot be accessed.
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Unity Catalog Hierarchy</span>
+      <pre><code>Metastore
+  -> Catalog
+      -> Schema
+          -> Table</code></pre>
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Example</span>
+      <pre><code>main.sales.orders</code></pre>
+      <ul>
+        <li><code>main</code> is the catalog</li>
+        <li><code>sales</code> is the schema</li>
+        <li><code>orders</code> is the table</li>
+      </ul>
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Options</span>
+      For this specific issue, you have two choices:
+      <ol>
+        <li>Use Default Storage from the Databricks UI. Since your account says Default Storage is enabled, create the catalog through the Databricks UI and choose Default Storage.</li>
+        <li>Provide a managed storage location manually.</li>
+      </ol>
+      <pre><code>CREATE CATALOG myCatalog
+MANAGED LOCATION 's3://my-bucket/path/';</code></pre>
+      <pre><code>CREATE CATALOG myCatalog
+MANAGED LOCATION 'abfss://container@storageaccount.dfs.core.windows.net/path/';</code></pre>
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Summary</span>
+      In short: the metastore is the Unity Catalog metadata container, and the metastore storage root is the cloud
+      storage path Databricks uses for managed data when you do not provide a catalog-specific location.
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">How To Create Metastore</span>
+      You create the metastore in the Databricks Account Console, not inside a notebook or SQL editor.
+
+      <ol>
+        <li>Go to Databricks Account Console</li>
+        <li>Open Catalog</li>
+        <li>Click Create metastore</li>
+        <li>Choose the region</li>
+        <li>Attach/link the workspace to that metastore</li>
+      </ol>
+
+      <p>
+        The most important rule: the metastore must be in the same cloud region as your Databricks workspace.
+        Databricks says a metastore is scoped to a single cloud region, and you typically need one metastore per
+        region where your organization has workspaces.
+      </p>
+
+      <p>
+        See Databricks docs:
+        <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/create-metastore">Create a Unity Catalog metastore</a>
+        and
+        <a href="https://docs.databricks.com/aws/en/data-governance/unity-catalog/securable-objects">Unity Catalog securable objects</a>.
+      </p>
+
+      <table>
+        <tr><th>Your Databricks workspace is in</th><th>Create metastore in</th></tr>
+        <tr><td>AWS <code>us-east-1</code></td><td>AWS <code>us-east-1</code></td></tr>
+        <tr><td>AWS <code>us-west-2</code></td><td>AWS <code>us-west-2</code></td></tr>
+        <tr><td>Azure <code>East US</code></td><td>Azure <code>East US</code></td></tr>
+        <tr><td>Azure <code>West Europe</code></td><td>Azure <code>West Europe</code></td></tr>
+        <tr><td>GCP <code>us-central1</code></td><td>GCP <code>us-central1</code></td></tr>
+      </table>
+
+      <p>You do not randomly choose any location. Choose the same region as your workspace.</p>
+
+      <p>
+        For your catalog error, you probably do not need to create a new metastore if one already exists. Instead,
+        create the catalog using one of these:
+      </p>
+
+      <pre><code>CREATE CATALOG my_catalog;</code></pre>
+
+      <p>using Default Storage from the UI, or:</p>
+
+      <pre><code>CREATE CATALOG my_catalog
+MANAGED LOCATION 'abfss://container@storageaccount.dfs.core.windows.net/path/';</code></pre>
+
+      <p>for Azure, or:</p>
+
+      <pre><code>CREATE CATALOG my_catalog
+MANAGED LOCATION 's3://bucket/path/';</code></pre>
+
+      <p>
+        Quick check: in your Databricks workspace, look at the workspace URL or admin settings to find the region.
+        Then create/attach the metastore in that same region.
+      </p>
+    </div>
+
+    <div class="pager">
+      <a href="../04_unity_catalog.html">Back: Unity Catalog</a>
+      <a href="../Databricks_Index.html">Databricks Topics</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

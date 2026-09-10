@@ -3,19 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Healthcare Co-Pilot Studio | Agentic AI Healthcare Copilot by Vishnu Kiran M</title>
-<meta name="description" content="Healthcare Co-Pilot Studio is an Agentic AI healthcare copilot project by Vishnu Kiran M, demonstrating doctor and patient personas, natural-language healthcare queries, ASP.NET Core APIs, Semantic Kernel orchestration, Ollama LLMs, SQL Server guardrails, Angular UI, Azure AI roadmap, and governed enterprise AI architecture." />
-<meta name="keywords" content="Healthcare Co-Pilot Studio, healthcare AI copilot, Agentic AI healthcare, doctor copilot, patient copilot, healthcare chatbot, Semantic Kernel healthcare, ASP.NET Core AI API, Ollama LLM healthcare, SQL Server guardrails, Angular healthcare UI, Azure AI healthcare architecture, RAG healthcare, enterprise AI healthcare solution, Vishnu Kiran M portfolio project" />
-<meta name="author" content="Vishnu Kiran M" />
-<meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://mvkml.github.io/vishnukiran.github.io/mvk-ai-hc/about_project/hcs_home.html" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Healthcare Co-Pilot Studio | Agentic AI Healthcare Copilot" />
-<meta property="og:description" content="A portfolio project showing an AI-assisted healthcare platform with doctor and patient personas, Semantic Kernel, Ollama, ASP.NET Core, SQL Server guardrails, Angular, and an Azure AI roadmap." />
-<meta property="og:url" content="https://mvkml.github.io/vishnukiran.github.io/mvk-ai-hc/about_project/hcs_home.html" />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Healthcare Co-Pilot Studio | Agentic AI Healthcare Copilot" />
-<meta name="twitter:description" content="Agentic AI healthcare copilot project using Semantic Kernel, Ollama, ASP.NET Core, SQL Server guardrails, Angular, and Azure AI architecture." />
+<title>Healthcare Co-Pilot Studio — Project Overview</title>
 <style>
   :root {
     --bg: #0f172a;
@@ -42,6 +30,15 @@
     line-height: 1.65;
   }
   .wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .back-link:hover { text-decoration: underline; }
   header.doc-header {
     border-bottom: 1px solid var(--panel-border);
     padding-bottom: 24px;
@@ -140,16 +137,35 @@
     .status-planned { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
   }
 
-  .grounding {
-    background: #1a1408;
-    border: 1px solid #92400e;
-    border-radius: 10px;
-    padding: 14px 18px;
-    font-size: 0.9rem;
-    color: #fde68a;
-    margin-bottom: 32px;
+  .articles-section {
+    margin-top: 48px;
+    border-top: 1px solid var(--panel-border);
+    padding-top: 32px;
   }
-  .grounding strong { color: #fef3c7; }
+  .articles-section h2 {
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+    font-size: 1.2rem;
+    margin-bottom: 18px;
+  }
+  .article-list { list-style: none; padding: 0; margin: 0; }
+  .article-list li {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .article-list li:hover { border-color: rgba(56,189,248,0.4); }
+  .article-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .article-info { flex: 1; }
+  .article-title { font-size: 0.95rem; font-weight: 600; color: #f1f5f9; margin-bottom: 2px; }
+  .article-meta { font-size: 0.78rem; color: var(--text-dim); }
+  .article-link { color: var(--accent); text-decoration: none; font-size: 0.82rem; font-weight: 600; flex-shrink: 0; }
+  .article-link:hover { text-decoration: underline; }
 
   footer {
     border-top: 1px solid var(--panel-border);
@@ -173,35 +189,6 @@
   .author-name { font-size: 1.25rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
   .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 14px; }
   .author-bio { color: var(--text-dim); font-size: 0.95rem; }
-
-  .contact-card {
-    margin-top: 24px;
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    border-radius: 12px;
-    padding: 24px 26px;
-  }
-  .contact-card h2 { border: none; padding-left: 0; font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
-  .contact-card p { color: var(--text-dim); font-size: 0.95rem; margin: 0 0 16px; }
-  .contact-links { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
-  .contact-link {
-    display: inline-flex;
-    align-items: center;
-    color: #fff;
-    background: var(--badge-bg);
-    border: 1px solid transparent;
-    border-radius: 999px;
-    padding: 8px 14px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    text-decoration: none;
-  }
-  .contact-link.secondary {
-    color: var(--accent);
-    background: transparent;
-    border-color: var(--panel-border);
-  }
-  .contact-link:hover { filter: brightness(1.1); text-decoration: none; }
 
   .top-btn {
     position: fixed;
@@ -254,16 +241,16 @@
 <a href="#top" class="top-btn">↑ Top</a>
 <div class="wrap">
 
+  <a href="../AboutVishnuKiran.html#projects" class="back-link">← Back to Profile</a>
+
   <header class="doc-header" id="top">
     <h1>Healthcare Co-Pilot Studio</h1>
     <p class="tagline">An AI-assisted healthcare platform where doctors and patients get natural-language answers grounded in real data — not guesses.</p>
     <div class="meta">
       <span class="badge">Version 1</span>
-      <span class="badge alt">2026-07-23 14:05</span>
-      <a href="../../AboutVishnuKiran.html" class="badge alt" style="text-decoration:none;">Back to About Page</a>
+      <span class="badge alt">2026-07-23</span>
       <a href="#about-document" class="badge alt" style="text-decoration:none;">About This Document ↓</a>
       <a href="#author" class="badge alt" style="text-decoration:none;">About Author ↓</a>
-      <a href="../ts/01_technology_stack_v1.html" class="badge" style="text-decoration:none;">Technology Stack →</a>
     </div>
   </header>
 
@@ -276,7 +263,7 @@
       <li><a href="#s4">Who It's For</a></li>
       <li><a href="#s5">Technology Stack</a></li>
       <li><a href="#s6">Current Status</a></li>
-      <li><a href="#s7">Client Demo Framing</a></li>
+      <li><a href="#articles">Technical Articles</a></li>
     </ol>
   </nav>
 
@@ -371,26 +358,24 @@
   </section>
 
   <section id="s5">
-    <h2><a href="../ts/01_technology_stack_v1.html" style="color:inherit; text-decoration:none;">5. Technology Stack</a></h2>
+    <h2>5. Technology Stack</h2>
     <div class="layer plain">
       <span class="layer-label">Plain</span>
       Built on mainstream, enterprise-proven technology end to end — nothing exotic or
-      hard-to-maintain, with newer AI, agent, MCP, and Azure tracks documented as the platform
-      evolves from local-first implementation toward cloud-ready architecture.
+      hard-to-maintain, so the platform is straightforward to support, extend, and hand over.
     </div>
     <table>
       <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
-      <tr><td>AI orchestration</td><td>Semantic Kernel, AI Agents</td><td>Routes persona requests, coordinates model calls, and documents agent patterns for healthcare workflows</td></tr>
-      <tr><td>Language models</td><td>Ollama, local LLMs, LLM/ML tracks</td><td>Supports local model execution, prompt iteration, ML concepts, and future model evolution</td></tr>
-      <tr><td>Tool integration</td><td>Model Context Protocol (MCP)</td><td>Defines governed tool-calling patterns for exposing backend capabilities safely to AI agents</td></tr>
-      <tr><td>Backend APIs</td><td>ASP.NET Core (C#), EF Core</td><td>REST APIs, service boundaries, code-first data access, migrations, and guarded query execution</td></tr>
-      <tr><td>Data platform</td><td>SQL Server, PySpark, Cosmos DB design</td><td>Relational healthcare data, synthetic dataset profiling, and planned vector/RAG storage direction</td></tr>
-      <tr><td>Frontend &amp; identity</td><td>Angular, TypeScript, JWT authentication</td><td>Persona-specific chat UI, web portal, login/signup, and secured request flow</td></tr>
-      <tr><td>Azure roadmap</td><td>Azure AI Foundry, Azure OpenAI, Azure AI Search, Azure Functions, Service Bus, Event Hub</td><td>Planned cloud AI, integration, eventing, and serverless capabilities documented separately from what is already built</td></tr>
-      <tr><td>Testing &amp; delivery</td><td>Playwright, Azure DevOps, backlog docs</td><td>Automated/manual verification, traceable work planning, and staged documentation updates</td></tr>
+      <tr><td>Backend APIs</td><td>ASP.NET Core (C#)</td><td>REST APIs for AI assistant, authentication, and patient records</td></tr>
+      <tr><td>Data access</td><td>Entity Framework Core, SQL Server</td><td>Code-first schema, migrations, query execution</td></tr>
+      <tr><td>AI orchestration</td><td>Microsoft Semantic Kernel</td><td>Connects the API layer to the language model, manages the chat/completion flow</td></tr>
+      <tr><td>Language model runtime</td><td>Ollama (local), <code>qwen2.5</code> family + persona-tuned variants</td><td>Runs the actual language model that interprets questions and composes answers</td></tr>
+      <tr><td>Frontend</td><td>Angular, TypeScript</td><td>Persona-specific chat UI and web portal</td></tr>
+      <tr><td>Authentication</td><td>JWT-based auth API, EF Core-backed</td><td>Secures every persona's access</td></tr>
+      <tr><td>Data engineering</td><td>PySpark</td><td>Ingesting and profiling the synthetic patient dataset used for development</td></tr>
+      <tr><td>Testing</td><td>Playwright</td><td>Automated API and UI test coverage</td></tr>
+      <tr><td>Process/delivery</td><td>Azure DevOps</td><td>Backlog, sprint, and work-item tracking</td></tr>
     </table>
-    <a href="../ts/01_technology_stack_v1.html" class="badge" style="text-decoration:none; display:inline-block; margin-top:8px;">View full Technology Stack →</a>
-    <br>
     <a href="#contents" class="section-nav-link">↑ Contents</a>
   </section>
 
@@ -414,33 +399,20 @@
     <a href="#contents" class="section-nav-link">↑ Contents</a>
   </section>
 
-  <section id="s7">
-    <h2>7. Client Demo Framing</h2>
-    <div class="layer plain">
-      <span class="layer-label">Plain</span>
-      The demo story is simple: this is Healthcare Co-Pilot Studio starting with real user
-      journeys, not a generic chat application. A doctor or patient signs in, asks a healthcare question,
-      and the platform routes that question through identity, persona rules, model orchestration,
-      guardrails, and real data before returning an answer.
-    </div>
-    <div class="layer tech">
-      <span class="layer-label">Technical</span>
-      The client value is the combination of architecture and delivery discipline: Angular for the
-      persona UI, ASP.NET Core for the API boundary, Semantic Kernel for orchestration, Ollama for
-      local model execution, SQL Server for governed healthcare data/configuration, Playwright for
-      regression confidence, and Azure DevOps for traceable backlog management. Each layer is
-      documented separately so the project can be discussed with product, architecture, engineering,
-      QA, or delivery stakeholders.
-    </div>
-    <table>
-      <tr><th>Demo Point</th><th>What It Proves</th><th>Audience Value</th></tr>
-      <tr><td>Persona login and chat</td><td>Doctor and Patient journeys are treated as different product experiences.</td><td>Shows user-centered healthcare workflow thinking.</td></tr>
-      <tr><td>Guardrailed data access</td><td>The assistant is designed to answer from governed records, not unsupported model memory.</td><td>Builds trust for healthcare and enterprise review.</td></tr>
-      <tr><td>Local LLM orchestration</td><td>Model execution can be developed and tested locally before hosted AI expansion.</td><td>Shows practical AI engineering control.</td></tr>
-      <tr><td>Backlog and QA documentation</td><td>Features, risks, tests, and current gaps are tracked openly.</td><td>Shows delivery maturity, not just code output.</td></tr>
-    </table>
-    <a href="#contents" class="section-nav-link">Contents</a>
-  </section>
+  <!-- TECHNICAL ARTICLES -->
+  <div class="articles-section" id="articles">
+    <h2>Technical Articles</h2>
+    <ul class="article-list">
+      <li>
+        <div class="article-icon">📄</div>
+        <div class="article-info">
+          <div class="article-title">Entity Framework Core — What It Is, Why We Use It, How We Set It Up</div>
+          <div class="article-meta">EF Core 8 · SQL Server · Code-First · Migrations</div>
+        </div>
+        <a href="ef/01_entity_framework_core_setup_v1.html" class="article-link">Read →</a>
+      </li>
+    </ul>
+  </div>
 
   <footer>
     <h2>Coming in the next version</h2>
@@ -462,39 +434,13 @@
   <div class="author-card" id="author">
     <h2>About Author</h2>
     <div class="author-name">Vishnu Kiran M</div>
-    <div class="author-email">vishnu.nt@gmail.com</div>
+    <div class="author-email">mvkwithmath@gmail.com</div>
     <div class="author-bio">
       Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
       Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API Management,
       Terraform, AIOps, and enterprise integration. Experienced in architecting scalable, secure,
       production-ready AI solutions on Microsoft Azure.
     </div>
-  </div>
-
-  <div class="contact-card" id="contact">
-    <h2>Get In Touch</h2>
-    <div class="contact-links">
-      <a href="https://www.linkedin.com/in/vishnu-m-50a453258/" class="contact-link" target="_blank">LinkedIn</a>
-      <a href="https://github.com/mvkml" class="contact-link secondary" target="_blank">GitHub</a>
-      <a href="https://www.youtube.com/@vishnukiranm/playlists" class="contact-link secondary" target="_blank">YouTube</a>
-      <a href="mailto:vishnu.nt@gmail.com" class="contact-link secondary">Email</a>
-      <a href="tel:+918523007299" class="contact-link secondary">+91 85230 07299</a>
-      <a href="../../AboutVishnuKiran.html#contact" class="contact-link secondary">Full Profile</a>
-    </div>
-    <p>
-      Open to remote opportunities, Forward Deployed Engineer roles, enterprise consulting,
-      freelance projects, and strategic collaborations.
-    </p>
-    <p>
-      I work with organizations to identify business and operational gaps, uncover opportunities
-      for AI-driven transformation, and design and build practical end-to-end solutions using
-      Agentic AI, Azure AI, Cloud, IoT/IIoT, and enterprise integration technologies.
-    </p>
-    <p>
-      Whether it's solving an existing challenge, modernizing a workflow, connecting systems and
-      industrial data, or building a new AI-enabled solution, I'm open to partnering from problem
-      discovery through architecture, implementation, and deployment.
-    </p>
   </div>
 
 </div>

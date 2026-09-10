@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Server — Persona/LLM Option Schema</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .flow { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 18px 20px; font-size: 0.86rem; overflow-x: auto; margin: 14px 0; }
+  .flow code { display: block; white-space: pre; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">SQL Server Topics</div>
+    <a href="SQLServer_Home.html">🏠 SQL Server Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_query_guardrail.html">4. The Query-Guardrail Procedure</a>
+    <a href="05_persona_llm_schema.html" class="active">5. Persona/LLM Option Schema</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <a href="07_stored_procedures.html">7. Stored Procedures</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="SQLServer_Home.html">SQL Server</a> / Topic 5</div>
+    <h1>Persona/LLM Option Schema</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Today, which AI model answers a Doctor or Patient's question is decided by a config file.
+      This schema is the database-backed replacement being built — so that decision can change
+      per user or persona without redeploying the application.
+    </div>
+
+    <table>
+      <tr><th>Table</th><th>Role</th><th>What it holds</th></tr>
+      <tr><td><code>PersonaType</code></td><td>Dimension</td><td>The LLM execution context a request runs under — <code>1 = Doctor</code>, <code>2 = Patient</code>. Deliberately separate from <code>Roles</code> (the auth/account concept), not a replacement for it.</td></tr>
+      <tr><td><code>LLMOption</code></td><td>Dimension</td><td>Available model/provider/endpoint configurations — mirrors what's currently hardcoded in <code>appsettings.json</code> (<code>HCClassification</code>, <code>HCDocExecutor</code>, <code>HCPatientExecutor</code>).</td></tr>
+      <tr><td><code>LLMMapper</code></td><td>Fact</td><td>Links a <code>PersonaType</code> to an <code>LLMOption</code> for a given <code>ModelRole</code> (<code>Classification</code> or <code>Executor</code>), plus generation parameters (<code>MaxTokens</code>, <code>Temperature</code>, <code>TopP</code>, etc.).</td></tr>
+      <tr><td><code>PersonaMapper</code></td><td>Bridge</td><td>Connects <code>Roles.RoleId</code> to <code>PersonaType.TypeId</code>, so the two concepts can coexist without merging.</td></tr>
+    </table>
+
+    <p>The resolution path already exists as a stored procedure —
+    <code>usp_GetLLMOptionByUserOrPersona</code> — called directly from
+    <code>HC.AI.MAPI.EF.DBContexts.MapiDbContext</code> via a keyless entity:</p>
+    <div class="flow"><code>return LLMOptionResolutions
+    .FromSqlRaw(
+        "EXEC dbo.usp_GetLLMOptionByUserOrPersona @UserId, @PersonaTypeId, @ModelRole",
+        userIdParam, personaTypeIdParam, modelRoleParam)
+    .ToListAsync();</code></div>
+    <p>It resolves either by a specific user (walking <code>Users → PersonaMapper → PersonaType</code>)
+    or directly by persona type, optionally filtered to a model role, ordered by
+    <code>IsDefault DESC, Priority ASC</code>.</p>
+
+    <div class="pager">
+      <a href="04_query_guardrail.html">← The Query-Guardrail Procedure</a>
+      <a href="06_current_status.html">Next: Current Status →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

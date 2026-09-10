@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agents - Doctor Multi-Agent Patterns</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --code-bg:#0b1220; --badge-bg:#1d4ed8; --warn:#f59e0b; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:250px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+  .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+  .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); }
+  .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+  .main { flex:1; padding:40px 32px 80px; max-width:980px; }
+  h1 { font-size:1.85rem; margin:0 0 12px; color:#f8fafc; }
+  h2 { font-size:1.25rem; color:#f8fafc; border-left:4px solid var(--accent); padding-left:12px; margin:34px 0 16px; }
+  .tagline { font-size:1.04rem; color:var(--text-dim); margin:0 0 18px; }
+  .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 28px; }
+  .purpose strong { color:var(--text); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; margin:18px 0; }
+  .card { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px; text-decoration:none; color:var(--text); display:block; }
+  a.card:hover { border-color:var(--accent); }
+  .card-title { font-weight:700; color:#f8fafc; margin-bottom:6px; }
+  .card p { color:var(--text-dim); font-size:.9rem; margin:0; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; }
+  th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; }
+  th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+  blockquote { margin:18px 0; padding:14px 18px; border-left:4px solid var(--accent); background:var(--panel); color:var(--text); border-radius:0 8px 8px 0; }
+  .pager { display:flex; justify-content:space-between; margin-top:40px; padding-top:20px; border-top:1px solid var(--panel-border); }
+  .pager a { color:var(--accent); text-decoration:none; }
+  @media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } .main { padding:28px 18px 56px; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --code-bg:#f1f5f9; --badge-bg:#2563eb; }
+    h1,h2,.card-title { color:#0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Agent Topics</div>
+    <a href="Agent_Home.html">Agent Home</a>
+    <a href="01_what_is_agent.html">1. What Is An Agent?</a>
+    <a href="02_langchain_agent.html">2. LangChain Agent</a>
+    <a href="03_semantic_kernel_agent.html">3. Semantic Kernel Agent</a>
+    <a href="04_agentic_patterns_healthcare.html">4. Agentic Patterns</a>
+    <a href="05_doctor_persona_multi_agent_patterns.html" class="active">5. Doctor Multi-Agent Patterns</a>
+  </nav>
+  <main class="main">
+    <h1>Doctor Persona Multi-Agent Design Patterns</h1>
+    <p class="tagline">Design patterns for handling doctor requests that may contain appointments, patient details, medications, insurance, claims, clinical documentation, and laboratory needs in one message.</p>
+
+    <div class="purpose">
+      <strong>Key decision:</strong> the classifier must support multiple classifications for one
+      doctor request. The request should not be forced into only one agent when the sentence clearly
+      asks for several healthcare domains.
+    </div>
+
+    <h2>Pattern Titles</h2>
+    <div class="grid">
+      <a class="card" href="06_router_agent_pattern.html"><div class="card-title">1. Router Agent Pattern</div><p>Directs the request into the multi-agent workflow.</p></a>
+      <a class="card" href="07_multi_intent_classification_pattern.html"><div class="card-title">2. Multi-Intent Classification Pattern</div><p>Finds all matching domains in one doctor request.</p></a>
+      <a class="card" href="08_planner_orchestrator_pattern.html"><div class="card-title">3. Planner / Orchestrator Pattern</div><p>Plans which agents should run and in what order.</p></a>
+      <a class="card" href="09_fan_out_fan_in_agent_pattern.html"><div class="card-title">4. Fan-Out / Fan-In Agent Pattern</div><p>Runs multiple specialist agents and merges their outputs.</p></a>
+      <a class="card" href="10_supervisor_agent_pattern.html"><div class="card-title">5. Supervisor Agent Pattern</div><p>Monitors routing, quality, failures, and escalation.</p></a>
+      <a class="card" href="11_tool_using_specialist_agent_pattern.html"><div class="card-title">6. Tool-Using Specialist Agent Pattern</div><p>Lets each domain agent call approved APIs, MCP tools, or stored procedures.</p></a>
+      <a class="card" href="12_shared_context_memory_pattern.html"><div class="card-title">7. Shared Context / Memory Pattern</div><p>Shares doctor, patient, session, and prior-chat context across agents.</p></a>
+      <a class="card" href="13_human_in_the_loop_escalation_pattern.html"><div class="card-title">8. Human-in-the-Loop Escalation Pattern</div><p>Escalates risky, incomplete, or policy-sensitive cases for review.</p></a>
+    </div>
+
+    <h2>Healthcare Agent Domains</h2>
+    <table>
+      <tr><th>Domain</th><th>Specialist Agent</th><th>Purpose</th></tr>
+      <tr><td>Scheduling</td><td>Appointment Agent</td><td>Retrieve and reason over doctor appointments and patient visit timing.</td></tr>
+      <tr><td>Clinical Documentation</td><td>Clinical Documentation Agent</td><td>Prepare or summarize clinical notes, visit context, and documentation needs.</td></tr>
+      <tr><td>Billing / Claims</td><td>Claims Agent</td><td>Answer claim, billing, eligibility, and payment-status questions.</td></tr>
+      <tr><td>Medications</td><td>Medication Agent</td><td>Retrieve active medication details and medication-related history.</td></tr>
+      <tr><td>Laboratory</td><td>Laboratory Agent</td><td>Retrieve recent lab status, results, and pending lab items.</td></tr>
+      <tr><td>Insurance</td><td>Insurance Agent</td><td>Provide insurance coverage, payer, and policy-related context.</td></tr>
+      <tr><td>Patient Details</td><td>Patient Agent</td><td>Provide demographic, care, and patient-profile details permitted for the doctor persona.</td></tr>
+    </table>
+
+    <h2>Example Multi-Intent Request</h2>
+    <blockquote>
+      Show me today's appointments for Dr. Azmath and include medication, insurance, and latest lab
+      status for the patient scheduled at 10 AM.
+    </blockquote>
+
+    <table>
+      <tr><th>Detected Classification</th><th>Agent</th></tr>
+      <tr><td>Scheduling / Appointments</td><td>Appointment Agent</td></tr>
+      <tr><td>Medications</td><td>Medication Agent</td></tr>
+      <tr><td>Insurance</td><td>Insurance Agent</td></tr>
+      <tr><td>Laboratory</td><td>Laboratory Agent</td></tr>
+      <tr><td>Patient Details</td><td>Patient Agent</td></tr>
+    </table>
+
+    <h2>Target Flow</h2>
+    <table>
+      <tr><th>Step</th><th>Responsibility</th><th>Pattern</th></tr>
+      <tr><td>1</td><td>Doctor request enters the assistant.</td><td>Router Agent</td></tr>
+      <tr><td>2</td><td>Classifier returns multiple matched domains.</td><td>Multi-Intent Classification</td></tr>
+      <tr><td>3</td><td>Orchestrator chooses specialist agents and execution order.</td><td>Planner / Orchestrator</td></tr>
+      <tr><td>4</td><td>Specialist agents retrieve approved domain data.</td><td>Tool-Using Specialist Agent</td></tr>
+      <tr><td>5</td><td>Agent outputs are combined into one answer.</td><td>Fan-Out / Fan-In</td></tr>
+      <tr><td>6</td><td>Supervisor checks quality, missing data, and escalation needs.</td><td>Supervisor / Human-in-the-Loop</td></tr>
+    </table>
+
+    <div class="pager"><a href="04_agentic_patterns_healthcare.html">Previous: Agentic Patterns</a><a href="Agent_Home.html">Agent Home</a></div>
+  </main>
+</div>
+</body>
+</html>

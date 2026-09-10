@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft Entra ID - Tenant</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 250px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 860px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a, .pager a { color: var(--accent); text-decoration: none; }
+  .pager a:hover { text-decoration: underline; }
+  h1 { font-size: 1.75rem; margin: 0 0 20px; color: #f8fafc; }
+  h2 { font-size: 1.18rem; color: #f8fafc; border-left: 4px solid var(--accent); padding-left: 12px; margin: 34px 0 16px; }
+  .layer { border-radius: 8px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { font-size: 0.9rem; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } .main { padding: 28px 18px 56px; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --badge-bg: #2563eb; }
+    h1, h2 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Azure Admin Topics</div>
+    <a href="../Azure_Admin_Home.html">Azure Admin Home</a>
+    <a href="../03_microsoft_entra_id.html">3. Microsoft Entra ID</a>
+    <a href="01_tenant.html" class="active">Tenant</a>
+    <a href="../subscription/01_subscription.html">Subscription</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../../ts/01_technology_stack_v1.html">Technology Stack</a>
+    <a class="sb-up" href="../../../about_project/hcs_home.html">Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="../Azure_Admin_Home.html">Azure Administration</a> / <a href="../03_microsoft_entra_id.html">Microsoft Entra ID</a> / Tenant</div>
+    <h1>Tenant</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Definition</span>
+      A tenant is an isolated instance of the Microsoft Entra ID service created for an organization to manage its identities and access.
+    </div>
+
+    <h2>Types Of Tenants</h2>
+    <table>
+      <tr><th>Tenant Type</th><th>Usage</th></tr>
+      <tr>
+        <td>Workforce tenant</td>
+        <td>Used for employees, administrators, internal users, and organizational resources. It manages access to Azure Portal, Azure subscriptions, Microsoft 365, internal applications, and enterprise resources.</td>
+      </tr>
+      <tr>
+        <td>External tenant</td>
+        <td>Used for customers, patients, partners, consumers, and external application users. It supports sign-in and access for people outside the organization who need controlled access to apps or portals.</td>
+      </tr>
+    </table>
+
+    <div class="layer plain">
+      <span class="layer-label">Simple View</span>
+      A workforce tenant is mainly for people inside the organization. An external tenant is mainly for people outside the organization who use your applications.
+    </div>
+
+    <div class="pager">
+      <a href="../03_microsoft_entra_id.html">Back: Microsoft Entra ID</a>
+      <a href="../Azure_Admin_Home.html">Azure Admin Home</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

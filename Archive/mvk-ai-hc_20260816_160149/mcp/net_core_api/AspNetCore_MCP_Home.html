@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASP.NET Core MCP - Track A</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --plain-bg:#0c2b3a; --plain-border:#0e7490; --tech-bg:#241a3a; --tech-border:#7c3aed; --code-bg:#0b1220; --badge-bg:#1d4ed8; }
+  * { box-sizing:border-box; } html { scroll-behavior:smooth; }
+  body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:260px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+  .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+  .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); } .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+  .sb-divider { border-top:1px solid var(--panel-border); margin:16px 6px; }
+  .main { flex:1; padding:40px 32px 80px; max-width:920px; }
+  h1 { font-size:1.9rem; margin:0 0 12px; color:#f8fafc; } h2 { font-size:1.28rem; border-left:4px solid var(--accent); padding-left:12px; margin-top:34px; color:#f8fafc; }
+  .tagline { font-size:1.05rem; color:var(--text-dim); margin:0 0 16px; }
+  .meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px; }
+  .badge { background:var(--badge-bg); color:#fff; font-size:.78rem; padding:4px 10px; border-radius:999px; font-weight:600; text-decoration:none; } .badge.alt { background:#334155; }
+  .layer { border-radius:10px; padding:16px 20px; margin:14px 0; } .layer-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:8px; } .plain { background:var(--plain-bg); border:1px solid var(--plain-border); } .plain .layer-label { color:#67e8f9; } .tech { background:var(--tech-bg); border:1px solid var(--tech-border); } .tech .layer-label { color:#c4b5fd; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; } th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; } th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  .flow { background:var(--code-bg); border:1px solid var(--panel-border); border-radius:8px; padding:18px 20px; font-size:.86rem; overflow-x:auto; } .flow code { white-space:pre; background:transparent; padding:0; }
+  code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+  .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 28px; } .purpose strong { color:var(--text); }
+  @media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --plain-bg:#ecfeff; --plain-border:#06b6d4; --tech-bg:#f5f3ff; --tech-border:#8b5cf6; --code-bg:#f1f5f9; --badge-bg:#2563eb; }
+    h1, h2 { color:#0f172a; }
+    .badge.alt { background:#e2e8f0; color:#334155; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">ASP.NET Core MCP</div>
+    <a href="AspNetCore_MCP_Home.html" class="active">Track A Home</a>
+    <a href="02_validation_and_inspector.html">Setup &amp; Validation</a>
+    <div class="sb-divider"></div>
+    <a href="../MCP_Home.html">MCP Home</a>
+    <a href="../01_overview.html">What Is MCP?</a>
+    <a href="../02_rest_api_vs_mcp.html">REST API vs MCP</a>
+    <a href="../03_implementation_options.html">Implementation Options</a>
+  </nav>
+  <main class="main">
+    <h1>Track A: ASP.NET Core MCP API</h1>
+    <p class="tagline">The current implementation path for hosting healthcare MCP tools in an enterprise .NET service.</p>
+    <div class="meta">
+      <span class="badge">Current Focus</span>
+      <span class="badge alt">.NET 8</span>
+      <span class="badge alt">ModelContextProtocol.AspNetCore</span>
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Client Summary</span>
+      This track shows how the project exposes healthcare data capabilities through a professional
+      ASP.NET Core service. The same service can support normal REST testing through controllers
+      and AI-agent integration through MCP HTTP transport.
+    </div>
+
+    <h2>Real Solution Structure</h2>
+    <table>
+      <tr><th>Project</th><th>Responsibility</th></tr>
+      <tr><td><code>HC.AI.MCP.API</code></td><td>ASP.NET Core host, Swagger, REST controllers, MCP server registration, HTTP transport.</td></tr>
+      <tr><td><code>HC.AI.MCP.Services</code></td><td>Application orchestration, validation, request mapping, response mapping.</td></tr>
+      <tr><td><code>HC.AI.MCP.BL</code></td><td>Business layer that coordinates patient chart data retrieval.</td></tr>
+      <tr><td><code>HC.AI.MCP.Repository</code></td><td>Data access boundary that calls the guarded SQL stored procedure.</td></tr>
+      <tr><td><code>HC.AI.MCP.EF</code></td><td>EF Core database context, entities, and result mapping.</td></tr>
+      <tr><td><code>HC.AI.MCP.Models</code></td><td>Request, filter, order, model, item, and response contracts.</td></tr>
+      <tr><td><code>HC.AI.MCP.Tools</code></td><td>Reserved tool assembly for MCP-callable tools.</td></tr>
+      <tr><td><code>HC.AI.MCP.Tests</code></td><td>Test project scaffold.</td></tr>
+    </table>
+
+    <h2>Runtime Wiring</h2>
+    <div class="flow"><code>builder.Services.AddControllers()
+builder.Services.AddSwaggerGen()
+builder.Services.AddDbContext&lt;McpDbContext&gt;(...)
+builder.Services.AddScoped&lt;PatientChart service/BL/repository dependencies&gt;()
+builder.Services.AddMcpServer()
+    .WithHttpTransport()
+    .WithToolsFromAssembly()
+
+app.MapControllers()
+app.MapMcp()</code></div>
+
+    <h2>NuGet Packages</h2>
+    <div class="layer plain">
+      <span class="layer-label">Package View</span>
+      The API project uses two important NuGet packages at the host level. One supports normal
+      REST API documentation and testing. The other is the package that makes the ASP.NET Core
+      service MCP-capable.
+    </div>
+
+    <table>
+      <tr><th>Package</th><th>Version</th><th>Type</th><th>Role And Responsibility</th></tr>
+      <tr>
+        <td><code>Swashbuckle.AspNetCore</code></td>
+        <td><code>6.4.0</code></td>
+        <td>ASP.NET Core REST API support</td>
+        <td>Generates Swagger/OpenAPI metadata and Swagger UI for the REST controller surface, including <code>api/PatientChart</code>. This is useful for developer testing, QA verification, and client demos because the HTTP API can be inspected and called without an MCP client.</td>
+      </tr>
+      <tr>
+        <td><code>ModelContextProtocol.AspNetCore</code></td>
+        <td><code>1.4.1</code></td>
+        <td>MCP-specific</td>
+        <td>Adds MCP server hosting support to ASP.NET Core. This package provides the extension methods used in <code>Program.cs</code>: <code>AddMcpServer()</code>, <code>WithHttpTransport()</code>, <code>WithToolsFromAssembly()</code>, and <code>MapMcp()</code>. It is the key package that allows this web API host to expose MCP tools for AI-agent access.</td>
+      </tr>
+    </table>
+
+    <div class="purpose">
+      <strong>Architecture takeaway:</strong> <code>Swashbuckle.AspNetCore</code> serves the human
+      and REST integration side of the service. <code>ModelContextProtocol.AspNetCore</code> serves
+      the AI-agent tool integration side. Keeping both in the same ASP.NET Core host lets the team
+      validate healthcare capabilities through REST while progressively exposing the same governed
+      capability through MCP.
+    </div>
+
+    <h2>Program.cs Explained</h2>
+    <div class="layer plain">
+      <span class="layer-label">Architecture View</span>
+      The ASP.NET Core MCP host is built in two layers. The first layer is normal ASP.NET Core
+      REST API infrastructure: controllers, Swagger, dependency injection, EF Core, and middleware.
+      The second layer is MCP-specific: registering an MCP server, enabling HTTP transport, loading
+      MCP tools from an assembly, and mapping the MCP endpoint.
+    </div>
+
+    <table>
+      <tr><th>Program.cs Line / Block</th><th>Type</th><th>What It Does</th><th>Why It Matters</th></tr>
+      <tr>
+        <td><code>var builder = WebApplication.CreateBuilder(args);</code></td>
+        <td>ASP.NET Core</td>
+        <td>Creates the application builder and loads configuration, logging, dependency injection, and hosting defaults.</td>
+        <td>This is the standard starting point for a modern minimal-hosting ASP.NET Core API.</td>
+      </tr>
+      <tr>
+        <td><code>builder.Services.AddControllers();</code></td>
+        <td>ASP.NET Core REST</td>
+        <td>Registers MVC controller support so classes like <code>PatientChartController</code> can handle HTTP requests.</td>
+        <td>This enables the REST testing path: <code>POST api/PatientChart</code>.</td>
+      </tr>
+      <tr>
+        <td><code>AddEndpointsApiExplorer()</code> and <code>AddSwaggerGen()</code></td>
+        <td>ASP.NET Core REST</td>
+        <td>Adds API metadata and Swagger/OpenAPI generation for developer inspection and manual testing.</td>
+        <td>Useful for client demos and QA because the REST endpoint can be inspected without an MCP client.</td>
+      </tr>
+      <tr>
+        <td><code>AddDbContext&lt;McpDbContext&gt;(...UseSqlServer(...))</code></td>
+        <td>Application data access</td>
+        <td>Registers EF Core with SQL Server using the <code>McpDb</code> connection string.</td>
+        <td>This connects the MCP host to the governed healthcare data layer and stored procedure execution path.</td>
+      </tr>
+      <tr>
+        <td><code>AddScoped&lt;IPatientDetailsRepository, PatientDetailsRepository&gt;()</code></td>
+        <td>Application service</td>
+        <td>Registers the patient details repository for request-scoped dependency injection.</td>
+        <td>Follows the same layered pattern used across the solution, even when a capability is not the main focus of the page.</td>
+      </tr>
+      <tr>
+        <td><code>AddScoped&lt;IPatientChartRepository, PatientChartRepository&gt;()</code></td>
+        <td>Application service</td>
+        <td>Registers the repository that calls <code>dbo.usp_ExecuteHealthcareQuery</code>.</td>
+        <td>This is the actual guarded data-access boundary behind the current PatientChart capability.</td>
+      </tr>
+      <tr>
+        <td><code>AddScoped&lt;IPatientChartBL, PatientChartBL&gt;()</code></td>
+        <td>Application service</td>
+        <td>Registers the business layer used between the service orchestration layer and repository layer.</td>
+        <td>Keeps business coordination separate from controller, MCP transport, and EF implementation details.</td>
+      </tr>
+      <tr>
+        <td><code>AddScoped&lt;IPatientChartValidationUtility, PatientChartValidationUtility&gt;()</code></td>
+        <td>Application guardrail</td>
+        <td>Registers validation for <code>RootTable</code>, filter count, max record limits, and sort direction.</td>
+        <td>Prevents malformed or oversized tool/API requests from reaching SQL first.</td>
+      </tr>
+      <tr>
+        <td><code>AddScoped&lt;IPatientChartMapper, PatientChartMapper&gt;()</code></td>
+        <td>Application mapping</td>
+        <td>Maps the incoming request model into the internal item shape used by BL and repository layers.</td>
+        <td>Keeps external API/MCP request shape separate from internal execution shape.</td>
+      </tr>
+      <tr>
+        <td><code>AddScoped&lt;IPatientChartResponseMapper, PatientChartResponseMapper&gt;()</code></td>
+        <td>Application mapping</td>
+        <td>Builds the outgoing response from the processed model and repository result.</td>
+        <td>Gives REST and future MCP tool calls a clean, consistent result contract.</td>
+      </tr>
+      <tr>
+        <td><code>AddScoped&lt;IPatientChartService, PatientChartService&gt;()</code></td>
+        <td>Application orchestration</td>
+        <td>Registers the service that coordinates request mapping, business-layer execution, and response mapping.</td>
+        <td>This becomes the reusable core for both REST controller calls and future MCP tool calls.</td>
+      </tr>
+      <tr>
+        <td><code>builder.Services.AddMcpServer()</code></td>
+        <td>MCP-specific</td>
+        <td>Registers the MCP server components in ASP.NET Core dependency injection.</td>
+        <td>This is the main switch that turns the ASP.NET Core host into an MCP-capable server.</td>
+      </tr>
+      <tr>
+        <td><code>.WithHttpTransport()</code></td>
+        <td>MCP-specific</td>
+        <td>Configures MCP communication over HTTP transport.</td>
+        <td>Allows MCP clients/agents to connect to this service through a web-hosted protocol endpoint.</td>
+      </tr>
+      <tr>
+        <td><code>.WithToolsFromAssembly()</code></td>
+        <td>MCP-specific</td>
+        <td>Scans the configured assembly for MCP tool definitions.</td>
+        <td>This is where future callable tools, such as a PatientChart MCP tool, become discoverable to an AI client.</td>
+      </tr>
+      <tr>
+        <td><code>var app = builder.Build();</code></td>
+        <td>ASP.NET Core</td>
+        <td>Builds the configured web application pipeline.</td>
+        <td>After this point, service registrations are turned into the runnable application.</td>
+      </tr>
+      <tr>
+        <td><code>UseSwagger()</code> and <code>UseSwaggerUI()</code></td>
+        <td>ASP.NET Core REST</td>
+        <td>Enables Swagger UI only in development.</td>
+        <td>Keeps the developer/demo inspection surface available locally without treating it as the production AI boundary.</td>
+      </tr>
+      <tr>
+        <td><code>app.UseHttpsRedirection();</code></td>
+        <td>ASP.NET Core</td>
+        <td>Redirects HTTP requests to HTTPS when the host supports it.</td>
+        <td>Standard web API security hygiene.</td>
+      </tr>
+      <tr>
+        <td><code>app.UseAuthorization();</code></td>
+        <td>ASP.NET Core security</td>
+        <td>Adds authorization middleware to the pipeline.</td>
+        <td>Prepares the host for secured endpoints, although policy/auth configuration still needs to be completed for production-grade MCP access.</td>
+      </tr>
+      <tr>
+        <td><code>app.MapControllers();</code></td>
+        <td>ASP.NET Core REST</td>
+        <td>Maps controller routes such as <code>api/PatientChart</code>.</td>
+        <td>This exposes the REST API surface for testing and non-agent integration.</td>
+      </tr>
+      <tr>
+        <td><code>app.MapMcp();</code></td>
+        <td>MCP-specific</td>
+        <td>Maps the MCP endpoint into the ASP.NET Core request pipeline.</td>
+        <td>This exposes the MCP protocol surface that an AI client can connect to.</td>
+      </tr>
+      <tr>
+        <td><code>app.Run();</code></td>
+        <td>ASP.NET Core</td>
+        <td>Starts the web application.</td>
+        <td>Runs both surfaces hosted by this application: REST controllers and the MCP endpoint.</td>
+      </tr>
+    </table>
+
+    <h2>What Is MCP And What Is Regular REST?</h2>
+    <table>
+      <tr><th>Category</th><th>Items</th><th>Meaning</th></tr>
+      <tr><td>Regular ASP.NET Core REST API</td><td><code>AddControllers</code>, <code>AddSwaggerGen</code>, <code>MapControllers</code>, Swagger UI</td><td>Supports normal API development, manual testing, QA, and frontend/service clients.</td></tr>
+      <tr><td>Shared application architecture</td><td>EF Core, repositories, BL, services, validation utilities, mappers</td><td>Business logic reused by REST and future MCP tool calls.</td></tr>
+      <tr><td>MCP-specific</td><td><code>AddMcpServer</code>, <code>WithHttpTransport</code>, <code>WithToolsFromAssembly</code>, <code>MapMcp</code></td><td>Turns the API host into a Model Context Protocol server for AI-agent tool access.</td></tr>
+    </table>
+
+    <h2>Current Healthcare Capability</h2>
+    <table>
+      <tr><th>Capability</th><th>Current Implementation</th></tr>
+      <tr><td>REST boundary</td><td><code>POST api/PatientChart</code> accepts a structured <code>PatientChartRequest</code>.</td></tr>
+      <tr><td>Validation</td><td>Requires <code>RootTable</code>, limits filters to 5, limits max records to 50, validates sort direction.</td></tr>
+      <tr><td>Guarded query</td><td>Repository calls <code>dbo.usp_ExecuteHealthcareQuery</code>, which is backed by whitelist metadata.</td></tr>
+      <tr><td>MCP readiness</td><td>The ASP.NET Core host registers MCP HTTP transport and scans the tool assembly.</td></tr>
+    </table>
+
+    <h2>Architecture Flow</h2>
+    <div class="flow"><code>AI agent or test client
+  -> ASP.NET Core API / MCP host
+  -> PatientChartController or future MCP tool
+  -> PatientChartValidationUtility
+  -> PatientChartService
+  -> PatientChartMapper
+  -> PatientChartBL
+  -> PatientChartRepository
+  -> McpDbContext
+  -> dbo.usp_ExecuteHealthcareQuery
+  -> PatientChartResponse</code></div>
+
+    <div class="purpose">
+      <strong>Honest status:</strong> the ASP.NET Core service is real and the MCP server is wired.
+      The current proven healthcare capability is exposed through the REST controller. The next
+      architecture step is to expose the same PatientChart capability as an explicit MCP tool from
+      <code>HC.AI.MCP.Tools</code>, while reusing the same validation and service pipeline.
+    </div>
+
+    <div class="purpose">
+      <strong>Next read:</strong> see <a href="02_validation_and_inspector.html" style="color:var(--accent);">Setup &amp; Validation</a>
+      for MCP Inspector setup, ASP.NET Core MCP validation flow, REST checks, and automated test
+      coverage direction.
+    </div>
+  </main>
+</div>
+</body>
+</html>

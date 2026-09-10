@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Server — Why We Use It</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">SQL Server Topics</div>
+    <a href="SQLServer_Home.html">🏠 SQL Server Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html" class="active">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_query_guardrail.html">4. The Query-Guardrail Procedure</a>
+    <a href="05_persona_llm_schema.html">5. Persona/LLM Option Schema</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <a href="07_stored_procedures.html">7. Stored Procedures</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="SQLServer_Home.html">SQL Server</a> / Topic 2</div>
+    <h1>Why We Use It</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Healthcare data is deeply relational — a patient has encounters, an encounter has
+      conditions and procedures, a claim references both a patient and a provider. A relational
+      database is a natural fit for keeping those connections consistent and enforceable.
+    </div>
+
+    <ul>
+      <li><strong>Strong relationships, enforced by the database itself.</strong> Foreign keys
+      between <code>Patients</code>, <code>Encounters</code>, <code>Conditions</code>,
+      <code>Claims</code>, and the rest of the clinical schema mean an orphaned record (a claim
+      pointing at a patient that doesn't exist) simply can't happen.</li>
+      <li><strong>First-class EF Core support.</strong> Every .NET API in this platform already
+      uses Entity Framework Core; SQL Server is EF's most mature, best-supported provider.</li>
+      <li><strong>A safe place to enforce access rules server-side.</strong> The AI assistant's
+      query engine (see <a href="04_query_guardrail.html">The Query-Guardrail Procedure</a>)
+      depends on being able to define, in the database itself, exactly which tables, columns,
+      and joins a request is allowed to touch — independent of whatever the calling code does.</li>
+      <li><strong>One local instance, zero extra infrastructure.</strong> LocalDB runs alongside
+      the APIs during development with no separate server to stand up, while still being the same
+      SQL Server engine used in production deployments.</li>
+    </ul>
+
+    <div class="pager">
+      <a href="01_overview.html">← Overview</a>
+      <a href="03_building_blocks.html">Next: Building Blocks →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

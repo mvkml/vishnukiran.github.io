@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Server — The Query-Guardrail Procedure</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .flow { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 18px 20px; font-size: 0.86rem; overflow-x: auto; margin: 14px 0; }
+  .flow code { display: block; white-space: pre; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  ol li { margin-bottom: 6px; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">SQL Server Topics</div>
+    <a href="SQLServer_Home.html">🏠 SQL Server Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_query_guardrail.html" class="active">4. The Query-Guardrail Procedure</a>
+    <a href="05_persona_llm_schema.html">5. Persona/LLM Option Schema</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <a href="07_stored_procedures.html">7. Stored Procedures</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="SQLServer_Home.html">SQL Server</a> / Topic 4</div>
+    <h1>The Query-Guardrail Procedure</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      When a Doctor asks the AI assistant a question that needs real patient data, the language
+      model never gets to write SQL itself. It describes the shape of the data it wants, and a
+      single stored procedure — <code>usp_ExecuteHealthcareQuery</code> — decides whether that
+      shape is even allowed before touching the database.
+    </div>
+
+    <h3 style="color:#f8fafc; font-size:1rem;">What the procedure actually does</h3>
+    <p><code>hc_data_source/hc_sql/procedures/usp_ExecuteHealthcareQuery.sql</code> takes a root
+    table, an optional single join, a set of columns, up to 5 filters, an order-by, and a record
+    limit — then, step by step:</p>
+    <ol>
+      <li>Clamps the requested record count server-side (default 10, hard ceiling 50) — the
+      caller's number is never trusted as final.</li>
+      <li>Checks the requested root table against <code>TableWhitelist</code> for that persona;
+      rejects with an error if it isn't listed.</li>
+      <li>Resolves any join only through <code>JoinWhitelist</code> — never from whatever the
+      caller supplied directly.</li>
+      <li>Resolves selectable columns through <code>ColumnWhitelist</code>.</li>
+      <li>Builds the <code>FROM</code>/<code>JOIN</code> clause using only whitelist-sourced
+      identifiers, quoted via <code>QUOTENAME</code>.</li>
+      <li>Builds filters (equals/contains/greater-than/less-than) — filter columns are
+      whitelist-checked, and filter <strong>values are always bound as parameters</strong> to
+      <code>sp_executesql</code>, never concatenated into the SQL text.</li>
+      <li>Optionally scopes results to the requesting doctor's own patients.</li>
+      <li>Executes, then writes one row to <code>QueryAuditLog</code> for every execution — a
+      permanent record of what was asked, by whom, and how many rows came back.</li>
+    </ol>
+
+    <div class="flow"><code>EXEC dbo.usp_ExecuteHealthcareQuery
+    @Persona = 'Doctor',
+    @RootTable = 'Patients',
+    @JoinTable = 'Encounters',
+    @SelectColumnsCsv = 'FirstName,LastName,EncounterDate',
+    @FiltersJson = '[{"column":"LastName","op":"contains","value":"Smith"}]',
+    @MaxRecords = 10,
+    @ProviderId = 42,
+    @ExecutedBy = 'doctor@example.com';</code></div>
+
+    <p>This is the concrete, database-side enforcement of a design rule stated in the project's
+    own AI assistant design document: the LLM never generates raw SQL — only a structured request
+    shape, validated before it ever reaches the database.</p>
+
+    <div class="pager">
+      <a href="03_building_blocks.html">← Building Blocks</a>
+      <a href="05_persona_llm_schema.html">Next: Persona/LLM Option Schema →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

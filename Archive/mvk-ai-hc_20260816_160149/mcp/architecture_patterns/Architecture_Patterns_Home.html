@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Architecture Patterns - Home</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --badge-bg:#1d4ed8; --code-bg:#0b1220; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:270px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+  .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+  .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); }
+  .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+  .main { flex:1; padding:40px 32px 80px; max-width:980px; }
+  h1 { font-size:1.9rem; margin:0 0 12px; color:#f8fafc; }
+  h2 { font-size:1.25rem; border-left:4px solid var(--accent); padding-left:12px; margin-top:34px; color:#f8fafc; }
+  .tagline { color:var(--text-dim); font-size:1.04rem; margin:0 0 16px; }
+  .meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px; }
+  .badge { background:var(--badge-bg); color:#fff; font-size:.78rem; padding:4px 10px; border-radius:999px; font-weight:600; }
+  .badge.alt { background:#334155; }
+  .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 28px; }
+  .purpose strong { color:var(--text); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(245px,1fr)); gap:16px; }
+  .card { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:18px; text-decoration:none; color:var(--text); display:block; }
+  .card:hover { border-color:var(--accent); }
+  .card-num { font-size:.72rem; color:var(--accent); font-weight:700; margin-bottom:6px; }
+  .card-title { font-size:1.02rem; font-weight:700; color:#f8fafc; margin-bottom:6px; }
+  .card-purpose { font-size:.86rem; color:var(--text-dim); }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; }
+  th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; }
+  th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+  @media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } }
+  @media (prefers-color-scheme: light) { :root { --bg:#f8fafc; --panel:#fff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --badge-bg:#2563eb; --code-bg:#f1f5f9; } h1,h2,.card-title { color:#0f172a; } .badge.alt { background:#e2e8f0; color:#334155; } }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">MCP Architecture</div>
+    <a href="Architecture_Patterns_Home.html" class="active">Patterns Home</a>
+    <a href="01_api_gateway.html">1. API Gateway</a>
+    <a href="02_bff.html">2. Backend for Frontend</a>
+    <a href="03_aggregator.html">3. Aggregator</a>
+    <a href="04_facade.html">4. Facade</a>
+    <a href="05_adapter.html">5. Adapter</a>
+    <a href="06_anti_corruption_layer.html">6. Anti-Corruption Layer</a>
+    <a href="07_bounded_context.html">7. Bounded Context</a>
+    <a href="08_circuit_breaker.html">8. Circuit Breaker</a>
+    <a href="09_bulkhead.html">9. Bulkhead</a>
+    <a href="10_service_discovery.html">10. Service Discovery</a>
+    <a href="11_strangler_fig.html">11. Strangler Fig</a>
+    <a href="12_mediator.html">12. Mediator</a>
+    <a href="../04_tool_segregation.html">Tool Segregation</a>
+    <a href="../MCP_Home.html">MCP Home</a>
+  </nav>
+  <main class="main">
+    <h1>MCP Architecture Patterns</h1>
+    <p class="tagline">The technical architecture vocabulary behind ADR004: how segregated MCP hosts can stay secure, understandable, and operable as the platform grows.</p>
+    <div class="meta">
+      <span class="badge">ADR004 Expansion</span>
+      <span class="badge alt">Planned Architecture</span>
+      <span class="badge alt">2026-07-29</span>
+    </div>
+
+    <div class="purpose">
+      <strong>Current status:</strong> these pages document the architecture direction for future MCP growth.
+      Today's <code>HC.AI.MCP</code> implementation still has one active tool path. The patterns below explain
+      how the system should evolve once OP, ICU, Emergency, and other domain-specific MCP hosts exist.
+    </div>
+
+    <h2>Technical Architecture Summary</h2>
+    <table>
+      <tr><th>Architecture Point</th><th>Decision</th></tr>
+      <tr><td>Trust boundary</td><td>Tool visibility should be enforced by MCP host boundaries, not client-side filtering.</td></tr>
+      <tr><td>Domain split</td><td>Future patient categories should map to bounded contexts such as OP, ICU, and Emergency.</td></tr>
+      <tr><td>Shared code</td><td>Thin host projects can reuse EF, Repository, BL, validation, and model libraries.</td></tr>
+      <tr><td>Agent view</td><td>A gateway, BFF, or aggregation layer can give one agent a coherent view across approved hosts.</td></tr>
+      <tr><td>Operational model</td><td>Each host can have independent security, deployment cadence, scaling, and failure isolation.</td></tr>
+    </table>
+
+    <h2>Pattern Pages</h2>
+    <div class="grid">
+      <a class="card" href="01_api_gateway.html"><div class="card-num">PATTERN 1</div><div class="card-title">API Gateway</div><div class="card-purpose">One controlled entry point in front of multiple MCP hosts.</div></a>
+      <a class="card" href="02_bff.html"><div class="card-num">PATTERN 2</div><div class="card-title">Backend for Frontend</div><div class="card-purpose">A gateway tailored to the Doctor agent's exact tool scope.</div></a>
+      <a class="card" href="03_aggregator.html"><div class="card-num">PATTERN 3</div><div class="card-title">Aggregator</div><div class="card-purpose">Combines approved host responses into one useful agent result.</div></a>
+      <a class="card" href="04_facade.html"><div class="card-num">PATTERN 4</div><div class="card-title">Facade</div><div class="card-purpose">Hides many-host complexity behind a simpler integration surface.</div></a>
+      <a class="card" href="05_adapter.html"><div class="card-num">PATTERN 5</div><div class="card-title">Adapter</div><div class="card-purpose">Normalizes different MCP host contracts into one common shape.</div></a>
+      <a class="card" href="06_anti_corruption_layer.html"><div class="card-num">PATTERN 6</div><div class="card-title">Anti-Corruption Layer</div><div class="card-purpose">Protects each healthcare subdomain model from unwanted leakage.</div></a>
+      <a class="card" href="07_bounded_context.html"><div class="card-num">PATTERN 7</div><div class="card-title">Bounded Context</div><div class="card-purpose">The reason OP, ICU, and Emergency should become separate hosts.</div></a>
+      <a class="card" href="08_circuit_breaker.html"><div class="card-num">PATTERN 8</div><div class="card-title">Circuit Breaker</div><div class="card-purpose">Stops one failing MCP host from cascading through the agent.</div></a>
+      <a class="card" href="09_bulkhead.html"><div class="card-num">PATTERN 9</div><div class="card-title">Bulkhead</div><div class="card-purpose">Isolates capacity so one hot domain does not starve another.</div></a>
+      <a class="card" href="10_service_discovery.html"><div class="card-num">PATTERN 10</div><div class="card-title">Service Discovery</div><div class="card-purpose">Finds independently deployed MCP hosts at runtime.</div></a>
+      <a class="card" href="11_strangler_fig.html"><div class="card-num">PATTERN 11</div><div class="card-title">Strangler Fig</div><div class="card-purpose">Gradually splits today's host without a big rewrite.</div></a>
+      <a class="card" href="12_mediator.html"><div class="card-num">PATTERN 12</div><div class="card-title">Mediator</div><div class="card-purpose">Explains the Kernel's coordination role across tools and hosts.</div></a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

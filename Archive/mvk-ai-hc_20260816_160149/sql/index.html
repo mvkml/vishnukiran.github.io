@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL Home | AI HealthCare</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --ink: #18202a;
+      --muted: #5d6875;
+      --line: #dce2ea;
+      --accent: #0f766e;
+      --accent-dark: #115e59;
+      --soft: #e7f5f2;
+      --warn: #fff7e6;
+      --warn-line: #f2d28b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    header {
+      background: #10212b;
+      color: #ffffff;
+      padding: 42px 24px;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #9fd8d0;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 780px;
+      font-size: clamp(34px, 6vw, 60px);
+    }
+
+    header p {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: #d5e1e5;
+      font-size: 18px;
+    }
+
+    main {
+      padding: 28px 0 52px;
+    }
+
+    section {
+      margin-top: 24px;
+      padding: 28px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    section h2 {
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      background: #fbfcfd;
+    }
+
+    .item h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .item p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .callout {
+      background: var(--soft);
+      border-color: #b7dfd8;
+    }
+
+    .project-link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      background: #fbfcfd;
+      transition: border-color 150ms ease, transform 150ms ease;
+    }
+
+    .project-link:hover,
+    .project-link:focus {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .project-link strong {
+      display: block;
+      color: var(--accent-dark);
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .database-list {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .database-link {
+      display: block;
+      padding: 14px 16px;
+      border: 1px solid #b7dfd8;
+      border-radius: 8px;
+      background: #ffffff;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .database-link:hover,
+    .database-link:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .database-link strong {
+      display: block;
+      color: var(--accent-dark);
+      font-size: 17px;
+      margin-bottom: 4px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 6px;
+      background: var(--accent);
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    footer {
+      padding: 24px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="eyebrow">AI HealthCare Documentation</p>
+      <h1>SQL Home Page</h1>
+      <p>This page is the starting point for understanding SQL, databases, SQL command types, and the project databases used in the AI HealthCare work.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>What Is SQL?</h2>
+      <p>SQL stands for Structured Query Language. It is a language used to communicate with relational databases.</p>
+      <p>SQL is used to store data, read data, update data, delete data, create database objects, and manage database access. In simple words, SQL helps an application talk to the database in an organized way.</p>
+      <p>SQL was developed at IBM in the 1970s. Donald D. Chamberlin and Raymond F. Boyce are commonly credited as the original designers of SQL.</p>
+      <p>In a project, SQL helps us define tables, insert records, search data, connect related tables, and prepare data for applications, reports, and APIs.</p>
+    </section>
+
+    <section>
+      <h2>What Is a Database?</h2>
+      <p>A database is an organized place where application data is stored. Instead of keeping information randomly, a database stores data in tables with rows and columns.</p>
+      <p>For example, in a healthcare project, a database can store patients, doctors, appointments, prescriptions, roles, permissions, and clinical notes.</p>
+    </section>
+
+    <section>
+      <h2>Important Database Concepts</h2>
+      <div class="grid">
+        <article class="item">
+          <h3>Table</h3>
+          <p>A table stores one type of information, such as patients, doctors, or appointments.</p>
+        </article>
+        <article class="item">
+          <h3>Row</h3>
+          <p>A row is one record inside a table, such as one patient record.</p>
+        </article>
+        <article class="item">
+          <h3>Column</h3>
+          <p>A column is one field of data, such as PatientName, DateOfBirth, or PhoneNumber.</p>
+        </article>
+        <article class="item">
+          <h3>Relationship</h3>
+          <p>A relationship connects tables, such as a patient having many appointments.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Types of SQL Commands</h2>
+      <div class="grid">
+        <article class="item">
+          <h3>DDL</h3>
+          <p>Data Definition Language is used to define database structure. Examples: CREATE, ALTER, DROP, TRUNCATE.</p>
+        </article>
+        <article class="item">
+          <h3>DML</h3>
+          <p>Data Manipulation Language is used to work with table data. Examples: INSERT, UPDATE, DELETE.</p>
+        </article>
+        <article class="item">
+          <h3>DQL</h3>
+          <p>Data Query Language is used to read data from tables. Example: SELECT.</p>
+        </article>
+        <article class="item">
+          <h3>DCL</h3>
+          <p>Data Control Language is used to control access. Examples: GRANT, REVOKE.</p>
+        </article>
+        <article class="item">
+          <h3>TCL</h3>
+          <p>Transaction Control Language is used to manage transactions. Examples: COMMIT, ROLLBACK, SAVEPOINT.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="callout">
+      <h2>Projects</h2>
+      <p>Select a project database to open its documentation page.</p>
+      <a class="project-link" href="healthcare-project.html">
+        <strong>Health Care Project</strong>
+        <span>Project database documentation for the AI HealthCare application.</span>
+      </a>
+      <div class="database-list" aria-label="Health Care project databases">
+        <a class="database-link" href="dbs/ai_hc_db/index.html">
+          <strong>AI HealthCare Database</strong>
+          <span>Open the database page where table details, relationships, and SQL notes will be maintained.</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    SQL documentation home for AI HealthCare.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Server — Home</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 820px; }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+  .badge { background: var(--badge-bg); color: #fff; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
+  .badge.alt { background: #334155; }
+  .intro { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 22px 24px; margin: 0 0 30px; }
+  .intro h2 { margin: 0 0 10px; font-size: 1.22rem; color: #f8fafc; }
+  .intro p { margin: 0 0 12px; color: var(--text-dim); }
+  .intro p:last-child { margin-bottom: 0; }
+  .intro-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-top: 14px; }
+  .intro-pill { border: 1px solid var(--panel-border); border-radius: 10px; padding: 12px; background: rgba(15, 23, 42, 0.26); }
+  .intro-pill strong { display: block; color: var(--accent); font-size: 0.88rem; margin-bottom: 4px; }
+  .intro-pill span { color: var(--text-dim); font-size: 0.84rem; }
+  .section-title { margin: 0 0 12px; font-size: 1.22rem; color: #f8fafc; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s, transform 0.15s; }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-num { font-size: 0.75rem; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+  .card-title { font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-bottom: 6px; }
+  .card-purpose { font-size: 0.86rem; color: var(--text-dim); }
+  .purpose { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 16px 18px; font-size: 0.95rem; color: var(--text-dim); margin-top: 40px; }
+  .author-card { margin-top: 32px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 24px 26px; }
+  .author-card h2 { font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .author-name { font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+  .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 12px; }
+  .author-bio { color: var(--text-dim); font-size: 0.92rem; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, .intro h2, .section-title, .card-title, .author-name { color: #0f172a; }
+    .intro-pill { background: #f8fafc; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sb-title">SQL Server Topics</div>
+    <a href="SQLServer_Home.html" class="active">🏠 SQL Server Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_query_guardrail.html">4. The Query-Guardrail Procedure</a>
+    <a href="05_persona_llm_schema.html">5. Persona/LLM Option Schema</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <a href="07_stored_procedures.html">7. Stored Procedures</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <h1>SQL Server</h1>
+    <p class="tagline">The relational database behind every backend API — one shared local database, split between EF Core-managed schema and hand-written DDL for a security-first query engine.</p>
+    <div class="meta">
+      <span class="badge">Version 1</span>
+      <span class="badge alt">2026-07-25</span>
+    </div>
+
+    <section class="intro">
+      <h2>Introduction to SQL</h2>
+      <p>SQL stands for Structured Query Language. It is the standard language used to communicate with relational databases.</p>
+      <p>SQL helps us create database structures, store records, read information, update existing data, delete data, and control access. In simple words, SQL is how an application talks to a database in an organized and reliable way.</p>
+      <p>SQL was developed at IBM in the 1970s. Donald D. Chamberlin and Raymond F. Boyce are commonly credited as the original designers of SQL.</p>
+      <p>SQL Server is Microsoft's relational database system. In this project, SQL Server stores and protects the healthcare data used by the backend APIs.</p>
+      <div class="intro-list" aria-label="SQL command categories">
+        <div class="intro-pill">
+          <strong>DDL</strong>
+          <span>Defines structure: CREATE, ALTER, DROP.</span>
+        </div>
+        <div class="intro-pill">
+          <strong>DML</strong>
+          <span>Changes data: INSERT, UPDATE, DELETE.</span>
+        </div>
+        <div class="intro-pill">
+          <strong>DQL</strong>
+          <span>Reads data: SELECT.</span>
+        </div>
+        <div class="intro-pill">
+          <strong>DCL</strong>
+          <span>Controls access: GRANT, REVOKE.</span>
+        </div>
+        <div class="intro-pill">
+          <strong>TCL</strong>
+          <span>Manages transactions: COMMIT, ROLLBACK.</span>
+        </div>
+      </div>
+    </section>
+
+    <h2 class="section-title">Project</h2>
+    <div class="grid">
+      <a class="card" href="sqlserver_project_healthcare.html">
+        <div class="card-num">PROJECT</div>
+        <div class="card-title">Health Care Project</div>
+        <div class="card-purpose">Open the project SQL page for source folders, database ownership, SQL scripts, and database-specific documentation.</div>
+      </a>
+      <a class="card" href="01_overview.html">
+        <div class="card-num">TOPIC 1</div>
+        <div class="card-title">Overview</div>
+        <div class="card-purpose">One shared database, four APIs, two different ways its schema gets managed.</div>
+      </a>
+      <a class="card" href="02_why_we_use_it.html">
+        <div class="card-num">TOPIC 2</div>
+        <div class="card-title">Why We Use It</div>
+        <div class="card-purpose">Why a relational database fits healthcare data's entity relationships.</div>
+      </a>
+      <a class="card" href="03_building_blocks.html">
+        <div class="card-num">TOPIC 3</div>
+        <div class="card-title">Building Blocks</div>
+        <div class="card-purpose">Real connection strings, real tables, and the EF-managed vs. hand-DDL split.</div>
+      </a>
+      <a class="card" href="04_query_guardrail.html">
+        <div class="card-num">TOPIC 4</div>
+        <div class="card-title">The Query-Guardrail Procedure</div>
+        <div class="card-purpose">How the Doctor Chat assistant queries real patient data safely, without ever writing raw SQL.</div>
+      </a>
+      <a class="card" href="05_persona_llm_schema.html">
+        <div class="card-num">TOPIC 5</div>
+        <div class="card-title">Persona/LLM Option Schema</div>
+        <div class="card-purpose">The tables that will let model selection be configured in the database instead of hardcoded.</div>
+      </a>
+      <a class="card" href="06_current_status.html">
+        <div class="card-num">TOPIC 6</div>
+        <div class="card-title">Current Status</div>
+        <div class="card-purpose">What's live, what's built but empty, and what's not read by any code yet.</div>
+      </a>
+      <a class="card" href="07_stored_procedures.html">
+        <div class="card-num">TOPIC 7</div>
+        <div class="card-title">Stored Procedures</div>
+        <div class="card-purpose">Procedure-level documentation with sections for role, guardrail, appointment, medication, lab, and imaging routines.</div>
+      </a>
+    </div>
+
+    <div class="purpose">
+      <strong>About this section:</strong> covers how SQL Server is actually used across this
+      platform's four backend APIs — grounded directly in the connection strings, migrations, and
+      hand-written scripts in the codebase, not a generic database explainer.
+    </div>
+
+    <div class="author-card">
+      <h2>About Author</h2>
+      <div class="author-name">Vishnu Kiran M</div>
+      <div class="author-email">mvkwithmath@gmail.com</div>
+      <div class="author-bio">
+        Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
+        Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API
+        Management, Terraform, AIOps, and enterprise integration. Experienced in architecting
+        scalable, secure, production-ready AI solutions on Microsoft Azure.
+      </div>
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

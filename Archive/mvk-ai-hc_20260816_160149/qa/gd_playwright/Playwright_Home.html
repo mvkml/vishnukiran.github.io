@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playwright — Home</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 820px; }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+  .badge { background: var(--badge-bg); color: #fff; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
+  .badge.alt { background: #334155; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 20px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s, transform 0.15s; }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-num { font-size: 0.75rem; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+  .card-title { font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-bottom: 6px; }
+  .card-purpose { font-size: 0.86rem; color: var(--text-dim); }
+  .purpose { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 16px 18px; font-size: 0.95rem; color: var(--text-dim); margin-top: 40px; }
+  .author-card { margin-top: 32px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 24px 26px; }
+  .author-card h2 { font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .author-name { font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+  .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 12px; }
+  .author-bio { color: var(--text-dim); font-size: 0.92rem; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, .card-title, .author-name { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sb-title">Playwright Topics</div>
+    <a href="Playwright_Home.html" class="active">🏠 Playwright Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_test_coverage.html">4. Test Coverage</a>
+    <a href="05_real_llm_test.html">5. The One Real End-to-End LLM Test</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <h1>Playwright</h1>
+    <p class="tagline">Automated test coverage for the web app and its backend APIs — including one test that talks to a real, live language model rather than a mock.</p>
+    <div class="meta">
+      <span class="badge">Version 1</span>
+      <span class="badge alt">2026-07-25</span>
+    </div>
+
+    <div class="purpose">
+      <strong>Client-demo framing:</strong> Playwright is presented as release confidence for the
+      persona chat experience. The documentation deliberately separates mocked checks, real API
+      checks, and the live LLM smoke path so stakeholders can see what is proven and what remains
+      manual or pending.
+    </div>
+
+    <div class="grid">
+      <a class="card" href="01_overview.html">
+        <div class="card-num">TOPIC 1</div>
+        <div class="card-title">Overview</div>
+        <div class="card-purpose">Where the test suites live and how they're organized.</div>
+      </a>
+      <a class="card" href="02_why_we_use_it.html">
+        <div class="card-num">TOPIC 2</div>
+        <div class="card-title">Why We Use It</div>
+        <div class="card-purpose">Why browser-level, end-to-end tests for a two-persona chat app.</div>
+      </a>
+      <a class="card" href="03_building_blocks.html">
+        <div class="card-num">TOPIC 3</div>
+        <div class="card-title">Building Blocks</div>
+        <div class="card-purpose">Config, fixtures, and the deliberate split between mock and real-backend tests.</div>
+      </a>
+      <a class="card" href="04_test_coverage.html">
+        <div class="card-num">TOPIC 4</div>
+        <div class="card-title">Test Coverage</div>
+        <div class="card-purpose">What's actually tested today, and one clear gap worth naming.</div>
+      </a>
+      <a class="card" href="05_real_llm_test.html">
+        <div class="card-num">TOPIC 5</div>
+        <div class="card-title">The One Real End-to-End LLM Test</div>
+        <div class="card-purpose">A test that waits on a real Ollama-generated reply, by design.</div>
+      </a>
+      <a class="card" href="06_current_status.html">
+        <div class="card-num">TOPIC 6</div>
+        <div class="card-title">Current Status</div>
+        <div class="card-purpose">Manual-only today — confirmed, not assumed.</div>
+      </a>
+    </div>
+
+    <div class="purpose">
+      <strong>About this section:</strong> covers the Playwright test suites exactly as they exist
+      in <code>hc_qa/</code> today — grounded in the real spec files and configs, including an
+      honest account of what has coverage and what doesn't yet.
+    </div>
+
+    <div class="author-card">
+      <h2>About Author</h2>
+      <div class="author-name">Vishnu Kiran M</div>
+      <div class="author-email">mvkwithmath@gmail.com</div>
+      <div class="author-bio">
+        Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
+        Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API
+        Management, Terraform, AIOps, and enterprise integration. Experienced in architecting
+        scalable, secure, production-ready AI solutions on Microsoft Azure.
+      </div>
+    </div>
+  </main>
+
+</div>
+</body>
+</html>

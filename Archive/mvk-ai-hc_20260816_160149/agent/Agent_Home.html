@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agents - Home</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --code-bg:#0b1220; --badge-bg:#1d4ed8; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:250px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+  .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+  .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); }
+  .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+  .sb-divider { border-top:1px solid var(--panel-border); margin:16px 6px; }
+  .main { flex:1; padding:40px 32px 80px; max-width:900px; }
+  h1 { font-size:1.9rem; margin:0 0 12px; color:#f8fafc; }
+  h2 { font-size:1.28rem; color:#f8fafc; border-left:4px solid var(--accent); padding-left:12px; margin:34px 0 16px; }
+  .tagline { font-size:1.05rem; color:var(--text-dim); margin:0 0 16px; }
+  .meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px; }
+  .badge { background:var(--badge-bg); color:#fff; font-size:.78rem; padding:4px 10px; border-radius:999px; font-weight:600; text-decoration:none; }
+  .badge.alt { background:#334155; }
+  .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 32px; }
+  .purpose strong { color:var(--text); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px; margin-top:20px; }
+  .card { background:var(--panel); border:1px solid var(--panel-border); border-radius:12px; padding:20px; text-decoration:none; color:var(--text); display:block; transition:border-color .15s, transform .15s; }
+  a.card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .card-num { font-size:.75rem; color:var(--accent); font-weight:700; margin-bottom:6px; }
+  .card-title { font-size:1.05rem; font-weight:700; color:#f8fafc; margin-bottom:6px; }
+  .card-purpose { font-size:.86rem; color:var(--text-dim); }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; }
+  th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; }
+  th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+  @media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --badge-bg:#2563eb; --code-bg:#f1f5f9; }
+    h1, h2, .card-title { color:#0f172a; }
+    .badge.alt { background:#e2e8f0; color:#334155; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Agent Topics</div>
+    <a href="Agent_Home.html" class="active">Agent Home</a>
+    <a href="01_what_is_agent.html">1. What Is An Agent?</a>
+    <a href="02_langchain_agent.html">2. LangChain Agent</a>
+    <a href="03_semantic_kernel_agent.html">3. Semantic Kernel Agent</a>
+    <a href="04_agentic_patterns_healthcare.html">4. Agentic Patterns</a>
+    <a href="05_doctor_persona_multi_agent_patterns.html">5. Doctor Multi-Agent Patterns</a>
+    <div class="sb-divider"></div>
+    <a href="../ts/01_technology_stack_v1.html">Technology Stack</a>
+    <a href="../about_project/hcs_home.html">Site Home</a>
+  </nav>
+  <main class="main">
+    <h1>AI Agents</h1>
+    <p class="tagline">How Healthcare Co-Pilot Studio will use agents to plan, call tools, retrieve governed context, and complete healthcare workflows safely.</p>
+    <div class="meta">
+      <span class="badge">Architecture Draft</span>
+      <span class="badge alt">LangChain</span>
+      <span class="badge alt">Semantic Kernel</span>
+    </div>
+
+    <div class="purpose">
+      <strong>Executive summary:</strong> an agent is an AI workflow component that can reason over
+      a goal, choose tools, call those tools, evaluate results, and continue until it can return a
+      useful answer or action. In this platform, agents must work through controlled healthcare
+      boundaries such as MCP tools, identity, persona rules, validation, and audit-friendly APIs.
+    </div>
+
+    <div class="grid">
+      <a class="card" href="01_what_is_agent.html">
+        <div class="card-num">TOPIC 1</div>
+        <div class="card-title">What Is An Agent?</div>
+        <div class="card-purpose">Plain and technical explanation of agents in the Co-Pilot Studio architecture.</div>
+      </a>
+      <a class="card" href="02_langchain_agent.html">
+        <div class="card-num">TOPIC 2</div>
+        <div class="card-title">LangChain Agent</div>
+        <div class="card-purpose">How a LangChain-style agent can be assembled from model, tools, prompt, memory, and executor.</div>
+      </a>
+      <a class="card" href="03_semantic_kernel_agent.html">
+        <div class="card-num">TOPIC 3</div>
+        <div class="card-title">Semantic Kernel Agent</div>
+        <div class="card-purpose">How a Semantic Kernel agent can use plugins/tools, instructions, orchestration, and MCP-backed services.</div>
+      </a>
+      <a class="card" href="04_agentic_patterns_healthcare.html">
+        <div class="card-num">TOPIC 4</div>
+        <div class="card-title">Agentic Patterns</div>
+        <div class="card-purpose">Healthcare Co-Pilot Studio coverage of Memory, Tool-Using, Streaming, Loop, Reflection, Validation, and Supervisor patterns.</div>
+      </a>
+      <a class="card" href="05_doctor_persona_multi_agent_patterns.html">
+        <div class="card-num">TOPIC 5</div>
+        <div class="card-title">Doctor Multi-Agent Patterns</div>
+        <div class="card-purpose">Router, multi-intent classification, orchestrator, fan-out/fan-in, supervisor, specialist tools, shared memory, and human escalation.</div>
+      </a>
+    </div>
+
+    <h2>Agent Tracks</h2>
+    <table>
+      <tr><th>Track</th><th>Role</th><th>Status</th></tr>
+      <tr><td>LangChain</td><td>Python-friendly agent architecture for experimentation and data/AI tool workflows.</td><td>Documentation draft</td></tr>
+      <tr><td>Semantic Kernel</td><td>.NET-friendly orchestration and agent path aligned with the existing ASP.NET Core/Semantic Kernel stack.</td><td>Documentation draft</td></tr>
+      <tr><td>MCP Tools</td><td>Tool access layer agents can use to retrieve governed healthcare data.</td><td>Track A active</td></tr>
+    </table>
+
+    <h2>Doctor Multi-Agent Pattern Pages</h2>
+    <table>
+      <tr><th>Pattern</th><th>Page</th></tr>
+      <tr><td>Router Agent Pattern</td><td><a href="06_router_agent_pattern.html">Open page</a></td></tr>
+      <tr><td>Multi-Intent Classification Pattern</td><td><a href="07_multi_intent_classification_pattern.html">Open page</a></td></tr>
+      <tr><td>Planner / Orchestrator Pattern</td><td><a href="08_planner_orchestrator_pattern.html">Open page</a></td></tr>
+      <tr><td>Fan-Out / Fan-In Agent Pattern</td><td><a href="09_fan_out_fan_in_agent_pattern.html">Open page</a></td></tr>
+      <tr><td>Supervisor Agent Pattern</td><td><a href="10_supervisor_agent_pattern.html">Open page</a></td></tr>
+      <tr><td>Tool-Using Specialist Agent Pattern</td><td><a href="11_tool_using_specialist_agent_pattern.html">Open page</a></td></tr>
+      <tr><td>Shared Context / Memory Pattern</td><td><a href="12_shared_context_memory_pattern.html">Open page</a></td></tr>
+      <tr><td>Human-in-the-Loop Escalation Pattern</td><td><a href="13_human_in_the_loop_escalation_pattern.html">Open page</a></td></tr>
+    </table>
+  </main>
+</div>
+</body>
+</html>

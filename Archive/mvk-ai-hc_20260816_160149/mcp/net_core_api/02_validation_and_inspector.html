@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASP.NET Core MCP - Setup & Validation</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --plain-bg:#0c2b3a; --plain-border:#0e7490; --tech-bg:#241a3a; --tech-border:#7c3aed; --code-bg:#0b1220; --badge-bg:#1d4ed8; }
+  * { box-sizing:border-box; } html { scroll-behavior:smooth; }
+  body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:260px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+  .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+  .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); } .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+  .sb-divider { border-top:1px solid var(--panel-border); margin:16px 6px; }
+  .main { flex:1; padding:40px 32px 80px; max-width:920px; }
+  h1 { font-size:1.9rem; margin:0 0 12px; color:#f8fafc; } h2 { font-size:1.28rem; border-left:4px solid var(--accent); padding-left:12px; margin-top:34px; color:#f8fafc; }
+  .tagline { font-size:1.05rem; color:var(--text-dim); margin:0 0 16px; }
+  .meta { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px; }
+  .badge { background:var(--badge-bg); color:#fff; font-size:.78rem; padding:4px 10px; border-radius:999px; font-weight:600; text-decoration:none; } .badge.alt { background:#334155; }
+  .layer { border-radius:10px; padding:16px 20px; margin:14px 0; } .layer-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:8px; } .plain { background:var(--plain-bg); border:1px solid var(--plain-border); } .plain .layer-label { color:#67e8f9; } .tech { background:var(--tech-bg); border:1px solid var(--tech-border); } .tech .layer-label { color:#c4b5fd; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; } th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; } th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  .flow { background:var(--code-bg); border:1px solid var(--panel-border); border-radius:8px; padding:18px 20px; font-size:.86rem; overflow-x:auto; } .flow code { white-space:pre; background:transparent; padding:0; }
+  code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+  .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 28px; } .purpose strong { color:var(--text); }
+  a { color:var(--accent); }
+  @media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --plain-bg:#ecfeff; --plain-border:#06b6d4; --tech-bg:#f5f3ff; --tech-border:#8b5cf6; --code-bg:#f1f5f9; --badge-bg:#2563eb; }
+    h1, h2 { color:#0f172a; }
+    .badge.alt { background:#e2e8f0; color:#334155; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">ASP.NET Core MCP</div>
+    <a href="AspNetCore_MCP_Home.html">Track A Home</a>
+    <a href="02_validation_and_inspector.html" class="active">Setup &amp; Validation</a>
+    <div class="sb-divider"></div>
+    <a href="../MCP_Home.html">MCP Home</a>
+    <a href="../02_rest_api_vs_mcp.html">REST API vs MCP</a>
+  </nav>
+  <main class="main">
+    <h1>Setup &amp; Validation</h1>
+    <p class="tagline">How to set up MCP Inspector and validate the ASP.NET Core MCP service through REST checks, protocol checks, and automated tests.</p>
+    <div class="meta">
+      <span class="badge">Track A</span>
+      <span class="badge alt">Setup &amp; Testing</span>
+      <span class="badge alt">MCP Inspector</span>
+    </div>
+
+    <div class="layer plain">
+      <span class="layer-label">Client Summary</span>
+      This page is the validation tab for the ASP.NET Core MCP implementation track. It has two
+      responsibilities: first, explain how the validation tools are set up; second, explain how the
+      MCP and REST surfaces should be validated after the service is running.
+    </div>
+
+    <h2>1. MCP Inspector Setup</h2>
+    <div class="layer tech">
+      <span class="layer-label">Tool Setup</span>
+      MCP Inspector is normally run through <code>npx</code>. It gives a browser UI and CLI mode for
+      connecting to an MCP server, inspecting available tools, calling tools with test arguments,
+      and checking the protocol-level response.
+    </div>
+
+    <table>
+      <tr><th>Requirement</th><th>Purpose</th><th>Notes</th></tr>
+      <tr><td>Node.js</td><td>Runs the <code>npx</code>-based Inspector package.</td><td>Required for MCP Inspector UI or CLI mode.</td></tr>
+      <tr><td>Running ASP.NET Core MCP API</td><td>Provides the local MCP endpoint.</td><td>Current project host is <code>HC.AI.MCP.API</code>.</td></tr>
+      <tr><td>MCP endpoint URL</td><td>Target URL used by Inspector.</td><td>Local documentation currently uses <code>http://localhost:5087</code>; confirm the actual launch profile when running.</td></tr>
+      <tr><td>Implemented MCP tool</td><td>Something for Inspector to list and call.</td><td>Current next step is exposing PatientChart from <code>HC.AI.MCP.Tools</code>.</td></tr>
+    </table>
+
+    <h2>2. Setup Commands</h2>
+    <div class="flow"><code># Start the Inspector UI
+npx @modelcontextprotocol/inspector
+
+# Optional CLI check against an HTTP MCP endpoint
+npx @modelcontextprotocol/inspector --cli http://localhost:5087 --transport http --method tools/list</code></div>
+
+    <div class="purpose">
+      <strong>Important:</strong> Swagger validates the REST controller surface. MCP Inspector
+      validates the MCP protocol surface. Both are useful, but they prove different parts of the
+      ASP.NET Core MCP architecture.
+    </div>
+
+    <h2>3. Validation Layers</h2>
+    <table>
+      <tr><th>Layer</th><th>Tool</th><th>What We Validate</th></tr>
+      <tr><td>REST API validation</td><td>Swagger UI, Postman, curl, HTTP files</td><td>The controller route, request model, validation rules, SQL access path, and response shape.</td></tr>
+      <tr><td>MCP protocol validation</td><td>MCP Inspector</td><td>Server connection, capability negotiation, tool discovery, tool schemas, tool calls, and returned results.</td></tr>
+      <tr><td>Automated regression</td><td>xUnit, Playwright/API tests</td><td>Repeatable validation for known success, failure, and edge cases.</td></tr>
+      <tr><td>Security validation</td><td>Manual checks plus future automated policy tests</td><td>Authentication, authorization, patient/persona boundaries, and safe failure messages.</td></tr>
+    </table>
+
+    <h2>4. What Is MCP Inspector?</h2>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      MCP Inspector is an interactive developer tool for testing and debugging MCP servers. It
+      provides a browser UI and CLI mode that can connect to MCP servers, list tools/resources/
+      prompts, inspect schemas, call tools with custom inputs, and view server messages.
+    </div>
+
+    <table>
+      <tr><th>Inspector Area</th><th>Purpose</th><th>Why It Matters For This Project</th></tr>
+      <tr><td>Connection pane</td><td>Selects transport and connection details.</td><td>Confirms the ASP.NET Core MCP endpoint can be reached.</td></tr>
+      <tr><td>Tools tab</td><td>Lists available tools, schemas, and tool execution results.</td><td>Will prove that PatientChart is exposed as a real MCP tool after implementation.</td></tr>
+      <tr><td>Resources tab</td><td>Shows available resources and metadata.</td><td>Useful later if the MCP service exposes read-only healthcare resources.</td></tr>
+      <tr><td>Prompts tab</td><td>Displays prompt templates and arguments.</td><td>Useful later if reusable MCP prompts are added for Doctor or Patient personas.</td></tr>
+      <tr><td>Notifications/messages</td><td>Shows server logs and protocol messages.</td><td>Helps debug tool discovery, bad inputs, and failed calls during development.</td></tr>
+    </table>
+
+    <h2>5. ASP.NET Core MCP Validation Process</h2>
+    <div class="flow"><code>1. Run the ASP.NET Core MCP API locally.
+2. Confirm the service starts and exposes the MCP endpoint through app.MapMcp().
+3. Start MCP Inspector with npx.
+4. Connect Inspector to the local MCP endpoint using HTTP transport.
+5. Open the Tools tab.
+6. Confirm the expected MCP tools are listed.
+7. Call a tool with valid input and verify the result.
+8. Call the same tool with invalid input and verify safe validation errors.</code></div>
+
+    <div class="purpose">
+      <strong>Current status for HC.AI.MCP:</strong> the ASP.NET Core host already registers
+      <code>AddMcpServer()</code>, <code>WithHttpTransport()</code>, <code>WithToolsFromAssembly()</code>,
+      and <code>MapMcp()</code>. The REST <code>PatientChart</code> capability exists today. The next
+      validation milestone is to expose <code>PatientChart</code> from <code>HC.AI.MCP.Tools</code> as
+      an MCP tool, then verify it appears and executes inside MCP Inspector.
+    </div>
+
+    <h2>6. Example Inspector Commands</h2>
+    <div class="flow"><code># UI mode
+npx @modelcontextprotocol/inspector
+
+# CLI mode against a remote/local HTTP MCP endpoint
+npx @modelcontextprotocol/inspector --cli http://localhost:5087 --transport http --method tools/list
+
+# CLI mode for calling a tool after the PatientChart MCP tool is implemented
+npx @modelcontextprotocol/inspector --cli http://localhost:5087 --transport http --method tools/call --tool-name patient_chart</code></div>
+
+    <h2>7. Other Validation Tools</h2>
+    <table>
+      <tr><th>Tool</th><th>Role</th><th>MCP Relationship</th></tr>
+      <tr><td>Swagger UI</td><td>Manual REST endpoint testing.</td><td>Validates the REST controller surface, not MCP protocol behavior.</td></tr>
+      <tr><td>Postman / curl / HTTP files</td><td>Repeatable HTTP request checks.</td><td>Useful for REST route testing and basic endpoint availability.</td></tr>
+      <tr><td>xUnit</td><td>Unit/integration test automation.</td><td>Best for validation utilities, mappers, BL, and repository behavior.</td></tr>
+      <tr><td>Playwright API tests</td><td>End-to-end API regression tests.</td><td>Useful for proving the hosted service works as part of the larger platform flow.</td></tr>
+      <tr><td>MCP Inspector</td><td>Protocol-level MCP testing.</td><td>The main tool for proving MCP tools are discoverable and callable by an AI client.</td></tr>
+    </table>
+
+    <div class="purpose">
+      <strong>References:</strong> MCP Inspector official documentation:
+      <a href="https://modelcontextprotocol.io/docs/tools/inspector">modelcontextprotocol.io/docs/tools/inspector</a>.
+      Inspector source and command examples:
+      <a href="https://github.com/modelcontextprotocol/inspector">github.com/modelcontextprotocol/inspector</a>.
+    </div>
+  </main>
+</div>
+</body>
+</html>

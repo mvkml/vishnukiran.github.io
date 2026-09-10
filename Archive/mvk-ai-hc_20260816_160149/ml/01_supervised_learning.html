@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supervised Learning</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --tech-bg: #241a3a; --tech-border: #7c3aed;
+    --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  .back-link { display: inline-block; margin-bottom: 24px; font-size: 0.85rem; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .back-link:hover, a:hover { text-decoration: underline; }
+  header.doc-header { border-bottom: 1px solid var(--panel-border); padding-bottom: 24px; margin-bottom: 32px; }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .badge { background: var(--badge-bg); color: #fff; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; font-weight: 600; letter-spacing: 0.02em; }
+  .badge.alt { background: #334155; }
+  section { margin-bottom: 44px; }
+  h2 { font-size: 1.35rem; color: #f8fafc; border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 18px; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .tech { background: var(--tech-bg); border: 1px solid var(--tech-border); }
+  .tech .layer-label { color: #c4b5fd; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; }
+  a { color: var(--accent); }
+  .purpose { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 16px 18px; font-size: 0.95rem; color: var(--text-dim); margin-top: 40px; }
+  .purpose strong { color: var(--text); }
+  .author-card { margin-top: 32px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 24px 26px; }
+  .author-card h2 { border: none; padding-left: 0; font-size: 1.1rem; margin-top: 0; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .author-name { font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin-bottom: 2px; }
+  .author-email { color: var(--accent); font-size: 0.9rem; margin-bottom: 12px; }
+  .author-bio { color: var(--text-dim); font-size: 0.92rem; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --tech-bg: #f5f3ff; --tech-border: #8b5cf6; --badge-bg: #2563eb; }
+    h1, h2, .author-name { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="MachineLearning_Home.html" class="back-link">&larr; Back to Machine Learning</a>
+
+  <header class="doc-header">
+    <h1>Supervised Learning</h1>
+    <p class="tagline">A machine learning approach where the model learns from labeled examples where the expected answer is already known.</p>
+    <div class="meta">
+      <span class="badge">Staging Draft</span>
+      <span class="badge alt">Machine Learning</span>
+      <span class="badge alt">Labeled Data</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. What Is Supervised Learning?</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Supervised Learning is like teaching with answer keys. We give the model many examples and
+      each example includes the correct answer. Over time, the model learns the pattern between the
+      input data and the answer, then uses that pattern to make predictions for new data.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      In supervised learning, the training dataset contains input features and a target label. The
+      algorithm learns a mapping from features to labels by minimizing prediction error on labeled
+      training examples.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. What Is Labeled Data?</h2>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Labeled data means each training record already has the answer attached. If the model is
+      learning to identify whether a patient is high risk, each example must include patient data
+      and the known risk label, such as high risk or low risk.
+    </div>
+    <table>
+      <tr><th>Input Data</th><th>Label</th><th>Meaning</th></tr>
+      <tr><td>Age, diagnosis, vitals, previous admissions</td><td>High readmission risk</td><td>The known outcome/category the model should learn to predict.</td></tr>
+      <tr><td>Clinical note text</td><td>Contains medication mention</td><td>The correct classification assigned by humans or trusted rules.</td></tr>
+      <tr><td>Lab history and patient profile</td><td>Expected glucose value</td><td>A known numeric target used for prediction.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>3. Examples</h2>
+    <table>
+      <tr><th>Use Case</th><th>Input Features</th><th>Label / Target</th></tr>
+      <tr><td>Readmission risk prediction</td><td>Age, encounter history, diagnosis, medications, lab results</td><td>Readmitted: yes/no</td></tr>
+      <tr><td>Disease classification</td><td>Symptoms, observations, lab values, diagnosis history</td><td>Condition category</td></tr>
+      <tr><td>Claim approval prediction</td><td>Procedure, payer, diagnosis, previous claim outcomes</td><td>Approved / denied</td></tr>
+      <tr><td>Length-of-stay prediction</td><td>Admission reason, vitals, comorbidities, treatment plan</td><td>Number of days</td></tr>
+      <tr><td>Document classification</td><td>OCR text, document layout, detected keywords</td><td>Insurance card / lab report / prescription</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>4. Types Of Supervised Learning</h2>
+    <table>
+      <tr><th>Type</th><th>What It Predicts</th><th>Example</th></tr>
+      <tr>
+        <td>Classification</td>
+        <td>A category or class label.</td>
+        <td>Predict whether a patient is high risk, medium risk, or low risk.</td>
+      </tr>
+      <tr>
+        <td>Binary Classification</td>
+        <td>One of two possible classes.</td>
+        <td>Readmitted: yes or no.</td>
+      </tr>
+      <tr>
+        <td>Multi-Class Classification</td>
+        <td>One class from more than two possible classes.</td>
+        <td>Document type: lab report, discharge summary, prescription, or insurance card.</td>
+      </tr>
+      <tr>
+        <td>Multi-Label Classification</td>
+        <td>Multiple labels can be true at the same time.</td>
+        <td>A clinical note may mention fever, cough, medication, and follow-up instruction together.</td>
+      </tr>
+      <tr>
+        <td>Regression</td>
+        <td>A numeric value.</td>
+        <td>Predict expected claim cost, length of stay, or future lab value.</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>5. Simple Training Flow</h2>
+    <table>
+      <tr><th>Step</th><th>Description</th></tr>
+      <tr><td>Collect examples</td><td>Gather historical records with both input data and known answers.</td></tr>
+      <tr><td>Prepare features</td><td>Clean and transform the input data into values the algorithm can use.</td></tr>
+      <tr><td>Train model</td><td>Let the algorithm learn patterns from the labeled examples.</td></tr>
+      <tr><td>Evaluate model</td><td>Test on data the model has not seen and measure accuracy or error.</td></tr>
+      <tr><td>Use model</td><td>Apply the trained model to new data and generate predictions.</td></tr>
+    </table>
+  </section>
+
+  <div class="purpose">
+    <strong>About this section:</strong> this page explains supervised learning as the first
+    detailed Machine Learning topic. It focuses on labeled data because labels are the key
+    difference between supervised learning and other ML approaches.
+  </div>
+
+  <div class="author-card">
+    <h2>About Author</h2>
+    <div class="author-name">Vishnu Kiran M</div>
+    <div class="author-email">mvkwithmath@gmail.com</div>
+    <div class="author-bio">
+      Azure AI Solution Architect specializing in Azure AI Foundry, Azure OpenAI, AI Agents,
+      Retrieval-Augmented Generation (RAG), Document Intelligence, Azure AI Search, API Management,
+      Terraform, AIOps, and enterprise integration.
+    </div>
+  </div>
+</div>
+</body>
+</html>

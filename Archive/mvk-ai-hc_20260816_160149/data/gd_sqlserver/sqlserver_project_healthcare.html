@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Server - Health Care Project</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 860px; }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+  .badge { background: var(--badge-bg); color: #fff; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
+  .badge.alt { background: #334155; }
+  section { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 22px 24px; margin: 0 0 30px; }
+  section h2 { margin: 0 0 10px; font-size: 1.22rem; color: #f8fafc; }
+  section p { margin: 0 0 12px; color: var(--text-dim); }
+  .path-box { display: block; padding: 11px 12px; border-radius: 8px; background: var(--code-bg); color: var(--accent); font-size: 0.9rem; overflow-wrap: anywhere; margin: 12px 0 16px; }
+  .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin-top: 14px; }
+  .folder-card { border: 1px solid var(--panel-border); border-radius: 10px; padding: 14px; background: rgba(15, 23, 42, 0.26); }
+  .folder-card strong { display: block; color: #f8fafc; margin-bottom: 5px; }
+  .folder-card span { display: block; color: var(--text-dim); font-size: 0.86rem; }
+  .run-order, .owner-list { margin: 12px 0 0; padding-left: 20px; color: var(--text-dim); }
+  .run-order strong, .owner-list strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.87rem; }
+  th, td { border: 1px solid var(--panel-border); padding: 9px 10px; vertical-align: top; }
+  th { background: rgba(15, 23, 42, 0.42); color: #f8fafc; text-align: left; }
+  td { color: var(--text-dim); }
+  td code { color: var(--accent); }
+  pre { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 13px 14px; overflow-x: auto; color: var(--text); font-size: 0.84rem; line-height: 1.5; }
+  pre code { color: var(--text); }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, section h2, .folder-card strong { color: #0f172a; }
+    .folder-card { background: #f8fafc; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="sidebar">
+    <div class="sb-title">SQL Server Project</div>
+    <a href="SQLServer_Home.html">SQL Server Home</a>
+    <a href="07_stored_procedures.html">Stored Procedures Page</a>
+    <a href="sqlserver_project_healthcare.html" class="active">Health Care Project</a>
+    <a href="#roles-table">Roles Table</a>
+    <a href="#llm-option-table">LLMOption Table</a>
+    <a href="#llm-mapper-table">LLMMapper Table</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">Site Home</a>
+  </nav>
+
+  <main class="main">
+    <h1>Health Care Project SQL</h1>
+    <p class="tagline">Project-level SQL documentation for healthcare database source files, ownership, run order, and upcoming table-level details.</p>
+    <div class="meta">
+      <span class="badge">Project SQL</span>
+      <span class="badge alt">Work in progress</span>
+    </div>
+
+    <section>
+      <h2>Project SQL Source Folder</h2>
+      <p>The project SQL scripts are maintained in one source folder. This folder is the working place for database table scripts, seed data, stored procedures, and validation scripts.</p>
+      <code class="path-box">hc_data_source/hc_sql/</code>
+      <div class="folder-grid" aria-label="SQL source folder structure">
+        <div class="folder-card">
+          <strong>README.md</strong>
+          <span>Explains the purpose, run order, current database work, and open items.</span>
+        </div>
+        <div class="folder-card">
+          <strong>tables/</strong>
+          <span>Table and schema scripts, including whitelist, auth, admin, persona, LLM, patient, and provider tables.</span>
+        </div>
+        <div class="folder-card">
+          <strong>seed/</strong>
+          <span>Seed and backfill scripts for initial or required reference data.</span>
+        </div>
+        <div class="folder-card">
+          <strong>procedures/</strong>
+          <span>Stored procedures used by the application, including healthcare query execution and LLM option lookup.</span>
+        </div>
+        <div class="folder-card">
+          <strong>validation/</strong>
+          <span>Sample queries, test scripts, and validation notes used to verify SQL behavior.</span>
+        </div>
+      </div>
+      <ol class="run-order">
+        <li><strong>Run order:</strong> tables first.</li>
+        <li><strong>Next:</strong> seed scripts.</li>
+        <li><strong>Last:</strong> stored procedures.</li>
+      </ol>
+    </section>
+
+    <section id="roles-table">
+      <h2>Roles Table</h2>
+      <p><code>dbo.Roles</code> is the authentication role lookup table. It stores the account-level role assigned to a user, such as <code>Doctor</code>, <code>Patient</code>, <code>QA</code>, <code>DEV</code>, <code>AgentDev</code>, and <code>AgentQA</code>.</p>
+      <p>This table is different from <code>dbo.PersonaType</code>. <code>Roles</code> answers "what account role does this user have?" while <code>PersonaType</code> answers "which LLM execution persona should be used?" The bridge between those concepts is <code>dbo.PersonaMapper</code>.</p>
+
+      <table aria-label="Roles table dependency summary">
+        <thead>
+          <tr>
+            <th>Current Table</th>
+            <th>Primary Key</th>
+            <th>Tables Depending On This Table</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>dbo.Roles</code></td>
+            <td><code>RoleId</code></td>
+            <td><code>dbo.Users</code>, <code>dbo.PersonaMapper</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table aria-label="Roles table schema">
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>RoleId</code></td>
+            <td><code>int</code>, primary key, identity</td>
+            <td>Unique role identifier. Other tables store this value as a foreign key when they need to reference a role.</td>
+          </tr>
+          <tr>
+            <td><code>RoleName</code></td>
+            <td><code>nvarchar(100)</code>, required, unique</td>
+            <td>Human-readable role name, for example <code>Doctor</code>, <code>Patient</code>, <code>QA</code>, or <code>AgentDev</code>.</td>
+          </tr>
+          <tr>
+            <td><code>OrderId</code></td>
+            <td><code>int</code>, required, default <code>0</code></td>
+            <td>Display or ordering value used when roles need a predictable sequence in UI or seed data.</td>
+          </tr>
+          <tr>
+            <td><code>IsActive</code></td>
+            <td><code>bit</code>, required, default <code>1</code></td>
+            <td>Marks whether the role is currently active. This allows a role to be disabled without deleting historical references.</td>
+          </tr>
+          <tr>
+            <td><code>CreatedDate</code></td>
+            <td><code>datetime2(7)</code>, required, default <code>SYSUTCDATETIME()</code></td>
+            <td>UTC timestamp for when the role row was created.</td>
+          </tr>
+          <tr>
+            <td><code>UpdatedDate</code></td>
+            <td><code>datetime2(7)</code>, nullable</td>
+            <td>UTC timestamp for the last role update. Empty when the row has not been modified after creation.</td>
+          </tr>
+          <tr>
+            <td><code>Description</code></td>
+            <td><code>nvarchar(500)</code>, nullable</td>
+            <td>Short explanation of what the role is used for.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table aria-label="Roles table relationships">
+        <thead>
+          <tr>
+            <th>Relationship</th>
+            <th>Foreign Key</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>dbo.Users.RoleId</code> -> <code>dbo.Roles.RoleId</code></td>
+            <td><code>FK_Users_Roles_RoleId</code></td>
+            <td>Assigns each authenticated user to one role. Example: a doctor user points to the <code>Doctor</code> role.</td>
+          </tr>
+          <tr>
+            <td><code>dbo.PersonaMapper.RoleId</code> -> <code>dbo.Roles.RoleId</code></td>
+            <td><code>FK_PersonaMapper_Roles</code></td>
+            <td>Maps an auth role to an LLM persona. Flow: <code>Users.RoleId</code> -> <code>Roles.RoleId</code> -> <code>PersonaMapper</code> -> <code>PersonaType</code> -> <code>LLMMapper</code> -> <code>LLMOption</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table aria-label="Current role rows">
+        <thead>
+          <tr>
+            <th>RoleId</th>
+            <th>RoleName</th>
+            <th>OrderId</th>
+            <th>IsActive</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>1</code></td>
+            <td><code>Doctor</code></td>
+            <td><code>1</code></td>
+            <td><code>1</code></td>
+            <td>Doctor account role.</td>
+          </tr>
+          <tr>
+            <td><code>2</code></td>
+            <td><code>Patient</code></td>
+            <td><code>2</code></td>
+            <td><code>1</code></td>
+            <td>Patient account role.</td>
+          </tr>
+          <tr>
+            <td><code>8</code></td>
+            <td><code>QA</code></td>
+            <td><code>3</code></td>
+            <td><code>1</code></td>
+            <td>Quality assurance role.</td>
+          </tr>
+          <tr>
+            <td><code>9</code></td>
+            <td><code>DEV</code></td>
+            <td><code>4</code></td>
+            <td><code>1</code></td>
+            <td>Development role.</td>
+          </tr>
+          <tr>
+            <td><code>10</code></td>
+            <td><code>AgentDev</code></td>
+            <td><code>5</code></td>
+            <td><code>1</code></td>
+            <td>Agent development role.</td>
+          </tr>
+          <tr>
+            <td><code>11</code></td>
+            <td><code>AgentQA</code></td>
+            <td><code>6</code></td>
+            <td><code>1</code></td>
+            <td>Agent quality assurance role.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Because <code>RoleId</code> is referenced by other tables, roles should normally be deactivated with <code>IsActive = 0</code> instead of deleted.</p>
+
+      <h3 style="color:#38bdf8; font-size:1.04rem; font-weight:700; margin-top:22px;">Stored Procedure</h3>
+      <p>The main stored procedure connected to <code>dbo.Roles</code> is <code>usp_GetLLMOptionByUserOrPersona</code>. It uses a user's <code>RoleId</code> to find the matching persona and active LLM configuration.</p>
+      <table aria-label="Stored procedures related to Roles">
+        <thead>
+          <tr>
+            <th>Stored Procedure</th>
+            <th>How It Uses Roles</th>
+            <th>Relationship Path</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>usp_GetLLMOptionByUserOrPersona</code></td>
+            <td>When called by <code>UserId</code>, it reads <code>Users.RoleId</code>, maps the role to a persona, then finds the active LLM option for that persona.</td>
+            <td><code>Users.RoleId</code> -> <code>Roles.RoleId</code> -> <code>PersonaMapper.RoleId</code> -> <code>PersonaType</code> -> <code>LLMMapper</code> -> <code>LLMOption</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="color:#f8fafc; font-size:1rem;">Sample Join Queries</h3>
+      <p>Use these examples when checking which users have which roles, or when tracing how a role resolves into an LLM persona.</p>
+      <pre><code>-- Users with their auth roles
+SELECT
+    u.UserId,
+    u.Email,
+    r.RoleId,
+    r.RoleName,
+    r.IsActive AS RoleIsActive
+FROM dbo.Users u
+INNER JOIN dbo.Roles r
+    ON r.RoleId = u.RoleId
+ORDER BY r.OrderId, u.UserId;</code></pre>
+
+      <pre><code>-- Role to LLM persona mapping
+SELECT
+    r.RoleId,
+    r.RoleName,
+    pm.PersonaMapperId,
+    pt.TypeId AS PersonaTypeId,
+    pt.Name AS PersonaName,
+    pm.IsDefault,
+    pm.IsActive
+FROM dbo.Roles r
+INNER JOIN dbo.PersonaMapper pm
+    ON pm.RoleId = r.RoleId
+INNER JOIN dbo.PersonaType pt
+    ON pt.TypeId = pm.PersonaTypeId
+ORDER BY r.OrderId, pm.IsDefault DESC;</code></pre>
+
+      <pre><code>-- Full path from user role to selected LLM option
+SELECT
+    u.UserId,
+    u.Email,
+    r.RoleName,
+    pt.Name AS PersonaName,
+    lm.ModelRole,
+    lo.Provider,
+    lo.Model,
+    lo.Name AS LLMOptionName,
+    lo.BaseUrl
+FROM dbo.Users u
+INNER JOIN dbo.Roles r
+    ON r.RoleId = u.RoleId
+INNER JOIN dbo.PersonaMapper pm
+    ON pm.RoleId = r.RoleId
+    AND pm.IsDefault = 1
+    AND pm.IsActive = 1
+INNER JOIN dbo.PersonaType pt
+    ON pt.TypeId = pm.PersonaTypeId
+INNER JOIN dbo.LLMMapper lm
+    ON lm.PersonaTypeId = pt.TypeId
+    AND lm.IsActive = 1
+INNER JOIN dbo.LLMOption lo
+    ON lo.LLMOptionId = lm.LLMOptionId
+    AND lo.IsActive = 1
+ORDER BY u.UserId, lm.ModelRole;</code></pre>
+    </section>
+
+    <section id="llm-option-table">
+      <h2>LLMOption Table</h2>
+      <p><code>dbo.LLMOption</code> is the dimension table for available LLM model/provider configurations. Each row represents one named model option that can be selected by the mapper layer.</p>
+
+      <table aria-label="LLMOption dependency summary">
+        <thead>
+          <tr>
+            <th>Current Table</th>
+            <th>Primary Key</th>
+            <th>Tables Depending On This Table</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>dbo.LLMOption</code></td>
+            <td><code>LLMOptionId</code></td>
+            <td><code>dbo.LLMMapper</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table aria-label="LLMOption table schema">
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>LLMOptionId</code></td><td><code>int</code>, primary key, identity</td><td>Unique model option identifier.</td></tr>
+          <tr><td><code>Name</code></td><td><code>nvarchar(100)</code>, required, unique</td><td>Configuration name, such as <code>HCClassification</code> or <code>HCDocExecutor</code>.</td></tr>
+          <tr><td><code>Description</code></td><td><code>nvarchar(255)</code>, nullable</td><td>Short explanation of the model option.</td></tr>
+          <tr><td><code>Provider</code></td><td><code>nvarchar(50)</code>, required</td><td>Model provider, for example <code>Ollama</code>.</td></tr>
+          <tr><td><code>Model</code></td><td><code>nvarchar(100)</code>, required</td><td>Provider model/deployment name.</td></tr>
+          <tr><td><code>BaseUrl</code></td><td><code>nvarchar(255)</code>, nullable</td><td>Optional provider endpoint URL.</td></tr>
+          <tr><td><code>Version</code></td><td><code>nvarchar(50)</code>, nullable</td><td>Optional model version label.</td></tr>
+          <tr><td><code>PublishedDate</code></td><td><code>datetime2(7)</code>, nullable</td><td>Date/time when this model option went live.</td></tr>
+          <tr><td><code>IsActive</code></td><td><code>bit</code>, required, default <code>1</code></td><td>Controls whether the option is available for active mapping.</td></tr>
+          <tr><td><code>CreatedDate</code></td><td><code>datetime2(7)</code>, required, default <code>SYSUTCDATETIME()</code></td><td>UTC timestamp for row creation.</td></tr>
+          <tr><td><code>UpdatedDate</code></td><td><code>datetime2(7)</code>, nullable</td><td>UTC timestamp for the last update.</td></tr>
+        </tbody>
+      </table>
+
+      <table aria-label="Current LLMOption rows">
+        <thead>
+          <tr>
+            <th>LLMOptionId</th>
+            <th>Name</th>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>IsActive</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>1</code></td><td><code>HCClassification</code></td><td><code>Ollama</code></td><td><code>qwen2.5:7b</code></td><td><code>1</code></td></tr>
+          <tr><td><code>2</code></td><td><code>HCDocExecutor</code></td><td><code>Ollama</code></td><td><code>hc-doctor-executor:2.2</code></td><td><code>1</code></td></tr>
+          <tr><td><code>3</code></td><td><code>HCPatientExecutor</code></td><td><code>Ollama</code></td><td><code>hc-patient-executor:1.1</code></td><td><code>1</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="color:#38bdf8; font-size:1.04rem; font-weight:700; margin-top:22px;">Stored Procedure</h3>
+      <p><code>usp_GetLLMOptionByUserOrPersona</code> reads <code>LLMOption</code> through <code>LLMMapper.LLMOptionId</code> to return the model configuration selected for a role/persona request.</p>
+
+      <h3 style="color:#f8fafc; font-size:1rem;">Sample Queries</h3>
+      <pre><code>-- Active LLM options
+SELECT
+    LLMOptionId,
+    Name,
+    Provider,
+    Model,
+    Version,
+    IsActive
+FROM dbo.LLMOption
+WHERE IsActive = 1
+ORDER BY LLMOptionId;</code></pre>
+
+      <pre><code>-- Update an LLM option description
+UPDATE dbo.LLMOption
+SET
+    Description = N'Doctor executor model option',
+    UpdatedDate = SYSUTCDATETIME()
+WHERE Name = N'HCDocExecutor';</code></pre>
+    </section>
+
+    <section id="llm-mapper-table">
+      <h2>LLMMapper Table</h2>
+      <p><code>dbo.LLMMapper</code> is the fact table that connects <code>dbo.PersonaType</code> to <code>dbo.LLMOption</code>. It decides which model option is used for each persona and model role, such as <code>Classification</code>, <code>Executor</code>, or <code>PreWarm</code>.</p>
+
+      <table aria-label="LLMMapper dependency summary">
+        <thead>
+          <tr>
+            <th>Current Table</th>
+            <th>Primary Key</th>
+            <th>Depends On</th>
+            <th>Tables Depending On This Table</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>dbo.LLMMapper</code></td>
+            <td><code>LLMMapperId</code></td>
+            <td><code>dbo.PersonaType</code>, <code>dbo.LLMOption</code></td>
+            <td><code>dbo.LLMChatHistory</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table aria-label="LLMMapper table relationships">
+        <thead>
+          <tr>
+            <th>Relationship</th>
+            <th>Foreign Key</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>dbo.LLMMapper.PersonaTypeId</code> -> <code>dbo.PersonaType.TypeId</code></td><td><code>FK_LLMMapper_PersonaType</code></td><td>Connects the mapper row to a persona such as Doctor or Patient.</td></tr>
+          <tr><td><code>dbo.LLMMapper.LLMOptionId</code> -> <code>dbo.LLMOption.LLMOptionId</code></td><td><code>FK_LLMMapper_LLMOption</code></td><td>Connects the mapper row to the selected model/provider option.</td></tr>
+          <tr><td><code>dbo.LLMChatHistory.LLMMapperId</code> -> <code>dbo.LLMMapper.LLMMapperId</code></td><td><code>FK_LLMChatHistory_LLMMapper</code></td><td>Preserves which mapper/model configuration was used for each chat history row.</td></tr>
+        </tbody>
+      </table>
+
+      <table aria-label="LLMMapper table schema">
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>LLMMapperId</code></td><td><code>int</code>, primary key, identity</td><td>Unique mapper row identifier.</td></tr>
+          <tr><td><code>PersonaTypeId</code></td><td><code>int</code>, required, FK</td><td>Persona context, linked to <code>PersonaType.TypeId</code>.</td></tr>
+          <tr><td><code>LLMOptionId</code></td><td><code>int</code>, required, FK</td><td>Model/provider option, linked to <code>LLMOption.LLMOptionId</code>.</td></tr>
+          <tr><td><code>ModelRole</code></td><td><code>nvarchar(20)</code>, required</td><td>Role the model plays, for example <code>Classification</code>, <code>Executor</code>, or <code>PreWarm</code>.</td></tr>
+          <tr><td><code>MapType</code></td><td><code>nvarchar(50)</code>, nullable</td><td>Grouping label such as <code>Doctor</code> or <code>Patient</code>.</td></tr>
+          <tr><td><code>IsDefault</code></td><td><code>bit</code>, required, default <code>0</code></td><td>Marks the default active mapper for a persona/model-role combination.</td></tr>
+          <tr><td><code>Priority</code></td><td><code>int</code>, nullable</td><td>Fallback order when multiple active mappings exist.</td></tr>
+          <tr><td><code>IsActive</code></td><td><code>bit</code>, required, default <code>1</code></td><td>Controls whether this mapping can be selected.</td></tr>
+          <tr><td><code>MaxTokens</code>, <code>Temperature</code>, <code>TopP</code>, <code>TopK</code></td><td>nullable generation settings</td><td>Optional model generation parameters stored at mapping level.</td></tr>
+          <tr><td><code>FrequencyPenalty</code>, <code>PresencePenalty</code>, <code>StopSequences</code>, <code>Stream</code>, <code>Seed</code></td><td>nullable generation settings</td><td>Additional optional model execution parameters.</td></tr>
+          <tr><td><code>CreatedDate</code>, <code>UpdatedDate</code></td><td><code>datetime2(7)</code></td><td>Creation and last update timestamps.</td></tr>
+        </tbody>
+      </table>
+
+      <table aria-label="Current LLMMapper rows">
+        <thead>
+          <tr>
+            <th>LLMMapperId</th>
+            <th>PersonaTypeId</th>
+            <th>LLMOptionId</th>
+            <th>ModelRole</th>
+            <th>MapType</th>
+            <th>IsDefault</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>1</code></td><td><code>1</code></td><td><code>1</code></td><td><code>Classification</code></td><td><code>Doctor</code></td><td><code>1</code></td><td><code>1</code></td></tr>
+          <tr><td><code>2</code></td><td><code>1</code></td><td><code>2</code></td><td><code>Executor</code></td><td><code>Doctor</code></td><td><code>1</code></td><td><code>1</code></td></tr>
+          <tr><td><code>6</code></td><td><code>1</code></td><td><code>2</code></td><td><code>PreWarm</code></td><td><code>Doctor</code></td><td><code>1</code></td><td><code>1</code></td></tr>
+          <tr><td><code>3</code></td><td><code>2</code></td><td><code>1</code></td><td><code>Classification</code></td><td><code>Patient</code></td><td><code>1</code></td><td><code>1</code></td></tr>
+          <tr><td><code>4</code></td><td><code>2</code></td><td><code>3</code></td><td><code>Executor</code></td><td><code>Patient</code></td><td><code>1</code></td><td><code>1</code></td></tr>
+          <tr><td><code>5</code></td><td><code>2</code></td><td><code>3</code></td><td><code>PreWarm</code></td><td><code>Patient</code></td><td><code>1</code></td><td><code>1</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="color:#38bdf8; font-size:1.04rem; font-weight:700; margin-top:22px;">Stored Procedure</h3>
+      <p><code>usp_GetLLMOptionByUserOrPersona</code> orders active mapper rows by <code>IsDefault DESC</code> and <code>Priority ASC</code> to choose the best active LLM mapping for a persona and optional model role.</p>
+
+      <h3 style="color:#f8fafc; font-size:1rem;">Sample Queries</h3>
+      <pre><code>-- LLM mapping with persona and model option names
+SELECT
+    lm.LLMMapperId,
+    pt.Name AS PersonaName,
+    lm.ModelRole,
+    lm.MapType,
+    lo.Name AS LLMOptionName,
+    lo.Provider,
+    lo.Model,
+    lm.IsDefault,
+    lm.Priority,
+    lm.IsActive
+FROM dbo.LLMMapper lm
+INNER JOIN dbo.PersonaType pt
+    ON pt.TypeId = lm.PersonaTypeId
+INNER JOIN dbo.LLMOption lo
+    ON lo.LLMOptionId = lm.LLMOptionId
+ORDER BY pt.TypeId, lm.ModelRole, lm.Priority;</code></pre>
+
+      <pre><code>-- Deactivate one mapper without deleting history references
+UPDATE dbo.LLMMapper
+SET
+    IsActive = 0,
+    UpdatedDate = SYSUTCDATETIME()
+WHERE LLMMapperId = 6;</code></pre>
+    </section>
+
+    <section>
+      <h2>Dev SQL Agent Ownership</h2>
+      <p>The Dev SQL Agent owns the database side of the project. This role designs and manages the data storage for the healthcare platform.</p>
+      <ul class="owner-list">
+        <li><strong>Owns:</strong> <code>hc_data_source/hc_sql/</code> and data model documentation.</li>
+        <li><strong>Maintains:</strong> schemas, SQL migration scripts, stored procedures, queries, and database validation work.</li>
+        <li><strong>Focus:</strong> data integrity, relationships, query performance, healthcare domain models, ORM alignment, and Graphify data requirements.</li>
+        <li><strong>Works with:</strong> Architect, Dev .NET, Dev FastAPI, Dev BigData, and Product Owner.</li>
+      </ul>
+    </section>
+
+  </main>
+
+</div>
+</body>
+</html>

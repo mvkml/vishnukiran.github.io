@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Databricks - What Is Databricks?</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 820px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  h2 { font-size: 1.18rem; color: #f8fafc; border-left: 4px solid var(--accent); padding-left: 12px; margin: 34px 0 16px; }
+  .layer { border-radius: 8px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } .main { padding: 28px 18px 56px; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, h2 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Databricks Topics</div>
+    <a href="Databricks_Home.html">Databricks Home</a>
+    <a href="Databricks_Index.html">Databricks Topics</a>
+    <a href="01_what_is_databricks.html" class="active">1. What Is Databricks?</a>
+    <a href="#">2. Databricks Architecture</a>
+    <a href="#">3. Control Plane &amp; Workspace</a>
+    <a href="04_unity_catalog.html">4. Unity Catalog</a>
+    <a href="metastore/04_metastore.html">Metastore</a>
+    <a href="05_catalog.html">5. Catalog</a>
+    <a href="#">6. Schema</a>
+    <a href="#">7. Create Workspace</a>
+    <a href="#">8. Deployment</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../gd_pyspark/PySpark_Home.html">Back to PySpark</a>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="Databricks_Home.html">Azure Databricks</a> / Topic 1</div>
+    <h1>What Is Databricks?</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Azure Databricks is a unified data and AI platform based on the Lakehouse architecture, with centralized governance,
+      security, and collaboration. It enables organizations to perform data engineering, data analytics, machine learning,
+      data workflows, and generative AI workloads at scale.
+    </div>
+
+    <h2>Core Idea</h2>
+    <p>
+      Databricks brings data teams, analytics teams, AI engineers, and machine learning teams into one shared workspace.
+      Instead of keeping data engineering, BI, machine learning, and AI experimentation in isolated tools, Databricks
+      provides a common platform for working with governed data at enterprise scale.
+    </p>
+
+    <h2>Lakehouse Architecture</h2>
+    <table>
+      <tr><th>Concept</th><th>Meaning</th></tr>
+      <tr><td>Data Lake</td><td>Stores large volumes of structured, semi-structured, and unstructured data.</td></tr>
+      <tr><td>Data Warehouse</td><td>Supports reliable analytics, reporting, SQL queries, and business intelligence.</td></tr>
+      <tr><td>Lakehouse</td><td>Combines the scale of a data lake with the reliability and analytics features of a warehouse.</td></tr>
+    </table>
+
+    <h2>What Teams Use It For</h2>
+    <table>
+      <tr><th>Workload</th><th>Purpose</th></tr>
+      <tr><td>Data Engineering</td><td>Build pipelines that ingest, transform, clean, and prepare large datasets.</td></tr>
+      <tr><td>Data Analytics</td><td>Run SQL, dashboards, reports, and exploratory analysis over governed data.</td></tr>
+      <tr><td>Machine Learning</td><td>Train, evaluate, track, and deploy ML models using scalable compute.</td></tr>
+      <tr><td>Data Workflows</td><td>Schedule and orchestrate notebooks, jobs, and repeatable data processing tasks.</td></tr>
+      <tr><td>Generative AI</td><td>Prepare data and build AI use cases that need trusted enterprise context.</td></tr>
+    </table>
+
+    <h2>Why It Matters For This Project</h2>
+    <p>
+      In Healthcare Co-Pilot Studio, Databricks can become the managed big-data layer for large healthcare datasets,
+      governed analytics, feature preparation, AI-ready data pipelines, and future generative AI workloads that need
+      clean, secure, auditable data.
+    </p>
+
+    <div class="pager">
+      <a href="Databricks_Home.html">Back: Databricks Home</a>
+      <a href="../gd_pyspark/PySpark_Home.html">Next: PySpark Track</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

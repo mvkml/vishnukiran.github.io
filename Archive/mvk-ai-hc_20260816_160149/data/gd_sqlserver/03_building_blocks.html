@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Server — Building Blocks</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .flow { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 18px 20px; font-size: 0.86rem; overflow-x: auto; margin: 14px 0; }
+  .flow code { display: block; white-space: pre; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.86rem; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">SQL Server Topics</div>
+    <a href="SQLServer_Home.html">🏠 SQL Server Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html" class="active">3. Building Blocks</a>
+    <a href="04_query_guardrail.html">4. The Query-Guardrail Procedure</a>
+    <a href="05_persona_llm_schema.html">5. Persona/LLM Option Schema</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <a href="07_stored_procedures.html">7. Stored Procedures</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="SQLServer_Home.html">SQL Server</a> / Topic 3</div>
+    <h1>Building Blocks</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      Four APIs, one database, two ways the schema gets built — Entity Framework migrations own
+      most of it, and a small, deliberate set of hand-written SQL scripts own the rest.
+    </div>
+
+    <h3 style="color:#f8fafc; font-size:1rem;">Connection strings (one LocalDB instance, shared)</h3>
+    <table>
+      <tr><th>API</th><th>Connection key</th><th>Value</th></tr>
+      <tr><td><code>HC.AI.Identity.Api</code></td><td><code>AiHrDb</code></td><td><code>Server=(localdb)\MSSQLLocalDB;Database=AI_HealthCarePatient;...</code></td></tr>
+      <tr><td><code>HC.AI.Admin.API</code></td><td><code>AdminDb</code></td><td>same server/database</td></tr>
+      <tr><td><code>AI.HealthCare.Patient.API</code></td><td><code>PatientDb</code></td><td>same server/database</td></tr>
+      <tr><td><code>HC.AI.MAPI</code></td><td><code>MapiDb</code></td><td>same server/database</td></tr>
+    </table>
+    <p>Each API registers its own <code>DbContext</code> against its own connection-string key —
+    e.g. <code>HC.AI.MAPI/Program.cs</code>:</p>
+    <div class="flow"><code>builder.Services.AddDbContext&lt;MapiDbContext&gt;(options =&gt;
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MapiDb")));</code></div>
+
+    <h3 style="color:#f8fafc; font-size:1rem;">EF Core-managed tables (schema owned by migrations)</h3>
+    <ul>
+      <li><strong>Auth</strong> — <code>Users</code>, <code>Roles</code>, <code>OcrDocuments</code> (<code>HC.AI.Identity.EF</code>, 5 migrations)</li>
+      <li><strong>Admin</strong> — <code>Admins</code> (<code>HC.AI.Admin.EF</code>)</li>
+      <li><strong>Clinical/patient data</strong> — 18 tables including <code>Patients</code>, <code>Encounters</code>, <code>Conditions</code>, <code>Claims</code>, <code>Providers</code>, <code>Observations</code> (<code>AI.HealthCare.Patient.EF</code>, 18 migrations, sourced from the Synthea synthetic dataset)</li>
+    </ul>
+    <p>These are created and updated with <code>dotnet ef database update</code> — the matching
+    <code>.sql</code> files under <code>hc_data_source/hc_sql/tables/</code> for this group exist
+    only as human-readable reference copies, not the DDL actually run.</p>
+
+    <h3 style="color:#f8fafc; font-size:1rem;">Hand-written DDL tables (no EF entity at all)</h3>
+    <table>
+      <tr><th>Table</th><th>Purpose</th></tr>
+      <tr><td><code>TableWhitelist</code>, <code>ColumnWhitelist</code>, <code>JoinWhitelist</code></td><td>Server-side allow-list of what the AI assistant may query — see <a href="04_query_guardrail.html">next topic</a></td></tr>
+      <tr><td><code>QueryAuditLog</code></td><td>One row per AI-driven query execution, for compliance traceability</td></tr>
+      <tr><td><code>PersonaType</code>, <code>LLMOption</code>, <code>LLMMapper</code>, <code>PersonaMapper</code></td><td>Configuration schema for dynamic model selection — see <a href="05_persona_llm_schema.html">Persona/LLM Option Schema</a></td></tr>
+    </table>
+    <p>Run order for these scripts, per <code>hc_data_source/hc_sql/README.md</code>:
+    <code>tables/</code> → <code>seed/</code> → <code>procedures/</code>.</p>
+
+    <div class="pager">
+      <a href="02_why_we_use_it.html">← Why We Use It</a>
+      <a href="04_query_guardrail.html">Next: The Query-Guardrail Procedure →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

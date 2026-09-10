@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP - REST API vs MCP</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --code-bg:#0b1220; --badge-bg:#1d4ed8; }
+  * { box-sizing:border-box; } body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; } .shell { display:flex; min-height:100vh; } .sidebar { width:250px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; } .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; } .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; } .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; } .main { flex:1; padding:40px 32px 80px; max-width:900px; } h1 { font-size:1.8rem; margin:0 0 20px; color:#f8fafc; } h2 { font-size:1.25rem; border-left:4px solid var(--accent); padding-left:12px; margin-top:34px; color:#f8fafc; } .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 28px; } .purpose strong { color:var(--text); } table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; } th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; } th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; } code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; } .pager { display:flex; justify-content:space-between; margin-top:40px; padding-top:20px; border-top:1px solid var(--panel-border); } .pager a { color:var(--accent); text-decoration:none; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --code-bg:#f1f5f9; --badge-bg:#2563eb; }
+    h1, h2 { color:#0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">MCP Topics</div>
+    <a href="MCP_Home.html">MCP Home</a>
+    <a href="01_overview.html">1. What Is MCP?</a>
+    <a href="02_rest_api_vs_mcp.html" class="active">2. REST API vs MCP</a>
+    <a href="03_implementation_options.html">3. Implementation Options</a>
+    <a href="net_core_api/AspNetCore_MCP_Home.html">ASP.NET Core MCP</a>
+  </nav>
+  <main class="main">
+    <h1>REST API vs MCP</h1>
+    <div class="purpose">
+      <strong>Short answer:</strong> REST is an application integration pattern. MCP is an AI-tool
+      integration pattern. They can coexist in the same service when the same business capability
+      must be available to both normal applications and AI agents.
+    </div>
+
+    <table>
+      <tr><th>Area</th><th>REST API</th><th>MCP</th></tr>
+      <tr><td>Primary user</td><td>Frontend apps, services, integrations, mobile clients.</td><td>AI assistants, agents, IDEs, model runtimes, orchestration layers.</td></tr>
+      <tr><td>Contract style</td><td>Endpoint-first: route, verb, request, response.</td><td>Tool-first: capability description, arguments, result.</td></tr>
+      <tr><td>Discovery</td><td>Usually via Swagger/OpenAPI or developer documentation.</td><td>Designed for AI clients to discover available tools programmatically.</td></tr>
+      <tr><td>Best fit</td><td>Stable product APIs and UI workflows.</td><td>Agent workflows where the model needs safe, callable business tools.</td></tr>
+      <tr><td>Healthcare risk control</td><td>Auth, validation, domain services, database permissions.</td><td>All REST controls plus agent/tool boundaries and explicit tool descriptions.</td></tr>
+    </table>
+
+    <h2>How This Project Uses Both</h2>
+    <table>
+      <tr><th>Layer</th><th>Role</th></tr>
+      <tr><td>REST endpoint</td><td><code>api/PatientChart</code> gives a testable HTTP boundary for the same healthcare query capability.</td></tr>
+      <tr><td>MCP transport</td><td><code>app.MapMcp()</code> prepares the service to expose MCP tools over HTTP transport.</td></tr>
+      <tr><td>Shared service layer</td><td>Validation, service, BL, repository, and EF keep business behavior consistent across access styles.</td></tr>
+    </table>
+
+    <div class="pager">
+      <a href="01_overview.html">Previous: What Is MCP?</a>
+      <a href="03_implementation_options.html">Next: Implementation Options</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

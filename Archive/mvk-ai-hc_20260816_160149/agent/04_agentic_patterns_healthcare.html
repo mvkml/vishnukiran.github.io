@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agents - Agentic Patterns</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --code-bg:#0b1220; --badge-bg:#1d4ed8; --ok:#22c55e; --warn:#f59e0b; --plan:#60a5fa; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; }
+  .sidebar { width:250px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; }
+  .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; }
+  .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); }
+  .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; }
+  .main { flex:1; padding:40px 32px 80px; max-width:980px; }
+  h1 { font-size:1.85rem; margin:0 0 12px; color:#f8fafc; }
+  h2 { font-size:1.25rem; color:#f8fafc; border-left:4px solid var(--accent); padding-left:12px; margin:34px 0 16px; }
+  .tagline { font-size:1.04rem; color:var(--text-dim); margin:0 0 18px; }
+  .purpose { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px 18px; color:var(--text-dim); margin:18px 0 28px; }
+  .purpose strong { color:var(--text); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(245px,1fr)); gap:14px; margin:18px 0; }
+  .card { background:var(--panel); border:1px solid var(--panel-border); border-radius:10px; padding:16px; }
+  .card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:8px; }
+  .card-title { font-weight:700; color:#f8fafc; }
+  .chip { border-radius:999px; font-size:.72rem; font-weight:700; padding:3px 8px; white-space:nowrap; }
+  .covered { background:rgba(34,197,94,.14); color:#86efac; }
+  .partial { background:rgba(245,158,11,.14); color:#fbbf24; }
+  .planned { background:rgba(96,165,250,.14); color:#93c5fd; }
+  .card p { color:var(--text-dim); font-size:.9rem; margin:0; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; }
+  th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; }
+  th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; }
+  code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; }
+  ol { color:var(--text-dim); padding-left:22px; }
+  blockquote { margin:18px 0; padding:14px 18px; border-left:4px solid var(--accent); background:var(--panel); color:var(--text); border-radius:0 8px 8px 0; }
+  .pager { display:flex; justify-content:space-between; margin-top:40px; padding-top:20px; border-top:1px solid var(--panel-border); }
+  .pager a { color:var(--accent); text-decoration:none; }
+  @media (max-width:760px) { .shell { flex-direction:column; } .sidebar { width:100%; height:auto; position:relative; } .main { padding:28px 18px 56px; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --code-bg:#f1f5f9; --badge-bg:#2563eb; }
+    h1,h2,.card-title { color:#0f172a; }
+    .covered { background:#ecfdf5; color:#047857; }
+    .partial { background:#fff7ed; color:#c2410c; }
+    .planned { background:#eff6ff; color:#1d4ed8; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Agent Topics</div>
+    <a href="Agent_Home.html">Agent Home</a>
+    <a href="01_what_is_agent.html">1. What Is An Agent?</a>
+    <a href="02_langchain_agent.html">2. LangChain Agent</a>
+    <a href="03_semantic_kernel_agent.html">3. Semantic Kernel Agent</a>
+    <a href="04_agentic_patterns_healthcare.html" class="active">4. Agentic Patterns</a>
+    <a href="05_doctor_persona_multi_agent_patterns.html">5. Doctor Multi-Agent Patterns</a>
+  </nav>
+  <main class="main">
+    <h1>Agentic Patterns In Healthcare Co-Pilot Studio</h1>
+    <p class="tagline">Current and planned agent patterns used across the Healthcare Co-Pilot Studio workflow.</p>
+
+    <div class="purpose">
+      <strong>Current position:</strong> Memory Agent and Tool-Using Agent are already implemented in
+      the Doctor/Provider copilot. The agent stores and replays chat history through
+      <code>LLMChatHistory</code>, calls MCP tools for healthcare data, and streams responses to Angular
+      through Server-Sent Events.
+    </div>
+
+    <h2>Coverage Summary</h2>
+    <div class="grid">
+      <div class="card"><div class="card-head"><span class="card-title">Memory Agent</span><span class="chip covered">Covered</span></div><p>Conversation turns are persisted in <code>dbo.LLMChatHistory</code> and replayed by <code>SessionId</code> and <code>UserId</code>.</p></div>
+      <div class="card"><div class="card-head"><span class="card-title">Tool-Using Agent</span><span class="chip covered">Covered</span></div><p>Provider Agent consumes MCP tools; appointment answers come from stored-procedure-backed tool calls.</p></div>
+      <div class="card"><div class="card-head"><span class="card-title">Streaming Agent</span><span class="chip covered">Covered</span></div><p>Doctor responses, progress, and errors are streamed to Angular using SSE.</p></div>
+      <div class="card"><div class="card-head"><span class="card-title">Loop Agent</span><span class="chip partial">Prototype</span></div><p>MVK Loop Agent demonstrates bounded repeated execution for R&amp;D and controlled automation.</p></div>
+      <div class="card"><div class="card-head"><span class="card-title">Reflection Agent</span><span class="chip planned">Planned</span></div><p>QA issues will trigger context replay and prompt/tool/model correction recommendations.</p></div>
+      <div class="card"><div class="card-head"><span class="card-title">Validation Agent</span><span class="chip planned">Planned</span></div><p>Validates answer quality, grounding, safety, completeness, and business rule alignment.</p></div>
+      <div class="card"><div class="card-head"><span class="card-title">Supervisor Agent</span><span class="chip planned">Future</span></div><p>Routes issues or tasks to validation, reflection, SQL, UI, QA, or human approval.</p></div>
+    </div>
+
+    <h2>Current Runtime Flow</h2>
+    <table>
+      <tr><th>Step</th><th>What Happens</th><th>Pattern</th></tr>
+      <tr><td>1</td><td>Doctor sends a question from Angular with a conversation <code>SessionId</code>.</td><td>Memory</td></tr>
+      <tr><td>2</td><td>Provider Agent rebuilds prior context from <code>LLMChatHistory</code>.</td><td>Memory Agent</td></tr>
+      <tr><td>3</td><td>Agent connects to MCP tool hosts and registers tools in Semantic Kernel.</td><td>Tool-Using Agent</td></tr>
+      <tr><td>4</td><td>Model decides whether to call appointment/patient tools.</td><td>Tool-Using Agent</td></tr>
+      <tr><td>5</td><td>Tool layer reaches SQL through <code>usp_Tool_*</code> stored procedures.</td><td>Tool Layer</td></tr>
+      <tr><td>6</td><td>Final answer, status, and errors are sent back through SSE.</td><td>Streaming Agent</td></tr>
+    </table>
+
+    <h2>QA Reflection Flow</h2>
+    <ol>
+      <li>QA reviews the streamed Doctor copilot response.</li>
+      <li>QA identifies an issue and submits severity, issue description, original prompt, and observed response.</li>
+      <li>QA Validation REST API sends the case to the Reflection Agent.</li>
+      <li>Reflection Agent checks prompt context, tool output, system prompt, and model configuration.</li>
+      <li>Reflection Agent identifies root cause: prompt gap, tool instruction issue, model configuration issue, missing grounding, or unsafe response.</li>
+      <li>Correction is recommended or applied with human approval for risky changes.</li>
+    </ol>
+
+    <h2>Validation vs Reflection vs Supervisor</h2>
+    <table>
+      <tr><th>Pattern</th><th>Main Question</th><th>Output</th></tr>
+      <tr><td>Validation Agent</td><td>Did the answer pass quality, safety, grounding, and business rules?</td><td>Pass/fail, score, category, evidence.</td></tr>
+      <tr><td>Reflection Agent</td><td>Why did it fail, and how should the agent improve?</td><td>Root cause, prompt/config/tool correction, remediation plan.</td></tr>
+      <tr><td>Supervisor Agent</td><td>Who should handle this issue next?</td><td>Route to validation, reflection, SQL, Angular, QA, or human approval.</td></tr>
+    </table>
+
+    <h2>Pending Scope</h2>
+    <table>
+      <tr><th>Item</th><th>Pattern</th><th>Status</th></tr>
+      <tr><td>Populate <code>LLMChatHistory.Title</code> and <code>TitleDescription</code>.</td><td>Memory Agent</td><td>Pending</td></tr>
+      <tr><td>Add API to list chat sessions for the logged-in doctor.</td><td>Memory Agent</td><td>Pending</td></tr>
+      <tr><td>Add Angular left-pane session list.</td><td>Memory Agent / UI</td><td>Pending</td></tr>
+      <tr><td>Add QA issue submission API.</td><td>Reflection Agent</td><td>Pending</td></tr>
+      <tr><td>Add validation rules for QA review.</td><td>Validation Agent</td><td>Pending</td></tr>
+      <tr><td>Add supervisor/orchestrator for routing QA issues.</td><td>Supervisor Agent</td><td>Future scope</td></tr>
+    </table>
+
+    <h2>Architecture Summary</h2>
+    <blockquote>
+      Healthcare Co-Pilot Studio currently implements Memory Agent and Tool-Using Agent patterns in
+      the Doctor/Provider copilot. Memory is persisted through LLMChatHistory using session-based
+      replay, and tool usage is implemented through MCP tools backed by stored procedures. The
+      loop-agent console demonstrates controlled autonomous execution. The next business enhancement
+      is a QA-driven Reflection and Validation workflow where QA can flag an issue and an agent can
+      re-evaluate the prompt, tool output, system prompt, and model configuration to recommend or
+      apply corrections.
+    </blockquote>
+
+    <div class="pager"><a href="03_semantic_kernel_agent.html">Previous: Semantic Kernel Agent</a><a href="05_doctor_persona_multi_agent_patterns.html">Next: Doctor Multi-Agent Patterns</a></div>
+  </main>
+</div>
+</body>
+</html>

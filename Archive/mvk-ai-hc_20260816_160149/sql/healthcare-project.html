@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Health Care Project Databases</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --surface: #ffffff;
+      --ink: #18202a;
+      --muted: #5d6875;
+      --line: #dce2ea;
+      --accent: #0f766e;
+      --accent-dark: #115e59;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    header {
+      background: #10212b;
+      color: #ffffff;
+      padding: 36px 24px;
+    }
+
+    .wrap {
+      width: min(1040px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    a {
+      color: var(--accent-dark);
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 14px;
+      color: #bce3dd;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    h1, h2 {
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: clamp(30px, 5vw, 48px);
+    }
+
+    header p {
+      max-width: 760px;
+      margin: 14px 0 0;
+      color: #d5e1e5;
+      font-size: 18px;
+    }
+
+    main {
+      padding: 28px 0 52px;
+    }
+
+    section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 26px;
+      margin-top: 22px;
+    }
+
+    .db-link {
+      display: block;
+      margin-top: 16px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .db-link:hover,
+    .db-link:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .db-link strong {
+      display: block;
+      color: var(--accent-dark);
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .status {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #fff7e6;
+      border: 1px solid #f2d28b;
+      color: #765316;
+      font-size: 13px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <a class="back" href="index.html">Back to SQL Home</a>
+      <h1>Health Care Project</h1>
+      <p>This page lists the databases connected to the Health Care project documentation.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>Databases</h2>
+      <a class="db-link" href="dbs/ai_hc_db/index.html">
+        <strong>AI HealthCare Database</strong>
+        <span>Main healthcare database currently being prepared for documentation.</span>
+        <br>
+        <span class="status">Work in progress</span>
+      </a>
+    </section>
+  </main>
+</body>
+</html>

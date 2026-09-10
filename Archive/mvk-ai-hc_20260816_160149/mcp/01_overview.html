@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP - What Is MCP?</title>
+<style>
+  :root { --bg:#0f172a; --panel:#1e293b; --panel-border:#334155; --text:#e2e8f0; --text-dim:#94a3b8; --accent:#38bdf8; --plain-bg:#0c2b3a; --plain-border:#0e7490; --tech-bg:#241a3a; --tech-border:#7c3aed; --code-bg:#0b1220; --badge-bg:#1d4ed8; }
+  * { box-sizing:border-box; } body { margin:0; font-family:-apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background:var(--bg); color:var(--text); line-height:1.65; }
+  .shell { display:flex; min-height:100vh; } .sidebar { width:250px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto; background:var(--panel); border-right:1px solid var(--panel-border); padding:24px 14px; }
+  .sidebar .sb-title { font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim); padding:0 10px 10px; } .sidebar a { display:block; padding:9px 10px; border-radius:8px; color:var(--text-dim); text-decoration:none; font-size:.87rem; margin-bottom:2px; } .sidebar a.active { background:var(--badge-bg); color:#fff; font-weight:600; } .sidebar a:hover { background:rgba(56,189,248,.1); color:var(--text); } .sb-divider { border-top:1px solid var(--panel-border); margin:16px 6px; }
+  .main { flex:1; padding:40px 32px 80px; max-width:860px; } h1 { font-size:1.8rem; margin:0 0 20px; color:#f8fafc; } h2 { font-size:1.25rem; border-left:4px solid var(--accent); padding-left:12px; margin-top:34px; color:#f8fafc; }
+  .layer { border-radius:10px; padding:16px 20px; margin:14px 0; } .layer-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; display:block; margin-bottom:8px; } .plain { background:var(--plain-bg); border:1px solid var(--plain-border); } .plain .layer-label { color:#67e8f9; } .tech { background:var(--tech-bg); border:1px solid var(--tech-border); } .tech .layer-label { color:#c4b5fd; }
+  table { width:100%; border-collapse:collapse; margin:16px 0; font-size:.9rem; } th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--panel-border); vertical-align:top; } th { color:var(--text-dim); text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; } code { font-family:"SF Mono", Consolas, Monaco, monospace; background:var(--code-bg); padding:2px 6px; border-radius:4px; font-size:.85em; } .pager { display:flex; justify-content:space-between; margin-top:40px; padding-top:20px; border-top:1px solid var(--panel-border); } .pager a { color:var(--accent); text-decoration:none; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f8fafc; --panel:#ffffff; --panel-border:#e2e8f0; --text:#1e293b; --text-dim:#64748b; --accent:#0284c7; --plain-bg:#ecfeff; --plain-border:#06b6d4; --tech-bg:#f5f3ff; --tech-border:#8b5cf6; --code-bg:#f1f5f9; --badge-bg:#2563eb; }
+    h1, h2 { color:#0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">MCP Topics</div>
+    <a href="MCP_Home.html">MCP Home</a>
+    <a href="01_overview.html" class="active">1. What Is MCP?</a>
+    <a href="02_rest_api_vs_mcp.html">2. REST API vs MCP</a>
+    <a href="03_implementation_options.html">3. Implementation Options</a>
+    <a href="net_core_api/AspNetCore_MCP_Home.html">ASP.NET Core MCP</a>
+  </nav>
+  <main class="main">
+    <h1>What Is Model Context Protocol?</h1>
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      MCP is a standard way for an AI assistant to use external tools and data sources. Instead of
+      asking the model to guess, the assistant can call an approved tool, receive real data, and
+      compose an answer from that result.
+    </div>
+    <div class="layer tech">
+      <span class="layer-label">Technical</span>
+      MCP provides a protocol boundary between an AI client/agent and a server that exposes tools,
+      resources, and prompts. The server describes callable capabilities in a structured form, the
+      client invokes them with typed arguments, and the result is returned to the model workflow as
+      governed context.
+    </div>
+
+    <h2>Why It Matters For Healthcare AI</h2>
+    <table>
+      <tr><th>Concern</th><th>MCP Architecture Response</th></tr>
+      <tr><td>Hallucinated facts</td><td>The model calls a real data tool and answers from returned records.</td></tr>
+      <tr><td>Unsafe data access</td><td>Tools expose constrained operations instead of raw database access.</td></tr>
+      <tr><td>Auditability</td><td>Tool calls can be logged with inputs, identity context, and results.</td></tr>
+      <tr><td>Persona boundaries</td><td>Doctor, Patient, and Admin tools can expose different capabilities.</td></tr>
+    </table>
+
+    <h2>AI Positioning</h2>
+    <div class="layer plain">
+      <span class="layer-label">Client Message</span>
+      In Healthcare Co-Pilot Studio, MCP is positioned as the professional tool layer for AI. The
+      LLM remains the reasoning and communication layer, while MCP-backed services provide the
+      trusted operational actions: search patient charts, retrieve approved records, validate query
+      boundaries, and return structured results.
+    </div>
+
+    <div class="pager">
+      <a href="MCP_Home.html">MCP Home</a>
+      <a href="02_rest_api_vs_mcp.html">Next: REST API vs MCP</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ollama — Current Status</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.05em; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, td code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .status-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+  .status-live { background: #064e3b; color: #6ee7b7; }
+  .status-progress { background: #422006; color: #fbbf24; }
+  .status-planned { background: #1e293b; color: #94a3b8; border: 1px solid var(--panel-border); }
+  .warn { background: #422006; border: 1px solid #92400e; border-radius: 10px; padding: 14px 18px; margin: 14px 0; font-size: 0.9rem; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+    .status-live { background: #d1fae5; color: #065f46; }
+    .status-progress { background: #fef3c7; color: #92400e; }
+    .status-planned { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+    .warn { background: #fef3c7; border-color: #fbbf24; color: #92400e; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Ollama Topics</div>
+    <a href="Ollama_Home.html">🏠 Ollama Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_custom_persona_models.html">4. Building Custom Persona Models</a>
+    <a href="05_model_selection.html">5. Model Selection: Config vs. Database</a>
+    <a href="06_current_status.html" class="active">6. Current Status</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="Ollama_Home.html">Ollama</a> / Topic 6</div>
+    <h1>Current Status</h1>
+
+    <table>
+      <tr><th>Piece</th><th>Status</th><th>Notes</th></tr>
+      <tr>
+        <td><code>qwen2.5:7b</code> base model</td>
+        <td><span class="status-pill status-live">Live</span></td>
+        <td>Pulled and used directly for classification and by default</td>
+      </tr>
+      <tr>
+        <td><code>hc-doctor-executor</code></td>
+        <td><span class="status-pill status-live">Live</span></td>
+        <td>Built, tagged <code>:latest</code>, referenced by <code>HCDocExecutor</code> config</td>
+      </tr>
+      <tr>
+        <td><code>hc-patient-executor</code></td>
+        <td><span class="status-pill status-live">Live</span></td>
+        <td>Two tags built side by side, <code>:1.1</code> and <code>:1.2</code>; config uses <code>:1.1</code></td>
+      </tr>
+      <tr>
+        <td><code>hc-doctor-classifier</code> / <code>hc-patient-classifier</code></td>
+        <td><span class="status-pill status-planned">Planned</span></td>
+        <td>Named in the setup guide's convention; no Modelfile written, never built</td>
+      </tr>
+      <tr>
+        <td>Direct <code>OllamaClient</code> (bypasses Semantic Kernel)</td>
+        <td><span class="status-pill status-progress">In Progress</span></td>
+        <td>Calls Ollama's <code>/api/chat</code> over plain HTTP; used by older Doctor endpoints that coexist with the Semantic Kernel path</td>
+      </tr>
+      <tr>
+        <td>Database-backed model selection (Path B)</td>
+        <td><span class="status-pill status-progress">In Progress</span></td>
+        <td>Schema and stored procedure exist; not yet the default resolution path in the live request flow</td>
+      </tr>
+      <tr>
+        <td>Cold-start request timeout (<code>BUG-001</code>)</td>
+        <td><span class="status-pill status-progress">In Progress</span></td>
+        <td>Open — see note below</td>
+      </tr>
+    </table>
+
+    <div class="warn">
+      <strong>Cold-start behavior — worth knowing before a live demo:</strong> Ollama has to load
+      a model into memory before it can generate anything. If <code>hc-doctor-executor:latest</code>
+      or <code>hc-patient-executor:1.1</code> hasn't been called recently, that first request after
+      idle time is measurably slower — observed at roughly <strong>91–110 seconds</strong> for a
+      single short message, versus about <strong>18.5 seconds</strong> once the model is already
+      warm. Doctor and Patient use different models, so each persona's first message in a session
+      can hit this independently.
+      <br><br>
+      <code>KernalFactory</code>'s HTTP client currently uses .NET's default 100-second timeout,
+      which the observed worst case can exceed — meaning a cold-start request can occasionally be
+      canceled outright rather than just arrive slowly. Tracked as <code>BUG-001</code>, still
+      open. Two fixes are under consideration, neither shipped yet: raising the timeout past the
+      observed worst case, or moving to a streamed response (<code>PB045</code>) so the reply
+      appears token-by-token instead of arriving as one blocking call. If this is seen live, it's
+      expected behavior for locally-hosted, on-demand LLM serving — not an environment fault.
+    </div>
+
+    <div class="warn">
+      <strong>Real config issue worth flagging:</strong> in <code>appsettings.json</code>, the
+      <code>FBDoctorExecutor</code> fallback section's <code>Model</code> value is
+      <code>hc-patient-executor:1.1</code> — a Patient model configured under a Doctor fallback
+      key. It reads as a copy-paste mistake rather than an intentional choice, and only takes
+      effect on the rare no-authenticated-user edge case, but it's exactly what's checked into
+      source control today.
+    </div>
+
+    <div class="pager">
+      <a href="05_model_selection.html">← Model Selection: Config vs. Database</a>
+      <a href="Ollama_Home.html">Back to Ollama Home →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

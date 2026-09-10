@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ollama — Building Custom Persona Models</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --plain-bg: #0c2b3a; --plain-border: #0e7490;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 800px; }
+  .crumb { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 10px; }
+  .crumb a { color: var(--accent); text-decoration: none; }
+  h1 { font-size: 1.7rem; margin: 0 0 20px; color: #f8fafc; }
+  .layer { border-radius: 10px; padding: 16px 20px; margin: 14px 0; }
+  .layer-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: block; }
+  .plain { background: var(--plain-bg); border: 1px solid var(--plain-border); }
+  .plain .layer-label { color: #67e8f9; }
+  .flow { background: var(--code-bg); border: 1px solid var(--panel-border); border-radius: 8px; padding: 18px 20px; font-size: 0.86rem; overflow-x: auto; margin: 14px 0; }
+  .flow code { display: block; white-space: pre; }
+  code { font-family: "SF Mono", Consolas, Monaco, monospace; }
+  p code, li code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .pager { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--panel-border); }
+  .pager a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .pager a:hover { text-decoration: underline; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --plain-bg: #ecfeff; --plain-border: #06b6d4; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1 { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Ollama Topics</div>
+    <a href="Ollama_Home.html">🏠 Ollama Home</a>
+    <a href="01_overview.html">1. Overview</a>
+    <a href="02_why_we_use_it.html">2. Why We Use It</a>
+    <a href="03_building_blocks.html">3. Building Blocks</a>
+    <a href="04_custom_persona_models.html" class="active">4. Building Custom Persona Models</a>
+    <a href="05_model_selection.html">5. Model Selection: Config vs. Database</a>
+    <a href="06_current_status.html">6. Current Status</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">← Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">← Site Home</a>
+  </nav>
+
+  <main class="main">
+    <div class="crumb"><a href="Ollama_Home.html">Ollama</a> / Topic 4</div>
+    <h1>Building Custom Persona Models</h1>
+
+    <div class="layer plain">
+      <span class="layer-label">Plain</span>
+      A "custom model" in Ollama isn't a retrained neural network — it's the same base model
+      paired with a fixed system prompt and a set of generation settings, packaged under its own
+      name so the application can request it by a simple tag instead of repeating a long prompt
+      every time.
+    </div>
+
+    <p>Real example — <code>hc_llm/llm/ollama/custom_models/hc_llms/doctor/executor/Modelfile</code>,
+    the file actually used to build <code>hc-doctor-executor</code>:</p>
+    <div class="flow"><code>FROM qwen2.5:7b
+
+SYSTEM """
+You are Dr. Ajmath's AI Clinical Assistant.
+=========================================================
+Doctor Profile
+=========================================================
+[persona: qualifications, hospital affiliations, appointment/patient/clinical/
+ prescription/hospital-assistant responsibilities, privacy rules, communication style]
+"""
+
+PARAMETER temperature 0.2
+PARAMETER top_p 0.9
+PARAMETER top_k 40
+PARAMETER num_ctx 8192
+PARAMETER repeat_penalty 1.1
+PARAMETER num_predict 1024</code></div>
+
+    <p>The parameters are tuned deliberately for a clinical assistant: a low
+    <code>temperature</code> (0.2) keeps answers consistent rather than creative, and
+    <code>num_ctx 8192</code> gives it enough context window to hold a real conversation plus
+    injected query results.</p>
+
+    <h3 style="color:#f8fafc; font-size:1rem;">Building it</h3>
+    <div class="flow"><code>ollama create hc-doctor-executor:latest -f hc_llm/llm/ollama/custom_models/hc_llms/doctor/executor/Modelfile
+ollama list   # confirm the tag is live</code></div>
+    <p><strong>Versioning matters:</strong> building without an explicit tag silently resolves to
+    <code>:latest</code>, and rebuilding overwrites it with no history. The project's own setup
+    guide is explicit that an already-built model is never renamed or retagged to match a naming
+    convention after the fact — since app configuration may already reference it by that exact
+    tag.</p>
+
+    <div class="pager">
+      <a href="03_building_blocks.html">← Building Blocks</a>
+      <a href="05_model_selection.html">Next: Model Selection: Config vs. Database →</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

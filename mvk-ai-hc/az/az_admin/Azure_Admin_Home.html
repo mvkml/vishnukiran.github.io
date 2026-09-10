@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Administration - Home</title>
+<style>
+  :root {
+    --bg: #0f172a; --panel: #1e293b; --panel-border: #334155;
+    --text: #e2e8f0; --text-dim: #94a3b8; --accent: #38bdf8;
+    --code-bg: #0b1220; --badge-bg: #1d4ed8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--panel); border-right: 1px solid var(--panel-border); padding: 24px 14px; }
+  .sidebar .sb-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); padding: 0 10px 10px; }
+  .sidebar a { display: block; padding: 9px 10px; border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 0.87rem; margin-bottom: 2px; }
+  .sidebar a:hover { background: rgba(56,189,248,0.1); color: var(--text); }
+  .sidebar a.active { background: var(--badge-bg); color: #fff; font-weight: 600; }
+  .sidebar .sb-divider { border-top: 1px solid var(--panel-border); margin: 16px 6px; }
+  .sidebar .sb-up { font-size: 0.8rem; }
+  .main { flex: 1; padding: 40px 32px 80px; max-width: 860px; }
+  h1 { font-size: 1.9rem; margin: 0 0 12px; color: #f8fafc; }
+  .tagline { font-size: 1.05rem; color: var(--text-dim); margin: 0 0 16px; }
+  .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+  .badge { background: var(--badge-bg); color: #fff; font-size: 0.78rem; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
+  .badge.alt { background: #334155; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; padding: 20px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s, transform 0.15s; }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-num { font-size: 0.75rem; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+  .card-title { font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-bottom: 6px; }
+  .card-purpose { font-size: 0.86rem; color: var(--text-dim); }
+  .purpose { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; padding: 16px 18px; font-size: 0.95rem; color: var(--text-dim); margin-top: 40px; }
+  @media (max-width: 760px) { .shell { flex-direction: column; } .sidebar { width: 100%; height: auto; position: relative; } .main { padding: 28px 18px 56px; } }
+  @media (prefers-color-scheme: light) {
+    :root { --bg: #f8fafc; --panel: #ffffff; --panel-border: #e2e8f0; --text: #1e293b; --text-dim: #64748b; --accent: #0284c7; --code-bg: #f1f5f9; --badge-bg: #2563eb; }
+    h1, .card-title { color: #0f172a; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar">
+    <div class="sb-title">Azure Admin Topics</div>
+    <a href="Azure_Admin_Home.html" class="active">Azure Admin Home</a>
+    <a href="01_what_is_azure_administration.html">1. What Is Azure Administration?</a>
+    <a href="02_tenant_to_resource_hierarchy.html">2. Tenant To Resource Hierarchy</a>
+    <a href="03_microsoft_entra_id.html">3. Microsoft Entra ID</a>
+    <a href="microsoft_entra_id/01_tenant.html">Tenant</a>
+    <a href="app_registration/01_app_registration.html">App Registration</a>
+    <a href="subscription/01_subscription.html">Subscription</a>
+    <div class="sb-divider"></div>
+    <a class="sb-up" href="../../ts/01_technology_stack_v1.html">Technology Stack</a>
+    <a class="sb-up" href="../../about_project/hcs_home.html">Site Home</a>
+  </nav>
+
+  <main class="main">
+    <h1>Azure Administration</h1>
+    <p class="tagline">Topic-wise learning and implementation notes for managing Azure resources, access, governance, monitoring, and operational readiness.</p>
+    <div class="meta">
+      <span class="badge">Version 1</span>
+      <span class="badge alt">2026-09-08</span>
+    </div>
+
+    <div class="grid">
+      <a class="card" href="01_what_is_azure_administration.html">
+        <div class="card-num">TOPIC 1</div>
+        <div class="card-title">What Is Azure Administration?</div>
+        <div class="card-purpose">Definition of Azure administration and where it fits in cloud operations.</div>
+      </a>
+      <a class="card" href="02_tenant_to_resource_hierarchy.html">
+        <div class="card-num">TOPIC 2</div>
+        <div class="card-title">Tenant To Resource Hierarchy</div>
+        <div class="card-purpose">Azure Portal hierarchy from Microsoft Entra ID tenant down to subscriptions, resource groups, and resources.</div>
+      </a>
+      <a class="card" href="03_microsoft_entra_id.html">
+        <div class="card-num">TOPIC 3</div>
+        <div class="card-title">Microsoft Entra ID</div>
+        <div class="card-purpose">Cloud identity service for users, groups, authentication, app registrations, access, roles, and tenant identity.</div>
+      </a>
+      <a class="card" href="microsoft_entra_id/01_tenant.html">
+        <div class="card-num">MICROSOFT ENTRA ID</div>
+        <div class="card-title">Tenant</div>
+        <div class="card-purpose">Definition of a tenant, main tenant types, and how each tenant type is used.</div>
+      </a>
+      <a class="card" href="app_registration/01_app_registration.html">
+        <div class="card-num">MICROSOFT ENTRA ID</div>
+        <div class="card-title">App Registration</div>
+        <div class="card-purpose">Placeholder for the app registration user story and implementation details.</div>
+      </a>
+      <a class="card" href="subscription/01_subscription.html">
+        <div class="card-num">AZURE ADMIN</div>
+        <div class="card-title">Subscription</div>
+        <div class="card-purpose">Billing, governance, resource management, RBAC, quotas, and environment boundary for Azure resources.</div>
+      </a>
+    </div>
+
+    <div class="purpose">
+      <strong>About this section:</strong> this Azure Administration track will be expanded one topic at a time.
+      It starts with the definition and can later cover subscriptions, resource groups, RBAC, networking,
+      governance, monitoring, cost management, backup, security, and deployment operations.
+    </div>
+  </main>
+</div>
+</body>
+</html>

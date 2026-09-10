@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Pattern - Bulkhead</title>
+  <link rel="stylesheet" href="patterns.css">
+</head>
+<body>
+  <div class="shell">
+    <nav class="sidebar">
+      <div class="sb-title">MCP Architecture</div>
+      <a href="Architecture_Patterns_Home.html">Patterns Home</a>
+      <a href="01_api_gateway.html">1. API Gateway</a>
+      <a href="02_bff.html">2. Backend for Frontend</a>
+      <a href="03_aggregator.html">3. Aggregator</a>
+      <a href="04_facade.html">4. Facade</a>
+      <a href="05_adapter.html">5. Adapter</a>
+      <a href="06_anti_corruption_layer.html">6. Anti-Corruption Layer</a>
+      <a href="07_bounded_context.html">7. Bounded Context</a>
+      <a href="08_circuit_breaker.html">8. Circuit Breaker</a>
+      <a href="09_bulkhead.html" class="active">9. Bulkhead</a>
+      <a href="10_service_discovery.html">10. Service Discovery</a>
+      <a href="11_strangler_fig.html">11. Strangler Fig</a>
+      <a href="12_mediator.html">12. Mediator</a>
+      <a href="../04_tool_segregation.html">Tool Segregation</a>
+    </nav>
+
+    <main class="main">
+      <h1>Bulkhead</h1>
+      <div class="meta">
+        <span class="badge">Resilience Pattern</span>
+        <span class="badge">Real Code Example</span>
+        <span class="badge alt">Planned MCP Host Use</span>
+      </div>
+
+      <div class="plain">
+        <strong>Plain:</strong> A Bulkhead keeps one failing part of the system from pulling down
+        another part that is still healthy. In this project, the principle now appears in real chat
+        history logging code, and it is also planned for future separated MCP hosts.
+      </div>
+
+      <h2>What It Is</h2>
+      <p>
+        Bulkhead is a resilience pattern from distributed systems. The name comes from physical
+        ship compartments: if one compartment floods, the whole ship should not sink. In software,
+        the same idea means separating failure domains, capacity, or operational risk so one
+        overloaded or broken area does not damage unrelated work.
+      </p>
+
+      <h2>Why, When, How</h2>
+      <p>
+        Use Bulkhead when two operations have different priorities or different failure tolerance.
+        A user-facing response path should usually be protected from side work such as telemetry,
+        audit enrichment, analytics, optional notifications, or calls to a lower-priority service.
+      </p>
+      <p>
+        The implementation can be a separate process, a separate host, a separate queue, a separate
+        connection pool, or simply a deliberate try/catch boundary around non-critical work. The
+        important design question is always the same: should this failure share a blast radius with
+        that other workflow?
+      </p>
+
+      <h2>Real Instance In This Codebase</h2>
+      <p>
+        The concrete example is in <code>ProviderPatientAgent.GetChatMessageContentAsync</code> in
+        <code>HC.AI.MAPI.AL.Provider</code>. The agent can produce a chat response and then persist
+        the turn to <code>dbo.LLMChatHistory</code> through
+        <code>ILLMChatHistoryRepository.AddAsync</code> for later analysis, guardrails, and
+        explainability.
+      </p>
+      <p>
+        The Bulkhead question is whether a failed history write should make the whole chat request
+        fail after the model has already answered. The intended design, tracked under PB065, is to
+        isolate those paths: the chat response should still return, while the logging failure is
+        contained and handled separately.
+      </p>
+
+      <h2>Why We Chose It Here</h2>
+      <p>
+        Chat response generation and chat history persistence are related, but they are not the same
+        failure domain. A doctor or patient should not lose a valid answer only because the
+        background record of that turn could not be saved. This gives the project a real,
+        code-backed resilience story instead of only a future architecture diagram.
+      </p>
+
+      <h2>Planned MCP Host Use</h2>
+      <p>
+        ADR004 also applies Bulkhead to future MCP host segregation. Once outpatient, ICU, emergency,
+        or other patient-data tools live in separate MCP hosts, each host can have its own capacity,
+        deployment, timeout, and failure behavior. An overloaded Emergency tool host should not
+        starve an outpatient query path, and an ICU host outage should not make every Doctor agent
+        interaction fail.
+      </p>
+
+      <h2>Diagram</h2>
+      <div class="flow"><code>Real today:
+Doctor or Patient chat request
+  -> Model generates answer
+  -> Chat response returns to user
+  -> Chat history write is isolated
+       -> if write fails, contain logging failure
+       -> do not fail the chat response
+
+Planned MCP host usage:
+Shared agent layer
+  -> OP MCP Host capacity pool
+  -> ICU MCP Host capacity pool
+  -> Emergency MCP Host capacity pool</code></div>
+
+      <div class="note">
+        <strong>Status:</strong> real as a resilience design around chat-history logging; planned as
+        an operating principle for independently deployed MCP hosts once a second host exists.
+      </div>
+
+      <div class="pager">
+        <a href="08_circuit_breaker.html">Previous: Circuit Breaker</a>
+        <a href="10_service_discovery.html">Next: Service Discovery</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
